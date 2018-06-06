@@ -1,10 +1,15 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {getStudentList} from '../actions';
 
 class StudentList extends React.Component{
 
+
+
     render(){
-        
+        console.log(this.props.getStudentList());
+        this.props
+        debugger
         return(
             <div className="col-md-offset-1 col-md-8 col-xs-12 pull-left">
 
@@ -37,9 +42,9 @@ class StudentList extends React.Component{
 
 function mapStateToProps(state){
     return {
-        count: state.countReducer.count,
+        studentList: state.studentList.student_list,
     }
 }
 
 
-export default connect(mapStateToProps, {})(StudentList);
+export default connect(mapStateToProps, {getStudentList})(StudentList);
