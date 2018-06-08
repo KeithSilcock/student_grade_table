@@ -4,15 +4,35 @@ import {getStudentList} from '../actions';
 
 class StudentList extends React.Component{
 
+    constructor(props){
+        super(props);
+    }
 
+    getListOfStudents(){
+        try{
+            this.props.getStudentList();
+        }
+        catch(err) {
+            throw err;
+        }
+    }
 
     render(){
-        console.log(this.props.getStudentList());
-        this.props
-        debugger
+        // console.log(this.props.getStudentList());
+        const studentData = this.props.studentList.map( (item, index) => {
+            debugger
+            return(
+                <tr key={index}>
+                    <td>{item.first_name} {item.last_name}</td>
+                    <td>{item.class_name}</td>
+                    <td>{item.grade}</td>
+                </tr>
+            )
+        });
+
         return(
             <div className="col-md-offset-1 col-md-8 col-xs-12 pull-left">
-
+                <button onClick={this.getListOfStudents.bind(this)}>GetStudents</button>
                 <div id="dataTable" className="student-list-container form-group col-md-12 dataTable">
                     <table className="student-list-container student-list table">
                         <thead className="col-xs-12">
@@ -30,6 +50,7 @@ class StudentList extends React.Component{
                         </tr>
                         </thead>
                         <tbody className="studentTableBody col-xs-12">
+                        {studentData}
                         </tbody>
                     </table>
                 </div>

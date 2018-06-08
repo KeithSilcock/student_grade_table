@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Test Ajax Call for Endpoints</title>
+</head>
+
+<body>
+    <h1>Test Ajax Call for endpoints</h1>
+    <input value="1" type="text">
+    <button class='bulletinBoardGet'> Bulletin Board Get</button>
+    <br>
+    <div>
+        <label>Post_text</label>
+        <input id='postText' type="text">
+        <label>Athlete ID</label>
+        <input id='athleteID' type="text">
+        <label>Team ID</label>
+        <input id='teamID' type="text">
+        <label>Pinned? (false, true)</label>
+        <input id='pinned' type="text">
+        <button class='bulletinBoardPost'> Bulletin Board Post</button>
+    </div>
+    <div>
+        <label>Post_id</label>
+        <input id='post_id' type="text">
+        <label>Athlete ID</label>
+        <input id='athlete_id' type="text">
+        <button id='bulletinBoardDelete'>Bulletin Board Delete</button>
+    </div>
+
+    <div class="spacer">
+        <p> | </p>
+        <p> | </p>
+        <p> | </p>
+    </div>
+    <div class="row">
+        <label>Athlete ID</label>
+        <input id="athleteInfoID" type="text">
+        <button class='athleteProfile'> athlete profile get</button>
+    </div>
+    <div class="row">
+        <!--`img_url`, `user_id`-->
+        <label>First Name</label>
+        <input id='first_name' type="text">
+        <label>Last Name</label>
+        <input id='last_name' type="text">
+        <label>Height</label>
+        <input id='height' type="text">
+        <label>Weight</label>
+        <input id='weight' type="text">
+        <!--<label>Athlete Image URL</label>-->
+        <!--<input id='imgURL' type="text">-->
+        <label>Age</label>
+        <input id='age' type="text">
+        <label>User ID</label>
+        <input id='userID' type="text">
+
+        <label>Team ID</label>
+        <input id='teamID2' type="text">
+        <label>User Level</label>
+        <input id='userLevel' type="text">
+
+        <div class="spacer">
+            <p> | </p>
+        </div>
+
+        <label>Stat Name</label>
+        <input id='statName' type="text">
+        <label>Stat Value</label>
+        <input id='statValue' type="text">
+
+        <button class='athleteProfilePost'> athlete profile post</button>
+
+    </div>
+
+    <br>
+    <br>
+
+    <div class="login">
+        <h2>Log in Sessions</h2>
+        <input id='login-username' type="text" placeholder="username">
+        <input id='login-password' type="password" placeholder="password">
+        <button id='login'>Log In</button>
+    </div>
+
+    <br>
+    <br>
+    <br>
+
+    <div class="signup">
+        <h2>Sign Up</h2>
+        <input id='sign-up-email' placeholder='email' type="text">
+        <input id="sign-up-username" type='text' placeholder='username'>
+        <input id='sign-up-password' type='password' placeholder='password'>
+        <button id='signup'>Sign Up</button>
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div class="joinTeam">
+        <h2>Join Team</h2>
+        <input id='join_team_code' placeholder='team code' type='text'>
+        <button id='joinTeam'>Join Team</button>
+
+    </div>
+
+
+
+    <div class="updateInfo">
+        <h1>Update Info</h1>
+        <label>first name</label>
+        <input id='updateFirstName' value='keith' type='text'>
+        <label>last name</label>
+        <input id='updateLastName' value='Silcock' type='text'>
+        <label>age</label>
+        <input id='updateAge' value='27' type='text'>
+        <label>height</label>
+        <input id='updateHeight' value='80' type='text'>
+        <label>weight</label>
+        <input type="text" id='updateWeight' value='100'>
+        <br>
+        <br>
+        <label>Stat Name</label>
+        <input id='updateStatName' value='2k' type='text'>
+        <label>Stat Value</label>
+        <input id='updateStatValue' value='7:00' type='text'>
+        <button id="update">update</button>
+    </div>
+
+    <script>
+
+        function makeAjaxCall(url, method, data) {
+            $.ajax({
+                url: url,
+                method: method,
+                data: data,
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: (data) => {
+                    console.log("success data: ", data)
+                    return data;
+                },
+                error: (errors) => {
+                    console.log('errors data: ', errors)
+                    return errors;
+                }
+            })
+        }
+
+        $("#update").click( () => {
+            let statsArray = [{ stat_name: '50m', stat_value: '23s' }, { stat_name: '2k', stat_value: '7:30' }]
+            let dataToSend = {
+                first_name: $("#updateFirstName").val(),
+                last_name: $("#updateLastName").val(),
+                age: $("#updateAge").val(),
+                height: $("#updateHeight").val(),
+                weight: $("#updateWeight").val(),
+                statsArray : JSON.stringify(statsArray),
+                athlete_info_id : 7,
+                athlete_id: 9
+            };
+
+            makeAjaxCall( '/api/update_athlete_info' , 'post' , dataToSend );
+
+        })
+
+        $("#joinTeam").click( () => {
+            let dataToSend = {
+                team_code: $("#join_team_code").val()
+            };
+
+            makeAjaxCall('/api/join_team' , 'post' , dataToSend);
+
+        });
+
+        $("#signup").click(() => {
+            let dataToSend = {
+                username: $("#sign-up-username").val(),
+                password: $("#sign-up-password").val(),
+                email: $("#sign-up-email").val()
+            }
+            makeAjaxCall('/api/signup', 'post', dataToSend);
+        })
+
+        $("#login").click(() => {
+            let dataToSend = {
+                email: $("#login-username").val(),
+                password: $("#login-password").val()
+            }
+            return makeAjaxCall('/api/login', 'post', dataToSend);
+        })
+
+        // $('.bulletinBoardGet').click( () => {
+        //     let dataToSend = {};
+        //     makeAjaxCall('http://localhost:3000/api/bulletin_board', 'get', dataToSend);
+        // })
+
+        $('.bulletinBoardGet').click(() => {
+            $.ajax({
+                method: 'get',
+                url: '/test',
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: (data) => {
+                    console.log("success: data: ", data)
+                },
+                error: (errors) => {
+                    console.log("error: data: ", errors);
+                }
+            });
+        });
+
+
+        $(".bulletinBoardPost").click(() => {
+            $.ajax({
+                method: 'post',
+                url: '/api/bulletin_board',
+                dataType: 'json',
+                data: {
+                    post_text: $('#postText').val(),
+                    athlete_id: $('#athleteID').val(),
+                    team_id: $('#teamID').val(),
+                    pinned: $("#pinned").val()
+                },
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: (data) => {
+                    console.log('data: ', data);
+                },
+                error: (errors) => {
+                    console.log('errors: ', errors);
+                }
+            })
+        });
+
+        $("#bulletinBoardDelete").click(() => {
+            console.log($("#athlete_id").val());
+            $.ajax({
+                method: 'delete',
+                url: 'http://localhost:3000/api/bulletin_board',
+                dataType: 'json',
+                data: {
+                    athlete_id: parseInt($("#athlete_id").val()),
+                    post_id: parseInt($('#post_id').val())
+                },
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: (data) => {
+                    console.log('data: ', data);
+                },
+                error: (error) => {
+                    console.log('errors: ', error);
+                }
+            })
+        })
+
+    </script>
+
+    <script>
+        $('.athleteProfile').click(() => {
+            let dataInput = $('#athleteProfileID').val();
+            $.ajax({
+                method: 'get',
+                url: 'http://localhost:3000/api/athlete_profile' + `?athleteId=${dataInput}`,
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: (data) => {
+                    console.log("success: data: ", data)
+                },
+                error: (errors) => {
+                    console.log("error: data: ", errors);
+                }
+            });
+        });
+
+        $('.athleteProfilePost').click(() => {
+            let athleteInfoId = $('#athleteInfoID').val();
+            let firstName = $('#first_name').val();
+            let lastName = $('#last_name').val();
+            let height = $('#height').val();
+            let weight = $('#weight').val();
+            let age = $('#age').val();
+            let userID = $('#userID').val();
+            let teamID = $('#teamID2').val();
+            let userLevel = $('#userLevel').val();
+
+            let statName = $('#statName').val();
+            let statValue = $('#statValue').val();
+
+            let dataToSend = {
+                athleteInfoId, firstName, lastName, height, weight, age,
+                userLevel, userID, teamID, statName, statValue
+            };
+
+            $.ajax({
+                method: 'post',
+                url: 'http://localhost:3000/api/athlete_profile',
+                data: dataToSend,
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: (data) => {
+                    console.log("success: data: ", data)
+                },
+                error: (errors) => {
+                    console.log("error: data: ", errors);
+                }
+            });
+        });
+
+    </script>
+</body>
+
+</html>
