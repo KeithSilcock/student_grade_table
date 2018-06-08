@@ -1,0 +1,32 @@
+{
+  "name": "studentgradetable",
+  "version": "1.0.0",
+  "description": "A student grade table CMS made in JavaScript with React, Redux, and Node.js",
+  "main": "webserver.js",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "mysql": "^2.15.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.5",
+    "npm-run-all": "^4.1.3"
+  },
+  "scripts": {
+    "start": "node webserver.js",
+    "dev": "npm-run-all --parallel dev:*",
+    "dev:server": "nodemon webserver.js",
+    "dev:client": "npm start --prefix client",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KeithSilcock/student_grade_table.git"
+  },
+  "author": "Keith Silcock",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KeithSilcock/student_grade_table/issues"
+  },
+  "homepage": "https://github.com/KeithSilcock/student_grade_table#readme"
+}
