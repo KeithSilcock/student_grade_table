@@ -1,23 +1,31 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
-const {credentials} = require('./config/mysqlCredentials');
-
-
 const webserver = express();
-const database = mysql.createConnection(credentials);
+const { credentials } = require('./config/mysqlCredentials');
+const database = mysql.createConnection( credentials );
+const PORT = 9000;
 
-webserver.use(express.static(__dirname + "/client" + "/public"));
+
 webserver.use(bodyParser.urlencoded( {extended: false} ));
-webserver.use(bodyParser.json);
-
-
+webserver.use(bodyParser.json());
 database.connect( (error) => {
     if(error) throw error;
     console.log("successfully connected to database!")
-})
+});
+webserver.use(express.static(__dirname + "/client" + "/public"));
 
-const port = 9000;
-webserver.listen(port, () => {
-    console.log(`Starting webserver.js at port: ${port}`);
+
+// endpoints start here
+require('./routes')(mysql, webserver, database);
+
+webserver.get('/test', (req, res) => {
+    console.log('Someone reached the test')
+    res.send({
+        success: true,
+    })
+});
+
+webserver.listen(PORT, () => {
+    console.log(`Starting webserver.js at port: ${PORT}`);
 });
