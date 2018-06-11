@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Header from './header';
+import StudentPage from './students';
+import Assignments from './students/assignments_page';
 import StudentList from './student_list';
 import AddStudent from './add_student';
 import './App.css';
@@ -9,11 +11,13 @@ class App extends Component {
     render() {
         return (
             <div className="App">
+                {/*<StudentPage />*/}
                 <Header />
-                <div className="row">
-                    <StudentList />
-                    <AddStudent />
-                </div>
+                <Assignments />
+                {/*<div className="row">*/}
+                    {/*<StudentList />*/}
+                    {/*<AddStudent />*/}
+                {/*</div>*/}
             </div>
         );
     }

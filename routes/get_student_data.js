@@ -8,11 +8,16 @@ module.exports = (mysql, webserver, database) => {
             errors: [],
         };
 
-        let query = `SELECT users.first_name, users.last_name, classes.class_name, classes.grade
+        const query = `SELECT users.first_name, users.last_name, classes.class_name, classes.grade
         FROM users
-        JOIN classes where users.id = classes.student_id`;
+        JOIN classes ON users.id = classes.student_id
+        WHERE users.id = ?`;
 
-        database.query(query, (err, data, fields) => {
+        const inserts = ['1'];
+
+        const sqlQuery = mysql.format(query, inserts);
+
+        database.query(sqlQuery, (err, data, fields) => {
             if(!err){
                 console.log("query sucessful");
                 output.success=true;

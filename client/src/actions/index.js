@@ -18,3 +18,13 @@ export function getStudentList() {
         payload: response,
     }
 }
+
+export function getStudentAssignmentList() {
+    const path='/api/get_student_assignments';
+    const response = axios.get(path);
+
+    return {
+        type: types.GET_STUDENT_ASSIGNMENT_LIST,
+        payload: response,
+    }
+}
