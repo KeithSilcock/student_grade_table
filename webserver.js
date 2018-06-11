@@ -6,7 +6,9 @@ const { credentials } = require('./config/mysqlCredentials');
 const database = mysql.createConnection( credentials );
 const PORT = 9000;
 
-
+//lol hi tim! this is dope have a good meeting!
+// hi Keith
+//  Live Share is cool-beans
 webserver.use(bodyParser.urlencoded( {extended: false} ));
 webserver.use(bodyParser.json());
 database.connect( (error) => {
