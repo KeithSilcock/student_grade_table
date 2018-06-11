@@ -1,6 +1,6 @@
 
 export default store => next => async action => {
-    console.log('here', action);
+    console.log(`Promise action for actionType: ${action.type}: `, action);
 
     if(!action.payload || !action.payload.then){
         return next(action);
