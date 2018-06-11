@@ -5,3 +5,7 @@ password: 'password',
 database: 'database',
 port: PORT
 }
+
+exports.secret = {
+    secret:'secret'
+};
