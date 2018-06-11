@@ -28,3 +28,17 @@ export function getStudentAssignmentList() {
         payload: response,
     }
 }
+
+export function teacherLogin(dataToSend = {}){
+    const path='/api/teacher_login';
+    dataToSend = {
+        school_id:'789ghi',
+        password:'nothanks'
+    }
+    const response = axios.post(path, dataToSend);
+
+    return {
+        type: types.TEACHER_LOGGIN,
+        payload: response,
+    }
+}

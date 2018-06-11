@@ -4,7 +4,7 @@ const expressValidator = require("express-validator");
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const webserver = express();
-const { credentials, secret } = require('./config/mysqlCredentials');
+const { credentials, secret, encrypt } = require('./config/mysqlCredentials');
 const database = mysql.createConnection( credentials );
 const PORT = 9000;
 
@@ -22,7 +22,7 @@ webserver.use(express.static(__dirname + "/client" + "/public"));
 
 
 // endpoints start here
-require('./routes')(mysql, webserver, database);
+require('./routes')(mysql, webserver, database, encrypt);
 
 webserver.get('/test', (req, res) => {
     console.log('Someone reached the test')
