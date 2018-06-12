@@ -14,10 +14,10 @@ class App extends Component {
                 {/*<StudentPage />*/}
                 <Header />
                 <Assignments />
-                {/*<div className="row">*/}
-                    {/*<StudentList />*/}
+                <div className="row">
+                    <StudentList />
                     {/*<AddStudent />*/}
-                {/*</div>*/}
+                </div>
             </div>
         );
     }

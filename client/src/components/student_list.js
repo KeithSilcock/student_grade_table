@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getStudentList} from '../actions';
+import {teacherLogin} from '../actions';
 
 class StudentList extends React.Component{
 
@@ -10,7 +10,7 @@ class StudentList extends React.Component{
 
     getListOfStudents(){
         try{
-            this.props.getStudentList();
+            this.props.teacherLogin();
         }
         catch(err) {
             throw err;
@@ -67,4 +67,4 @@ function mapStateToProps(state){
 }
 
 
-export default connect(mapStateToProps, {getStudentList})(StudentList);
+export default connect(mapStateToProps, {teacherLogin})(StudentList);

@@ -8,7 +8,7 @@ const DEFAULT_STATE = {
 export default function (state=DEFAULT_STATE, action){
 
     switch (action.type){
-        case types.GET_STUDENT_LIST:
+        case types.TEACHER_LOGGIN:
             if(action.payload.data.success) {
                 return {...state, student_list: action.payload.data.data};
             }else {
