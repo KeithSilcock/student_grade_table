@@ -65,14 +65,14 @@ module.exports = function (mysql, webserver, dataBase, encrypt) {
             password = slashes.add(req.body.password);
         }
 
-        let query = `SELECT users.password, users.permissions, 
+        const query = `SELECT users.password, users.permissions, 
         users.id, users.first_name, users.last_name
         FROM users
         WHERE school_id = ?`;
 
-        let inserts = [school_id];
+        const inserts = [school_id];
 
-        let mysqlQuery = mysql.format(query, inserts);
+        const mysqlQuery = mysql.format(query, inserts);
 
         dataBase.query(mysqlQuery, (err, data, fields) => {
             if (!err) {
@@ -107,31 +107,16 @@ module.exports = function (mysql, webserver, dataBase, encrypt) {
 
         }
 
-        /*
-
-        SELECT users.first_name as student_fn, users.last_name as student_ln,
-classes.class_name, classes.description, classes.grade,
-assignments.assignment_name, assignments.score, assignments.points_total
-FROM users
-JOIN classes ON classes.teacher_id = '3'
-JOIN assignments on assignments.teacher_id = '3'
-WHERE users.id IN (SELECT classes.student_id
-                   FROM classes
-                   WHERE classes.teacher_id = '3')
-
-
-         */
-
         function getTeacherData(){
             //get student list:
-            let query = `SELECT users.first_name as student_fn, users.last_name as student_ln, users.id as student_id
+            const query = `SELECT users.first_name as student_fn, users.last_name as student_ln, users.id as student_id
             FROM users
             WHERE users.id IN (SELECT classes.student_id
             FROM classes
             WHERE classes.teacher_id = ?)`;
-            let inserts = [req.session.user_id];
+            const inserts = [req.session.user_id];
 
-            let sqlQuery = mysql.format(query, inserts);
+            const sqlQuery = mysql.format(query, inserts);
 
             dataBase.query(sqlQuery, (error, data, fields) => {
                 if (!error) {
@@ -147,8 +132,81 @@ WHERE users.id IN (SELECT classes.student_id
 
             //get all classes data
             function getStudentClassData() {
-                
+                const query = `SELECT classes.class_name, classes.description, classes.student_id, classes.id as class_id
+                FROM classes
+                WHERE classes.teacher_id = ?`;
+                const inserts = [req.session.user_id];
+                const sqlQuery = mysql.format(query, inserts);
+                dataBase.query(sqlQuery, (error, data, fields) => {
+                    if (!error) {
+
+                        // compile class data and student name data into one output
+                        const newStudentList = data.map( (classInfo, index) => {
+                            for(let studentIndex=0; studentIndex<output.student_list.length; studentIndex++){
+                                const student = output.student_list[studentIndex];
+                                if(student.student_id === classInfo.student_id){
+                                    return {
+                                        ...classInfo,
+                                        first_name: student.student_fn,
+                                        last_name: student.student_ln,
+                                        assignments: [],
+                                    }
+                                }
+                            }
+                        });
+
+                        output.student_list = newStudentList;
+                        // console.log("student list as of class query", output.student_list)
+                        getStudentAssignmentData();
+                    } else {
+                        output.errors = error;
+                        output.redirect = "/login";
+                        res.json(output);
+
+                    }
+                });
             }
+            //get all assignment data
+            let count = 0;
+            function getStudentAssignmentData() {
+                const query = `SELECT assignments.assignment_name, assignments.score, assignments.points_total, 
+                assignments.class_id, assignments.comments, assignments.student_id as student_assignment_id
+                FROM assignments
+                WHERE assignments.teacher_id = ?`;
+                const inserts = [req.session.user_id];
+                const sqlQuery = mysql.format(query, inserts);
+                dataBase.query(sqlQuery, (error, data, fields) => {
+                    if (!error) {
+                        // console.log("Get student Assignment Data: ", data);
+
+                        const newStudentList = output.student_list.map( (classInfo, index) => {
+
+                            for(let assignmentIndex=0; assignmentIndex<data.length; assignmentIndex++){
+                                const assignment = data[assignmentIndex];
+                                if( classInfo.student_id === assignment.student_assignment_id && classInfo.class_id === assignment.class_id){
+                                    console.log("The count is: ",count++, assignment)
+                                    return{
+                                        ...classInfo,
+                                        assignments: [...classInfo.assignments, {...assignment}],
+                                    }
+                                }
+                            }
+                            return{
+                                ...classInfo,
+                                assignments: [...classInfo.assignments],
+                            }
+                        });
+                        output.student_list = newStudentList;
+                        output.success = true;
+                        res.json(output);
+                    } else {
+                        output.errors = error;
+                        output.redirect = "/login";
+                        res.json(output);
+                    }
+                });
+            }
+
         }
 
         function getStudentData(){
