@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { teacherLogin } from "../actions";
+import { teacherLogin } from "../../actions";
 
 class StudentList extends React.Component {
   constructor(props) {
@@ -19,7 +19,6 @@ class StudentList extends React.Component {
 
   render() {
     this.props;
-    debugger;
 
     // console.log(this.props.getStudentList());
     const studentData = this.props.studentList.map((item, index) => {
