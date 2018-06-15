@@ -1,20 +1,20 @@
-#dataTable{
-  padding:0;
+#dataTable {
+  padding: 0;
 }
-.avgGrade{
+.avgGrade {
   background-color: gray;
-  color:white;
+  color: white;
 }
 /*autocomplete*/
-#autoComplete{
+#autoComplete {
   position: absolute;
-  top:100%;
+  top: 100%;
   padding: 0;
   background-color: white;
 
   z-index: 10;
 }
-#autoCompleteLI{
+#autoCompleteLI {
   list-style: none;
   cursor: pointer;
 
@@ -28,29 +28,30 @@
   border-style: solid;
   border-color: black;
 }
-#autoCompleteLI:last-child{
+#autoCompleteLI:last-child {
   border-bottom: 1px;
   border-style: solid;
   border-color: black;
 }
 
 /*sort*/
-.arrowSegment{
+.arrowSegment {
   display: inline-block;
-  width:10px;
-  height:10px;
+  width: 10px;
+  height: 10px;
   cursor: pointer;
 }
-.sortableHeader{
+.sortableHeader {
   cursor: pointer;
 }
 
-.arrowUnsorted{
+.arrowUnsorted {
   border-top: 3px solid grey;
 
   transform: rotate(0deg);
 }
-.arrowUp, .arrowDown{
+.arrowUp,
+.arrowDown {
   border-top: 3px;
   border-left: 3px;
   border-bottom: 0;
@@ -59,10 +60,10 @@
 
   border-color: red;
 }
-.arrowUp{
+.arrowUp {
   transform: rotate(45deg);
 }
-.arrowDown{
+.arrowDown {
   transform: rotate(225deg);
 }
 
@@ -76,8 +77,8 @@
   height: 100%;
 
   overflow: auto;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.4);
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
 
   z-index: 10;
 }
@@ -90,7 +91,7 @@
 }
 .errorModalClose {
   position: relative;
-  top:3%;
+  top: 3%;
   left: 97%;
 
   font-size: 2em;
@@ -98,14 +99,33 @@
   font-weight: bold;
   cursor: pointer;
 }
-.errorHeader, .errorText, .errorExtra{
+.errorHeader,
+.errorText,
+.errorExtra {
   text-align: center;
 }
-.errorHeader{
+.errorHeader {
   color: red;
   font-weight: bold;
 }
-.errorText{
+.errorText {
   font-size: 1.3em;
   font-weight: bold;
+}
+
+.drop-down-container {
+  position: absolute;
+  z-index: 5;
+  padding: 0;
+  margin: 0;
+}
+.drop-down-content {
+  position: relative;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 12px 16px;
+  list-style: none;
+
+  overflow: hidden;
 }
