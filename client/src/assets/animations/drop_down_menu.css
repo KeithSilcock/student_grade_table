@@ -1,6 +1,6 @@
 .opening-drop-down {
   animation-name: openDropDown;
-  animation-duration: 0.5s;
+  animation-duration: 0.3s;
 }
 
 @keyframes openDropDown {
@@ -17,7 +17,7 @@
 
 .closing-drop-down {
   animation-name: closeDropDown;
-  animation-duration: 1s;
+  animation-duration: 0.3s;
 }
 
 @keyframes closeDropDown {

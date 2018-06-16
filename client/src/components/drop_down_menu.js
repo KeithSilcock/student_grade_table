@@ -1,5 +1,5 @@
 import React from "react";
-import "../assets/animations/drop_down_menu";
+import "../assets/animations/drop_down_menu.css";
 
 class dropDownMenu extends React.Component {
   constructor(props) {
@@ -7,7 +7,7 @@ class dropDownMenu extends React.Component {
 
     this.state = {
       dropDownIsOpen: false,
-      dropDownContents: ["sup", "bro"],
+      dropDownContents: this.props.dropDownContents,
       dropDownClass: ""
     };
 
@@ -32,7 +32,7 @@ class dropDownMenu extends React.Component {
           dropDownIsOpen: !dropDownIsOpen,
           dropDownClass: ""
         });
-      }, 500);
+      }, 300);
     } else {
       this.setState({
         dropDownIsOpen: !dropDownIsOpen,
@@ -43,7 +43,7 @@ class dropDownMenu extends React.Component {
         this.setState({
           dropDownClass: ""
         });
-      }, 500);
+      }, 300);
     }
   }
 

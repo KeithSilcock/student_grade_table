@@ -1,15 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
 import { teacherLogin } from "../../actions";
+import DropDownMenu from "../drop_down_menu";
 
 class StudentList extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      classes:[],
+    };
   }
 
-  getListOfStudents() {
+  componentWillMount() {
     try {
       this.props.teacherLogin();
     } catch (err) {
@@ -17,8 +20,23 @@ class StudentList extends React.Component {
     }
   }
 
-  render() {
+  formatTeacherData() {
     this.props;
+    
+    // format data 
+    const classes
+
+    this.props.studentList.map( (student, index) =>{
+
+    })
+
+    debugger;
+  }
+
+  render() {
+    if (this.props.studentList.length) {
+      this.formatTeacherData();
+    }
 
     // console.log(this.props.getStudentList());
     const studentData = this.props.studentList.map((item, index) => {
@@ -35,7 +53,8 @@ class StudentList extends React.Component {
 
     return (
       <div className="col-md-offset-1 col-md-8 col-xs-12 pull-left">
-        <button onClick={this.getListOfStudents.bind(this)}>GetStudents</button>
+        <DropDownMenu dropDownContents={["sup", "bro"]} />
+        {/* <button onClick={this.getListOfStudents.bind(this)}>GetStudents</button> */}
         <div
           id="dataTable"
           className="student-list-container form-group col-md-12 dataTable"
