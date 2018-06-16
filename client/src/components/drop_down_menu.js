@@ -7,7 +7,6 @@ class dropDownMenu extends React.Component {
 
     this.state = {
       dropDownIsOpen: false,
-      dropDownContents: this.props.dropDownContents,
       dropDownClass: ""
     };
 
@@ -19,9 +18,7 @@ class dropDownMenu extends React.Component {
   toggleDropDown() {
     const { dropDownIsOpen } = this.state;
 
-    const transitionClass = dropDownIsOpen
-      ? "closing-drop-down"
-      : "opening-drop-down";
+    const transitionClass = dropDownIsOpen ? "closing-drop-down" : "opening-drop-down";
 
     if (dropDownIsOpen) {
       this.setState({
@@ -32,6 +29,8 @@ class dropDownMenu extends React.Component {
           dropDownIsOpen: !dropDownIsOpen,
           dropDownClass: ""
         });
+
+        clearTimeout(timeOut);
       }, 300);
     } else {
       this.setState({
@@ -43,18 +42,22 @@ class dropDownMenu extends React.Component {
         this.setState({
           dropDownClass: ""
         });
+        clearTimeout(timeOut);
       }, 300);
     }
   }
 
   render() {
-    const { dropDownIsOpen, dropDownContents, dropDownClass } = this.state;
+    const { dropDownIsOpen, dropDownClass } = this.state;
+    const { dropDownContents, changeClass } = this.props;
 
-    const dropDownList = dropDownContents.map((item, index) => {
+    const dropDownList = Object.keys(dropDownContents).map((item, index, array) => {
       return (
         <li
           key={index}
-          //   style={this.dropDownStyle}
+          onClick={e => {
+            changeClass(dropDownContents[item].class_id);
+          }}
           className="drop-down-content"
         >
           {item}
@@ -66,9 +69,7 @@ class dropDownMenu extends React.Component {
     return (
       <div>
         <h1>Drop down here</h1>
-        <button onClick={this.toggleDropDown.bind(this)}>
-          Classes: {arrow}
-        </button>
+        <button onClick={this.toggleDropDown.bind(this)}>Classes: {arrow}</button>
         <ul className={"drop-down-container " + dropDownClass}>
           {dropDownIsOpen ? dropDownList : null}
         </ul>
