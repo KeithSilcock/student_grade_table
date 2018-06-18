@@ -72,13 +72,18 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
     const mysqlQuery = mysql.format(query, inserts);
 
     dataBase.query(mysqlQuery, (err, data, fields) => {
+      console.log("Reached user loggin query");
       if (!err) {
         if (data.length > 0) {
-          encrypt.compare(password, data[0].password, (err, compareResponse) => {
-            req.session.name = `${data[0].first_name} ${data[0].last_name}`;
-            req.session.user_id = school_id;
-            getStartingInfo(data[0].permissions);
-          });
+          encrypt.compare(
+            password,
+            data[0].password,
+            (err, compareResponse) => {
+              req.session.name = `${data[0].first_name} ${data[0].last_name}`;
+              req.session.user_id = school_id;
+              getStartingInfo(data[0].permissions);
+            }
+          );
         } else {
           output.errors = err;
           output.redirect = "/login";
@@ -113,6 +118,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
 
       const sqlQuery = mysql.format(query, inserts);
       dataBase.query(sqlQuery, (error, data, fields) => {
+        console.log("Reached teacher class data query");
         if (!error) {
           output.data.class_list = data;
           const class_ids = data.map(item => {
@@ -136,6 +142,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
       const sqlQuery = mysql.format(query, inserts);
 
       dataBase.query(sqlQuery, (error, data, fields) => {
+        console.log("Reached teacher-student data query");
         if (!error) {
           // output.student_list = data;
           output.data.student_list = data;
@@ -167,6 +174,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
       const sqlQuery = mysql.format(query, inserts);
 
       dataBase.query(sqlQuery, (error, data, fields) => {
+        console.log("Reached teacher assignment data query");
         if (!error) {
           output.data.assignment_list = data;
           output.success = true;
