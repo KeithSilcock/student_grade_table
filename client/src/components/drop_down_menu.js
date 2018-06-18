@@ -31,7 +31,7 @@ class dropDownMenu extends React.Component {
         });
 
         clearTimeout(timeOut);
-      }, 300);
+      }, 200);
     } else {
       this.setState({
         dropDownIsOpen: !dropDownIsOpen,
@@ -43,20 +43,21 @@ class dropDownMenu extends React.Component {
           dropDownClass: ""
         });
         clearTimeout(timeOut);
-      }, 300);
+      }, 200);
     }
   }
 
   render() {
     const { dropDownIsOpen, dropDownClass } = this.state;
-    const { dropDownContents, changeClass } = this.props;
+    const { dropDownContents, changeClass, currentClass } = this.props;
 
     const dropDownList = Object.keys(dropDownContents).map((item, index, array) => {
       return (
         <li
           key={index}
           onClick={e => {
-            changeClass(dropDownContents[item].class_id);
+            changeClass(item, dropDownContents[item].class_id);
+            this.toggleDropDown();
           }}
           className="drop-down-content"
         >
@@ -66,10 +67,13 @@ class dropDownMenu extends React.Component {
     });
     const arrow = dropDownIsOpen ? <span>&#9666;</span> : <span>&#9662;</span>;
 
+    const displayText = Object.keys(currentClass).length ? `${currentClass.class_name}` : "Classes: ";
     return (
       <div>
         <h1>Drop down here</h1>
-        <button onClick={this.toggleDropDown.bind(this)}>Classes: {arrow}</button>
+        <button onClick={this.toggleDropDown.bind(this)}>
+          {displayText} {arrow}
+        </button>
         <ul className={"drop-down-container " + dropDownClass}>
           {dropDownIsOpen ? dropDownList : null}
         </ul>

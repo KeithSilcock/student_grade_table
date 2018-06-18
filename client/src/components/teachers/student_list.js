@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { teacherLogin } from "../../actions";
 import DropDownMenu from "../drop_down_menu";
+import { formatGrade } from "../../helper";
 
 class StudentList extends React.Component {
   constructor(props) {
@@ -9,14 +10,16 @@ class StudentList extends React.Component {
 
     this.state = {
       classes: {},
-      currentClass: null
+      currentClass: {},
+      teacherData: {},
+      assignments: {}
     };
   }
 
   async componentWillMount() {
     try {
       await this.props.teacherLogin();
-      if (this.props.studentList.length) {
+      if (Object.keys(this.props.studentData).length) {
         this.formatTeacherData();
       }
     } catch (err) {
@@ -25,54 +28,122 @@ class StudentList extends React.Component {
   }
 
   formatTeacherData() {
-    const { studentList } = this.props;
+    const { assignment_list, class_list, student_list } = this.props.studentData;
     // get all classes, assignments, and grades data formated
 
-    // get all classes
-    const classes = {};
+    const teacherData = {};
+    // get all class data (and add the current teacher's data)
+    const classes = class_list.reduce((initObject, classInfo) => {
+      teacherData.first_name = classInfo.first_name;
+      teacherData.last_name = classInfo.last_name;
 
-    for (let studentIndex = 0; studentIndex < studentList.length; studentIndex++) {
-      let studentInfo = studentList[studentIndex];
+      const classObj = {
+        [classInfo.class_name]: {
+          class_description: classInfo.description,
+          class_id: classInfo.class_id
+        }
+      };
 
-      classes[studentInfo.class_name] = {
-        description: studentInfo.description,
-        class_id: studentInfo.class_id
+      return Object.assign(initObject, classObj);
+    }, {});
+
+    //get assignment data and calc average grade per student
+    const studentAssignments = {};
+    for (let index = 0; index < assignment_list.length; index++) {
+      const assignment = assignment_list[index];
+
+      try {
+        var existingArray = studentAssignments[assignment.school_id].assignments;
+        var existingGradeAvg = studentAssignments[assignment.school_id].gradeAverage;
+        var skipAdd = false;
+      } catch (err) {
+        if (err.constructor == TypeError) {
+          existingArray = [];
+          existingGradeAvg = 0;
+          skipAdd = true;
+        } else {
+          throw err;
+        }
+      }
+
+      //formatting data
+      studentAssignments[assignment.school_id] = {
+        assignments: [
+          ...existingArray,
+          {
+            assignment_id: assignment.id,
+            class_id: assignment.class_id,
+            assignment_name: assignment.assignment_name,
+            score: assignment.score,
+            pointsTotal: assignment.points_total,
+            comments: assignment.comments
+          }
+        ],
+        gradeAverage: (existingGradeAvg + assignment.score / assignment.points_total) / (skipAdd ? 1 : 2)
       };
     }
 
     this.setState({
-      classes
+      classes,
+      teacherData,
+      assignments: studentAssignments
     });
   }
 
-  changeClass(class_id) {
+  changeClass(class_name, class_id) {
     console.log("changing class to: ", class_id);
     this.setState({
-      currentClass: class_id
+      currentClass: {
+        class_name,
+        class_id
+      }
     });
   }
 
   render() {
-    const { classes, currentClass } = this.state;
+    const { classes, currentClass, teacherData, assignments } = this.state;
+    const { student_list } = this.props.studentData;
 
-    // console.log(this.props.getStudentList());
-    const studentData = this.props.studentList.map((item, index) => {
-      debugger;
-      if (item.class_id === currentClass)
-        return (
-          <tr key={index}>
-            <td>
-              {item.first_name} {item.last_name}
-            </td>
-            <td>{item.class_name}</td>
-            <td>{item.grade}</td>
-          </tr>
-        );
-    });
+    if (student_list) {
+      var studentData = student_list.map((item, index) => {
+        if (item.class_id === currentClass.class_id) {
+          try {
+            var gradeAverage = assignments[item.school_id].gradeAverage;
+          } catch (err) {
+            gradeAverage = 0;
+          }
+          return (
+            <tr key={index}>
+              <td>
+                {item.first_name} {item.last_name}
+              </td>
+              <td>{formatGrade(gradeAverage)}</td>
+            </tr>
+          );
+        }
+      });
+    }
+
+    // const studentData = student_list.map((item, index) => {
+    //   if (item.class_id === currentClass)
+    //     return (
+    //       <tr key={index}>
+    //         <td>
+    //           {item.first_name} {item.last_name}
+    //         </td>
+    //         <td>{item.class_name}</td>
+    //         <td>{item.grade}</td>
+    //       </tr>
+    //     );
+    // });
 
     return (
       <div className="col-md-offset-1 col-md-8 col-xs-12 pull-left">
-        <DropDownMenu dropDownContents={classes} changeClass={this.changeClass.bind(this)} />
+        <DropDownMenu
+          dropDownContents={classes}
+          changeClass={this.changeClass.bind(this)}
+          currentClass={currentClass}
+        />
         {/* <button onClick={this.getListOfStudents.bind(this)}>GetStudents</button> */}
         <div id="dataTable" className="student-list-container form-group col-md-12 dataTable">
           <table className="student-list-container student-list table">
@@ -81,10 +152,6 @@ class StudentList extends React.Component {
                 <th className="sortableHeader" data-sort="name">
                   Student Name
                   <div className="arrowSegment arrowname arrowUnsorted" data-sort="name" />
-                </th>
-                <th className="sortableHeader" data-sort="course">
-                  Student Course
-                  <div className="arrowSegment arrowcourse arrowUnsorted" data-sort="course" />
                 </th>
                 <th className="sortableHeader" data-sort="grade">
                   Student Grade
@@ -103,7 +170,7 @@ class StudentList extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    studentList: state.studentList.student_list
+    studentData: state.studentData.student_data
   };
 }
 
