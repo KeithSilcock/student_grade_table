@@ -29,7 +29,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
     console.log("starting teacher log-in process");
     const output = {
       success: false,
-      data: [],
+      data: {},
       errors: [],
       redirect: ""
       // sessionID: null
@@ -63,8 +63,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
       password = slashes.add(req.body.password);
     }
 
-    const query = `SELECT users.password, users.permissions, 
-        users.id, users.first_name, users.last_name
+    const query = `SELECT users.password, users.permissions
         FROM users
         WHERE school_id = ?`;
 
@@ -75,16 +74,11 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
     dataBase.query(mysqlQuery, (err, data, fields) => {
       if (!err) {
         if (data.length > 0) {
-          encrypt.compare(
-            password,
-            data[0].password,
-            (err, compareResponse) => {
-              // console.log("Data for initial log-in: ", data);
-              req.session.name = `${data[0].first_name} ${data[0].last_name}`;
-              req.session.user_id = data[0].id;
-              getStartingInfo(data[0].permissions);
-            }
-          );
+          encrypt.compare(password, data[0].password, (err, compareResponse) => {
+            req.session.name = `${data[0].first_name} ${data[0].last_name}`;
+            req.session.user_id = school_id;
+            getStartingInfo(data[0].permissions);
+          });
         } else {
           output.errors = err;
           output.redirect = "/login";
@@ -103,123 +97,90 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
 
       if (current_permissions[1] > 0) {
         //they are a teacher
-        getTeacherData();
+        getTeacher_ClassData();
       } else {
         //they are a student
         getStudentData();
       }
     }
 
-    function getTeacherData() {
-      //get student list:
-      const query = `SELECT users.first_name as student_fn, users.last_name as student_ln, users.id as student_id
-            FROM users
-            WHERE users.id IN (SELECT classes.student_id
-            FROM classes
-            WHERE classes.teacher_id = ?)`;
+    function getTeacher_ClassData() {
+      const query = `SELECT teachers.first_name, teachers.last_name, teachers.class_id, classes.class_name, classes.description
+      FROM teachers
+      JOIN classes ON teachers.class_id = classes.id
+      WHERE teachers.school_id = ?`;
       const inserts = [req.session.user_id];
 
       const sqlQuery = mysql.format(query, inserts);
-
       dataBase.query(sqlQuery, (error, data, fields) => {
         if (!error) {
-          output.student_list = data;
-          getStudentClassData();
+          output.data.class_list = data;
+          const class_ids = data.map(item => {
+            return item.class_id;
+          });
+          getTeacher_StudentData(class_ids);
         } else {
           output.errors = error;
           output.redirect = "/login";
           res.json(output);
         }
       });
-
-      //get all classes data
-      function getStudentClassData() {
-        const query = `SELECT classes.class_name, classes.description, classes.student_id, classes.id as class_id
-                FROM classes
-                WHERE classes.teacher_id = ?`;
-        const inserts = [req.session.user_id];
-        const sqlQuery = mysql.format(query, inserts);
-        dataBase.query(sqlQuery, (error, data, fields) => {
-          if (!error) {
-            // compile class data and student name data into one output
-            const newStudentList = data.map((classInfo, index) => {
-              for (
-                let studentIndex = 0;
-                studentIndex < output.student_list.length;
-                studentIndex++
-              ) {
-                const student = output.student_list[studentIndex];
-                if (student.student_id === classInfo.student_id) {
-                  return {
-                    ...classInfo,
-                    first_name: student.student_fn,
-                    last_name: student.student_ln,
-                    assignments: []
-                  };
-                }
-              }
-            });
-
-            output.student_list = newStudentList;
-            // console.log("student list as of class query", output.student_list)
-            getStudentAssignmentData();
-          } else {
-            output.errors = error;
-            output.redirect = "/login";
-            res.json(output);
-          }
-        });
-      }
-      //get all assignment data
-      function getStudentAssignmentData() {
-        const query = `SELECT assignments.assignment_name, assignments.score, assignments.points_total, 
-                assignments.class_id, assignments.comments, assignments.student_id as student_assignment_id
-                FROM assignments
-                WHERE assignments.teacher_id = ?`;
-        const inserts = [req.session.user_id];
-        const sqlQuery = mysql.format(query, inserts);
-        dataBase.query(sqlQuery, (error, data, fields) => {
-          if (!error) {
-            const newStudentList = output.student_list.map(
-              (classInfo, index) => {
-                const assignmentsArray = [];
-                for (
-                  let assignmentIndex = 0;
-                  assignmentIndex < data.length;
-                  assignmentIndex++
-                ) {
-                  const assignment = data[assignmentIndex];
-                  if (
-                    classInfo.student_id === assignment.student_assignment_id &&
-                    classInfo.class_id === assignment.class_id
-                  ) {
-                    assignmentsArray.push(assignment);
-                  }
-                }
-                if (assignmentsArray.length) {
-                  return {
-                    ...classInfo,
-                    assignments: assignmentsArray
-                  };
-                }
-
-                return {
-                  ...classInfo
-                };
-              }
-            );
-            output.student_list = newStudentList;
-            output.success = true;
-            res.json(output);
-          } else {
-            output.errors = error;
-            output.redirect = "/login";
-            res.json(output);
-          }
-        });
-      }
     }
 
-    function getStudentData() {}
+    function getTeacher_StudentData(class_ids) {
+      // get student list:
+      const query = `SELECT students.school_id, students.class_id, students.first_name, 
+      students.last_name FROM students WHERE students.class_id in (?)`;
+      const inserts = [class_ids];
+
+      const sqlQuery = mysql.format(query, inserts);
+
+      dataBase.query(sqlQuery, (error, data, fields) => {
+        if (!error) {
+          // output.student_list = data;
+          output.data.student_list = data;
+
+          let student_ids = data.map(student => {
+            return student.school_id;
+          });
+          //get unique values only:
+          student_ids = [...new Set(student_ids)];
+
+          getTeacherAssignmentData(student_ids, class_ids);
+        } else {
+          output.errors = error;
+          output.redirect = "/login";
+          res.json(output);
+        }
+      });
+    }
+
+    //get all assignment data
+    function getTeacherAssignmentData(student_ids, class_ids) {
+      const query = `SELECT assignments.id, assignments.assignment_name, 
+      assignments.score, assignments.points_total, assignments.comments, 
+      assignments.school_id, assignments.class_id
+      FROM assignments
+      WHERE assignments.school_id IN (?) AND assignments.class_id IN (?)`;
+      const inserts = [student_ids, class_ids];
+
+      const sqlQuery = mysql.format(query, inserts);
+
+      dataBase.query(sqlQuery, (error, data, fields) => {
+        if (!error) {
+          output.data.assignment_list = data;
+          output.success = true;
+
+          res.json(output);
+        } else {
+          output.errors = error;
+          output.redirect = "/login";
+          res.json(output);
+        }
+      });
+    }
+
+    //   function getStudentData() {}
+    // });
   });
 };
