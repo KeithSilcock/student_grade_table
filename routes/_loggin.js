@@ -75,15 +75,11 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
       console.log("Reached user loggin query");
       if (!err) {
         if (data.length > 0) {
-          encrypt.compare(
-            password,
-            data[0].password,
-            (err, compareResponse) => {
-              req.session.name = `${data[0].first_name} ${data[0].last_name}`;
-              req.session.user_id = school_id;
-              getStartingInfo(data[0].permissions);
-            }
-          );
+          encrypt.compare(password, data[0].password, (err, compareResponse) => {
+            req.session.name = `${data[0].first_name} ${data[0].last_name}`;
+            req.session.user_id = school_id;
+            getStartingInfo(data[0].permissions);
+          });
         } else {
           output.errors = err;
           output.redirect = "/login";
@@ -153,7 +149,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
           //get unique values only:
           student_ids = [...new Set(student_ids)];
 
-          getTeacherAssignmentData(student_ids, class_ids);
+          getTeacherAssignmentData();
         } else {
           output.errors = error;
           output.redirect = "/login";
@@ -163,13 +159,14 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
     }
 
     //get all assignment data
-    function getTeacherAssignmentData(student_ids, class_ids) {
-      const query = `SELECT assignments.id, assignments.assignment_name, 
-      assignments.score, assignments.points_total, assignments.comments, 
-      assignments.school_id, assignments.class_id
+    function getTeacherAssignmentData() {
+      const query = `SELECT assignments.id as assignment_id, assignments.class_id, assignments.assignment_name, 
+      student_assignments.student_id, student_assignments.score, student_assignments.points_total, 
+      student_assignments.comments, student_assignments.id as student_assignment_id
       FROM assignments
-      WHERE assignments.school_id IN (?) AND assignments.class_id IN (?)`;
-      const inserts = [student_ids, class_ids];
+      JOIN student_assignments ON assignments.id = student_assignments.assignment_id
+      WHERE assignments.teacher_id = ?`;
+      const inserts = [req.session.user_id];
 
       const sqlQuery = mysql.format(query, inserts);
 

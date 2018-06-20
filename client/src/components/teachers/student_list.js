@@ -52,10 +52,9 @@ class StudentList extends React.Component {
     const studentAssignments = {};
     for (let index = 0; index < assignment_list.length; index++) {
       const assignment = assignment_list[index];
-
       try {
-        var existingArray = studentAssignments[assignment.school_id].assignments;
-        var existingGradeAvg = studentAssignments[assignment.school_id].gradeAverage;
+        var existingArray = studentAssignments[assignment.student_id].assignments;
+        var existingGradeAvg = studentAssignments[assignment.student_id].gradeAverage;
         var skipAdd = false;
       } catch (err) {
         if (err.constructor == TypeError) {
@@ -68,18 +67,8 @@ class StudentList extends React.Component {
       }
 
       //formatting data
-      studentAssignments[assignment.school_id] = {
-        assignments: [
-          ...existingArray,
-          {
-            assignment_id: assignment.id,
-            class_id: assignment.class_id,
-            assignment_name: assignment.assignment_name,
-            score: assignment.score,
-            pointsTotal: assignment.points_total,
-            comments: assignment.comments
-          }
-        ],
+      studentAssignments[assignment.student_id] = {
+        assignments: [...existingArray, assignment],
         gradeAverage: (existingGradeAvg + assignment.score / assignment.points_total) / (skipAdd ? 1 : 2)
       };
     }
@@ -100,6 +89,12 @@ class StudentList extends React.Component {
   //     }
   //   });
   // }
+
+  removeActiveStudentOnClassChange(a, b) {
+    const { changeActiveClass, clickStudent } = this.props;
+    changeActiveClass(a, b);
+    clickStudent({});
+  }
 
   render() {
     const { classes, teacherData, assignments } = this.state;
@@ -157,7 +152,7 @@ class StudentList extends React.Component {
       <div>
         <DropDownMenu
           dropDownContents={classes}
-          changeClass={changeActiveClass}
+          changeClass={this.removeActiveStudentOnClassChange.bind(this)}
           currentClass={currentClass}
         />
         {/* <button onClick={this.getListOfStudents.bind(this)}>GetStudents</button> */}
