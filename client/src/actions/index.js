@@ -41,3 +41,14 @@ export function teacherLogin(dataToSend = {}) {
     payload: response
   };
 }
+
+export function changeActiveClass(class_name, class_id) {
+  console.log("changing class to: ", class_id);
+  return {
+    type: types.CHANGE_ACTIVE_CLASS,
+    payload: {
+      class_name,
+      class_id
+    }
+  };
+}

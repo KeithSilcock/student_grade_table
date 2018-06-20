@@ -1,5 +1,5 @@
 import React from "react";
-import "../assets/animations/drop_down_menu.css";
+import "../assets/CSS/animations/drop_down_menu.css";
 
 class dropDownMenu extends React.Component {
   constructor(props) {
@@ -7,11 +7,8 @@ class dropDownMenu extends React.Component {
 
     this.state = {
       dropDownIsOpen: false,
-      dropDownClass: ""
-    };
-
-    this.dropDownStyle = {
-      position: "absolute"
+      dropDownClass: "",
+      isFirstTime: true
     };
   }
 
@@ -48,15 +45,23 @@ class dropDownMenu extends React.Component {
   }
 
   render() {
-    const { dropDownIsOpen, dropDownClass } = this.state;
-    const { dropDownContents, changeClass, currentClass } = this.props;
+    const { dropDownIsOpen, dropDownClass, isFirstTime } = this.state;
+    const { dropDownContents, changeClass, currentClass, studentRoster } = this.props;
 
     const dropDownList = Object.keys(dropDownContents).map((item, index, array) => {
+      if (isFirstTime) {
+        changeClass(item, dropDownContents[item].class_id);
+        this.setState({
+          ...this.state,
+          isFirstTime: false
+        });
+      }
+
       return (
         <li
           key={index}
           onClick={e => {
-            changeClass(item, dropDownContents[item].class_id);
+            changeClass(item, dropDownContents[item].class_id, studentRoster);
             this.toggleDropDown();
           }}
           className="drop-down-content"
@@ -70,7 +75,6 @@ class dropDownMenu extends React.Component {
     const displayText = Object.keys(currentClass).length ? `${currentClass.class_name}` : "Classes: ";
     return (
       <div>
-        <h1>Drop down here</h1>
         <button onClick={this.toggleDropDown.bind(this)}>
           {displayText} {arrow}
         </button>

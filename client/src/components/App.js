@@ -4,7 +4,7 @@ import { Route, Link } from "react-router-dom";
 import TeacherPortal from "./teachers/teacher_portal";
 import StudentPortal from "./students/student_portal";
 
-import "./App.css";
+import "../assets/CSS/App.css";
 import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 class App extends Component {

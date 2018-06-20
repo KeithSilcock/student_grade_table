@@ -1,0 +1,21 @@
+.teacher-portal-container {
+  width: 100%;
+  display: flex;
+}
+
+.teacher.left-container {
+  width: 65%;
+  padding: 0 2.5%;
+
+  border: 1px solid black;
+}
+
+.teacher.right-container {
+  width: 34%;
+
+  border: 1px solid black;
+}
+
+.teacher-student-table-row {
+  cursor: pointer;
+}
