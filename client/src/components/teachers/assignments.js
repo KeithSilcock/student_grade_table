@@ -10,21 +10,8 @@ class AssignmentsTab extends React.Component {
     } = this.props;
 
     if (assignment_list && activeStudent) {
-      const totalAssignmentList = [];
       var assignments = assignment_list.map((item, index) => {
-        if (item.class_id === currentClass.class_id && item.school_id === activeStudent.school_id) {
-          return (
-            <tr key={index}>
-              <td>{item.assignment_name}</td>
-              <td>{`${item.score}/${item.points_total}`}</td>
-            </tr>
-          );
-        } else if (item.class_id === currentClass.class_id) {
-          const allGrades = assignment_list.map( (item, index) =>{
-              
-              return (item.score/item.points_total)
-          })
-          const avg
+        if (item.class_id === currentClass.class_id && item.student_id === activeStudent.school_id) {
           return (
             <tr key={index}>
               <td>{item.assignment_name}</td>

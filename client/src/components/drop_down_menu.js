@@ -66,7 +66,7 @@ class dropDownMenu extends React.Component {
           }}
           className="drop-down-content"
         >
-          {item}
+          {`${item}`}
         </li>
       );
     });
@@ -76,7 +76,7 @@ class dropDownMenu extends React.Component {
     return (
       <div>
         <button onClick={this.toggleDropDown.bind(this)}>
-          {displayText} {arrow}
+          {`Class: ${displayText}`} {arrow}
         </button>
         <ul className={"drop-down-container " + dropDownClass}>
           {dropDownIsOpen ? dropDownList : null}
