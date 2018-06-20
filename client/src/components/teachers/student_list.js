@@ -1,8 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-import { teacherLogin } from "../../actions";
+import { teacherLogin, changeActiveClass } from "../../actions";
 import DropDownMenu from "../drop_down_menu";
-import { formatGrade } from "../../helper";
+import { formatGrade, getLetterGrade } from "../../helper";
+
+import "../../assets/CSS/teacher_page.css";
 
 class StudentList extends React.Component {
   constructor(props) {
@@ -10,7 +12,6 @@ class StudentList extends React.Component {
 
     this.state = {
       classes: {},
-      currentClass: {},
       teacherData: {},
       assignments: {}
     };
@@ -90,19 +91,20 @@ class StudentList extends React.Component {
     });
   }
 
-  changeClass(class_name, class_id) {
-    console.log("changing class to: ", class_id);
-    this.setState({
-      currentClass: {
-        class_name,
-        class_id
-      }
-    });
-  }
+  // changeClass(class_name, class_id) {
+  //   console.log("changing class to: ", class_id);
+  //   this.setState({
+  //     currentClass: {
+  //       class_name,
+  //       class_id
+  //     }
+  //   });
+  // }
 
   render() {
-    const { classes, currentClass, teacherData, assignments } = this.state;
+    const { classes, teacherData, assignments } = this.state;
     const { student_list } = this.props.studentData;
+    const { currentClass, changeActiveClass, clickStudent } = this.props;
 
     if (student_list) {
       var studentData = student_list.map((item, index) => {
@@ -113,11 +115,25 @@ class StudentList extends React.Component {
             gradeAverage = 0;
           }
           return (
-            <tr key={index}>
+            <tr
+              key={index}
+              className="teacher-student-table-row"
+              onClick={e => {
+                const studentData = {
+                  firstName: item.first_name,
+                  lastName: item.last_name,
+                  school_id: item.school_id
+                };
+                clickStudent(studentData);
+              }}
+            >
               <td>
                 {item.first_name} {item.last_name}
               </td>
-              <td>{formatGrade(gradeAverage)}</td>
+              <td>{`${formatGrade(gradeAverage)}  ${getLetterGrade(gradeAverage)}`}</td>
+              <td>
+                <button>Assignments</button>
+              </td>
             </tr>
           );
         }
@@ -138,10 +154,10 @@ class StudentList extends React.Component {
     // });
 
     return (
-      <div className="col-md-offset-1 col-md-8 col-xs-12 pull-left">
+      <div>
         <DropDownMenu
           dropDownContents={classes}
-          changeClass={this.changeClass.bind(this)}
+          changeClass={changeActiveClass}
           currentClass={currentClass}
         />
         {/* <button onClick={this.getListOfStudents.bind(this)}>GetStudents</button> */}
@@ -170,11 +186,12 @@ class StudentList extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    studentData: state.studentData.student_data
+    studentData: state.studentData.student_data,
+    currentClass: state.assignmentList.current_class
   };
 }
 
 export default connect(
   mapStateToProps,
-  { teacherLogin }
+  { teacherLogin, changeActiveClass }
 )(StudentList);

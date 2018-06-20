@@ -1,7 +1,7 @@
 import types from "../actions/types";
 
 const DEFAULT_STATE = {
-  student_data: [],
+  student_data: {},
   errors: []
 };
 
