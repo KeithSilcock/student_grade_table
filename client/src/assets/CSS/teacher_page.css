@@ -1,10 +1,12 @@
 .teacher-portal-container {
-  width: 100%;
+  width: 100vw;
+  height: 80vh;
   display: flex;
 }
 
 .teacher.left-container {
   width: 65%;
+  height: 100%;
   padding: 0 2.5%;
 
   border: 1px solid black;
@@ -12,10 +14,49 @@
 
 .teacher.right-container {
   width: 34%;
-
+  height: 100%;
   border: 1px solid black;
 }
 
 .teacher-student-table-row {
   cursor: pointer;
+}
+
+.assignment-tab-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+}
+.assignment-tab-header {
+  display: flex;
+  justify-content: space-between;
+}
+.assignment-box-top {
+  overflow-y: auto;
+}
+.assignment-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.new-assignment button {
+  border-radius: 50%;
+  border-color: rgb(29, 177, 29);
+
+  background-color: green;
+  width: 35px;
+  height: 35px;
+
+  cursor: pointer;
+}
+
+.new-assignment button span {
+  width: 100%;
+
+  color: white;
+
+  font-size: 1.8em;
+  line-height: 0.9em;
 }

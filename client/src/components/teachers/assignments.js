@@ -28,25 +28,34 @@ class AssignmentsTab extends React.Component {
 
     return (
       <div className="assignment-tab-container">
-        <div className="assignment-tab-header">
-          <h5>{headerName}</h5>
+        <div className="assignment-box-top">
+          <div className="assignment-tab-header">
+            <h5>{headerName}</h5>
+          </div>
+          <div className="assignment-tab-content">
+            <table className="student-list-container student-list table">
+              <thead className="col-xs-12 assignment-sidebar-header">
+                <tr>
+                  <th className="sortableHeader" data-sort="name">
+                    Assignment Name
+                    <div className="arrowSegment arrowname arrowUnsorted" data-sort="name" />
+                  </th>
+                  <th className="sortableHeader" data-sort="grade">
+                    Score
+                    <div className="arrowSegment arrowgrade arrowUnsorted" data-sort="grade" />
+                  </th>
+                </tr>
+              </thead>
+              <tbody>{assignments}</tbody>
+            </table>
+          </div>
         </div>
-        <div className="assignment-tab-content">
-          <table className="student-list-container student-list table">
-            <thead className="col-xs-12 assignment-sidebar-header">
-              <tr>
-                <th className="sortableHeader" data-sort="name">
-                  Assignment Name
-                  <div className="arrowSegment arrowname arrowUnsorted" data-sort="name" />
-                </th>
-                <th className="sortableHeader" data-sort="grade">
-                  Score
-                  <div className="arrowSegment arrowgrade arrowUnsorted" data-sort="grade" />
-                </th>
-              </tr>
-            </thead>
-            <tbody>{assignments}</tbody>
-          </table>
+        <div className="assignment-footer">
+          <div className="new-assignment">
+            <button>
+              <span>+</span>
+            </button>
+          </div>
         </div>
       </div>
     );
