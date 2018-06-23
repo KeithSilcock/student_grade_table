@@ -55,12 +55,12 @@ class StudentList extends React.Component {
       try {
         var existingArray = studentAssignments[assignment.student_id].assignments;
         var existingGradeAvg = studentAssignments[assignment.student_id].gradeAverage;
-        var skipAdd = false;
+        // var skipAdd = false;
       } catch (err) {
         if (err.constructor == TypeError) {
           existingArray = [];
-          existingGradeAvg = 0;
-          skipAdd = true;
+          // existingGradeAvg = 0;
+          // skipAdd = true;
         } else {
           throw err;
         }
@@ -68,8 +68,8 @@ class StudentList extends React.Component {
 
       //formatting data
       studentAssignments[assignment.student_id] = {
-        assignments: [...existingArray, assignment],
-        gradeAverage: (existingGradeAvg + assignment.score / assignment.points_total) / (skipAdd ? 1 : 2)
+        assignments: [...existingArray, assignment]
+        // gradeAverage: (existingGradeAvg + assignment.score / assignment.points_total) / (skipAdd ? 1 : 2)
       };
     }
 
@@ -90,6 +90,20 @@ class StudentList extends React.Component {
   //   });
   // }
 
+  getGradeAverageFromAssignments(assignments, currentClass) {
+    let count = 0;
+    const average = assignments.reduce((prev, assignment) => {
+      if (currentClass === assignment.class_id) {
+        const divisor = count ? 2 : 1;
+        count++;
+        return (prev + assignment.score / assignment.points_total) / divisor;
+      } else {
+        return prev + 0;
+      }
+    }, 0);
+    return average;
+  }
+
   removeActiveStudentOnClassChange(a, b) {
     const { changeActiveClass, clickStudent } = this.props;
     changeActiveClass(a, b);
@@ -104,11 +118,10 @@ class StudentList extends React.Component {
     if (student_list) {
       var studentData = student_list.map((item, index) => {
         if (item.class_id === currentClass.class_id) {
-          try {
-            var gradeAverage = assignments[item.school_id].gradeAverage;
-          } catch (err) {
-            gradeAverage = 0;
-          }
+          var gradeAverage = this.getGradeAverageFromAssignments(
+            assignments[item.school_id].assignments,
+            item.class_id
+          );
           return (
             <tr
               key={index}
