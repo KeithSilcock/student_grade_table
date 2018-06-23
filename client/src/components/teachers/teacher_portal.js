@@ -24,7 +24,7 @@ class TeacherPortal extends React.Component {
     return (
       <div>
         <h1>Teacher Portal Header</h1>
-        <div className="row teacher-portal-container">
+        <div className="teacher-portal-container">
           <div className="teacher left-container pull-left">
             <StudentList clickStudent={this.handleClickedStudent.bind(this)} />
           </div>

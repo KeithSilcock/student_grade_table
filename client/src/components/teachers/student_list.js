@@ -52,35 +52,24 @@ class StudentList extends React.Component {
     const studentAssignments = {};
     for (let index = 0; index < assignment_list.length; index++) {
       const assignment = assignment_list[index];
-
       try {
-        var existingArray = studentAssignments[assignment.school_id].assignments;
-        var existingGradeAvg = studentAssignments[assignment.school_id].gradeAverage;
-        var skipAdd = false;
+        var existingArray = studentAssignments[assignment.student_id].assignments;
+        var existingGradeAvg = studentAssignments[assignment.student_id].gradeAverage;
+        // var skipAdd = false;
       } catch (err) {
         if (err.constructor == TypeError) {
           existingArray = [];
-          existingGradeAvg = 0;
-          skipAdd = true;
+          // existingGradeAvg = 0;
+          // skipAdd = true;
         } else {
           throw err;
         }
       }
 
       //formatting data
-      studentAssignments[assignment.school_id] = {
-        assignments: [
-          ...existingArray,
-          {
-            assignment_id: assignment.id,
-            class_id: assignment.class_id,
-            assignment_name: assignment.assignment_name,
-            score: assignment.score,
-            pointsTotal: assignment.points_total,
-            comments: assignment.comments
-          }
-        ],
-        gradeAverage: (existingGradeAvg + assignment.score / assignment.points_total) / (skipAdd ? 1 : 2)
+      studentAssignments[assignment.student_id] = {
+        assignments: [...existingArray, assignment]
+        // gradeAverage: (existingGradeAvg + assignment.score / assignment.points_total) / (skipAdd ? 1 : 2)
       };
     }
 
@@ -101,6 +90,26 @@ class StudentList extends React.Component {
   //   });
   // }
 
+  getGradeAverageFromAssignments(assignments, currentClass) {
+    let count = 0;
+    const average = assignments.reduce((prev, assignment) => {
+      if (currentClass === assignment.class_id) {
+        const divisor = count ? 2 : 1;
+        count++;
+        return (prev + assignment.score / assignment.points_total) / divisor;
+      } else {
+        return prev + 0;
+      }
+    }, 0);
+    return average;
+  }
+
+  removeActiveStudentOnClassChange(a, b) {
+    const { changeActiveClass, clickStudent } = this.props;
+    changeActiveClass(a, b);
+    clickStudent({});
+  }
+
   render() {
     const { classes, teacherData, assignments } = this.state;
     const { student_list } = this.props.studentData;
@@ -109,11 +118,10 @@ class StudentList extends React.Component {
     if (student_list) {
       var studentData = student_list.map((item, index) => {
         if (item.class_id === currentClass.class_id) {
-          try {
-            var gradeAverage = assignments[item.school_id].gradeAverage;
-          } catch (err) {
-            gradeAverage = 0;
-          }
+          var gradeAverage = this.getGradeAverageFromAssignments(
+            assignments[item.school_id].assignments,
+            item.class_id
+          );
           return (
             <tr
               key={index}
@@ -157,7 +165,7 @@ class StudentList extends React.Component {
       <div>
         <DropDownMenu
           dropDownContents={classes}
-          changeClass={changeActiveClass}
+          changeClass={this.removeActiveStudentOnClassChange.bind(this)}
           currentClass={currentClass}
         />
         {/* <button onClick={this.getListOfStudents.bind(this)}>GetStudents</button> */}

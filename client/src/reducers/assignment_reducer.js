@@ -17,6 +17,7 @@ export default function(state = DEFAULT_STATE, action) {
           errors: [...state.errors, action.payload.data.errors]
         };
       }
+
     case types.CHANGE_ACTIVE_CLASS:
       return { ...state, current_class: action.payload };
     default:
