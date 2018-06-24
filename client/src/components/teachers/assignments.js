@@ -6,7 +6,8 @@ class AssignmentsTab extends React.Component {
     const {
       activeStudent,
       currentClass,
-      studentData: { assignment_list }
+      studentData: { assignment_list },
+      toggleModal
     } = this.props;
 
     if (assignment_list && activeStudent) {
@@ -52,8 +53,8 @@ class AssignmentsTab extends React.Component {
         </div>
         <div className="assignment-footer">
           <div className="new-assignment">
-            <button>
-              <span>+</span>
+            <button onClick={toggleModal}>
+              <span>Create New Assignment</span>
             </button>
           </div>
         </div>
@@ -65,7 +66,8 @@ class AssignmentsTab extends React.Component {
 function mapStateToProps(state) {
   return {
     studentData: state.studentData.student_data,
-    currentClass: state.assignmentList.current_class
+    currentClass: state.assignmentList.current_class,
+    activeStudent: state.studentData.activeStudent
   };
 }
 

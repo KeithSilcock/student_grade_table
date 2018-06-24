@@ -1,35 +1,46 @@
 import React from "react";
 import StudentList from "./student_list";
 import AssignmentsTab from "./assignments";
+import Modal from "../modal";
+import NewAssignment from "./new_assignment";
 
 class TeacherPortal extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      clickedStudent: {}
+      modalIsOpen: false
     };
+
+    this.toggleModal = this.toggleModal.bind(this);
   }
 
-  handleClickedStudent(clickedStudent) {
-    console.log(clickedStudent);
+  toggleModal() {
+    console.log("here");
+    const { modalIsOpen } = this.state;
     this.setState({
       ...this.state,
-      clickedStudent
+      modalIsOpen: !modalIsOpen
     });
   }
 
   render() {
-    const { clickedStudent } = this.state;
+    const { clickedStudent, modalIsOpen } = this.state;
+
+    const modalDisplay = modalIsOpen ? (
+      <Modal modalData={<NewAssignment />} toggleModal={this.toggleModal} />
+    ) : null;
+
     return (
       <div>
+        {modalDisplay}
         <h1>Teacher Portal Header</h1>
         <div className="teacher-portal-container">
           <div className="teacher left-container pull-left">
-            <StudentList clickStudent={this.handleClickedStudent.bind(this)} />
+            <StudentList />
           </div>
           <div className="teacher right-container pull-right">
-            <AssignmentsTab activeStudent={clickedStudent} />
+            <AssignmentsTab toggleModal={this.toggleModal} />
           </div>
         </div>
       </div>
