@@ -38,16 +38,16 @@
 }
 .assignment-footer {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 .new-assignment button {
-  border-radius: 50%;
-  border-color: rgb(29, 177, 29);
+  border-radius: 10px;
+  border-color: rgb(35, 179, 204);
 
-  background-color: green;
-  width: 35px;
-  height: 35px;
+  background-color: rgb(20, 160, 216);
+  /* width: 35px;
+  height: 35px; */
 
   cursor: pointer;
 }
@@ -57,6 +57,6 @@
 
   color: white;
 
-  font-size: 1.8em;
+  font-size: 1em;
   line-height: 0.9em;
 }
