@@ -1,7 +1,9 @@
 import React from "react";
+import { connect } from "react-redux";
+import { changeActiveClass, setActiveStudent } from "../actions";
 import "../assets/CSS/animations/drop_down_menu.css";
 
-class dropDownMenu extends React.Component {
+class DropDownMenu extends React.Component {
   constructor(props) {
     super(props);
 
@@ -46,22 +48,28 @@ class dropDownMenu extends React.Component {
 
   render() {
     const { dropDownIsOpen, dropDownClass, isFirstTime } = this.state;
-    const { dropDownContents, changeClass, currentClass, studentRoster } = this.props;
+    const {
+      classes: dropDownContents,
+      changeActiveClass: changeClass,
+      currentClass,
+      setActiveStudent
+    } = this.props;
 
     const dropDownList = Object.keys(dropDownContents).map((item, index, array) => {
       if (isFirstTime) {
-        changeClass(item, dropDownContents[item].class_id);
         this.setState({
           ...this.state,
           isFirstTime: false
         });
+        changeClass(item, dropDownContents[item].class_id);
       }
 
       return (
         <li
           key={index}
           onClick={e => {
-            changeClass(item, dropDownContents[item].class_id, studentRoster);
+            setActiveStudent({});
+            changeClass(item, dropDownContents[item].class_id);
             this.toggleDropDown();
           }}
           className="drop-down-content"
@@ -86,4 +94,14 @@ class dropDownMenu extends React.Component {
   }
 }
 
-export default dropDownMenu;
+function mapStateToProps(state) {
+  return {
+    currentClass: state.assignmentList.current_class,
+    classes: state.availableClasses.classes
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  { changeActiveClass, setActiveStudent }
+)(DropDownMenu);

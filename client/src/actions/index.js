@@ -43,12 +43,24 @@ export function teacherLogin(dataToSend = {}) {
 }
 
 export function changeActiveClass(class_name, class_id) {
-  console.log("changing class to: ", class_id);
   return {
     type: types.CHANGE_ACTIVE_CLASS,
     payload: {
       class_name,
       class_id
     }
+  };
+}
+export function setActiveStudent(studentData) {
+  return {
+    type: types.SET_ACTIVE_STUDENT,
+    payload: studentData
+  };
+}
+
+export function setAvailableClasses(availableClasses) {
+  return {
+    type: types.SET_AVAILABLE_CLASSES,
+    payload: availableClasses
   };
 }
