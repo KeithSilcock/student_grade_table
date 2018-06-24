@@ -64,3 +64,18 @@ export function setAvailableClasses(availableClasses) {
     payload: availableClasses
   };
 }
+
+export function addNewAssignment(assignmentData) {
+  debugger;
+  const path = "/api/add_new_assignment";
+  // dataToSend = {
+  //   school_id: "ghi789",
+  //   password: "nothanks"
+  // };
+  const response = axios.post(path, assignmentData);
+
+  return {
+    type: types.ADD_NEW_ASSIGNMENT,
+    payload: response
+  };
+}

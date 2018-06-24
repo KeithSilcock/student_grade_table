@@ -14,7 +14,7 @@ class AssignmentsTab extends React.Component {
       var assignments = assignment_list.map((item, index) => {
         if (item.class_id === currentClass.class_id && item.student_id === activeStudent.school_id) {
           return (
-            <tr key={index}>
+            <tr className="assignments-tab table-row" key={index}>
               <td>{item.assignment_name}</td>
               <td>{`${item.score}/${item.points_total}`}</td>
             </tr>
@@ -52,11 +52,9 @@ class AssignmentsTab extends React.Component {
           </div>
         </div>
         <div className="assignment-footer">
-          <div className="new-assignment">
-            <button onClick={toggleModal}>
-              <span>Create New Assignment</span>
-            </button>
-          </div>
+          <button className="new-assignment-button" onClick={toggleModal}>
+            <span>Create New Assignment</span>
+          </button>
         </div>
       </div>
     );
