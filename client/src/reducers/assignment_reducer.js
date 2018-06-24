@@ -20,6 +20,18 @@ export default function(state = DEFAULT_STATE, action) {
 
     case types.CHANGE_ACTIVE_CLASS:
       return { ...state, current_class: action.payload };
+
+    case types.ADD_NEW_ASSIGNMENT:
+      if (action.payload.data.success) {
+        return {
+          ...state
+        };
+      } else {
+        return {
+          ...state,
+          errors: [...state.errors, action.payload.data.errors]
+        };
+      }
     default:
       return state;
   }

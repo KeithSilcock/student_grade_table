@@ -19,7 +19,11 @@
 }
 
 .teacher-student-table-row {
+  background-color: white;
   cursor: pointer;
+}
+.assignments-tab.table-row {
+  background-color: white;
 }
 
 .assignment-tab-container {
@@ -39,24 +43,4 @@
 .assignment-footer {
   display: flex;
   justify-content: center;
-}
-
-.new-assignment button {
-  border-radius: 10px;
-  border-color: rgb(35, 179, 204);
-
-  background-color: rgb(20, 160, 216);
-  /* width: 35px;
-  height: 35px; */
-
-  cursor: pointer;
-}
-
-.new-assignment button span {
-  width: 100%;
-
-  color: white;
-
-  font-size: 1em;
-  line-height: 0.9em;
 }
