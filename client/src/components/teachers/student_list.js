@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { teacherLogin, changeActiveClass } from "../../actions";
+import { teacherLogin, changeActiveClass, setAvailableClasses, setActiveStudent } from "../../actions";
 import DropDownMenu from "../drop_down_menu";
 import { formatGrade, getLetterGrade } from "../../helper";
 
@@ -11,7 +11,6 @@ class StudentList extends React.Component {
     super(props);
 
     this.state = {
-      classes: {},
       teacherData: {},
       assignments: {}
     };
@@ -30,6 +29,7 @@ class StudentList extends React.Component {
 
   formatTeacherData() {
     const { assignment_list, class_list, student_list } = this.props.studentData;
+    const { setAvailableClasses } = this.props;
     // get all classes, assignments, and grades data formated
 
     const teacherData = {};
@@ -48,19 +48,15 @@ class StudentList extends React.Component {
       return Object.assign(initObject, classObj);
     }, {});
 
-    //get assignment data and calc average grade per student
+    //get assignment data per student
     const studentAssignments = {};
     for (let index = 0; index < assignment_list.length; index++) {
       const assignment = assignment_list[index];
       try {
         var existingArray = studentAssignments[assignment.student_id].assignments;
-        var existingGradeAvg = studentAssignments[assignment.student_id].gradeAverage;
-        // var skipAdd = false;
       } catch (err) {
         if (err.constructor == TypeError) {
           existingArray = [];
-          // existingGradeAvg = 0;
-          // skipAdd = true;
         } else {
           throw err;
         }
@@ -69,26 +65,15 @@ class StudentList extends React.Component {
       //formatting data
       studentAssignments[assignment.student_id] = {
         assignments: [...existingArray, assignment]
-        // gradeAverage: (existingGradeAvg + assignment.score / assignment.points_total) / (skipAdd ? 1 : 2)
       };
     }
 
     this.setState({
-      classes,
       teacherData,
       assignments: studentAssignments
     });
+    setAvailableClasses(classes);
   }
-
-  // changeClass(class_name, class_id) {
-  //   console.log("changing class to: ", class_id);
-  //   this.setState({
-  //     currentClass: {
-  //       class_name,
-  //       class_id
-  //     }
-  //   });
-  // }
 
   getGradeAverageFromAssignments(assignments, currentClass) {
     let count = 0;
@@ -104,16 +89,16 @@ class StudentList extends React.Component {
     return average;
   }
 
-  removeActiveStudentOnClassChange(a, b) {
-    const { changeActiveClass, clickStudent } = this.props;
-    changeActiveClass(a, b);
-    clickStudent({});
-  }
+  // removeActiveStudentOnClassChange(a, b) {
+  //   const { changeActiveClass, clickStudent } = this.props;
+  //   changeActiveClass(a, b);
+  //   clickStudent({});
+  // }
 
   render() {
-    const { classes, teacherData, assignments } = this.state;
+    const { teacherData, assignments } = this.state;
     const { student_list } = this.props.studentData;
-    const { currentClass, changeActiveClass, clickStudent } = this.props;
+    const { currentClass, setActiveStudent, classes } = this.props;
 
     if (student_list) {
       var studentData = student_list.map((item, index) => {
@@ -132,7 +117,7 @@ class StudentList extends React.Component {
                   lastName: item.last_name,
                   school_id: item.school_id
                 };
-                clickStudent(studentData);
+                setActiveStudent(studentData);
               }}
             >
               <td>
@@ -148,26 +133,9 @@ class StudentList extends React.Component {
       });
     }
 
-    // const studentData = student_list.map((item, index) => {
-    //   if (item.class_id === currentClass)
-    //     return (
-    //       <tr key={index}>
-    //         <td>
-    //           {item.first_name} {item.last_name}
-    //         </td>
-    //         <td>{item.class_name}</td>
-    //         <td>{item.grade}</td>
-    //       </tr>
-    //     );
-    // });
-
     return (
       <div>
-        <DropDownMenu
-          dropDownContents={classes}
-          changeClass={this.removeActiveStudentOnClassChange.bind(this)}
-          currentClass={currentClass}
-        />
+        <DropDownMenu />
         {/* <button onClick={this.getListOfStudents.bind(this)}>GetStudents</button> */}
         <div id="dataTable" className="student-list-container form-group col-md-12 dataTable">
           <table className="student-list-container student-list table">
@@ -195,11 +163,12 @@ class StudentList extends React.Component {
 function mapStateToProps(state) {
   return {
     studentData: state.studentData.student_data,
-    currentClass: state.assignmentList.current_class
+    currentClass: state.assignmentList.current_class,
+    classes: state.availableClasses.classes
   };
 }
 
 export default connect(
   mapStateToProps,
-  { teacherLogin, changeActiveClass }
+  { teacherLogin, changeActiveClass, setAvailableClasses, setActiveStudent }
 )(StudentList);
