@@ -95,8 +95,8 @@ class DropDownMenu extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    currentClass: state.assignmentList.current_class,
-    classes: state.availableClasses.classes
+    currentClass: state.teacherData.current_class,
+    classes: state.teacherData.classes
   };
 }
 

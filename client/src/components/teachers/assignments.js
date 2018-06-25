@@ -63,9 +63,9 @@ class AssignmentsTab extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    studentData: state.studentData.student_data,
-    currentClass: state.assignmentList.current_class,
-    activeStudent: state.studentData.activeStudent
+    studentData: state.teacherData.student_data,
+    currentClass: state.teacherData.current_class,
+    activeStudent: state.teacherData.activeStudent
   };
 }
 

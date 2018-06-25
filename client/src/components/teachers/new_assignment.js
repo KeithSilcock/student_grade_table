@@ -1,7 +1,7 @@
 import React from "react";
 import DropDownMenu from "../drop_down_menu";
 import { connect } from "react-redux";
-import { addNewAssignment } from "../../actions";
+import { addNewAssignment, getTeacherData } from "../../actions";
 
 import "../../assets/CSS/new_assignments.css";
 
@@ -65,7 +65,9 @@ class NewAssignment extends React.Component {
     const {
       studentData: { student_list },
       currentClass,
-      addNewAssignment
+      addNewAssignment,
+      toggleModal,
+      getTeacherData
     } = this.props;
 
     const studentData = student_list.map((student, index) => {
@@ -112,6 +114,7 @@ class NewAssignment extends React.Component {
         );
       }
     });
+
     return (
       <div className="new-assignment container">
         <div className="new-assignment top">
@@ -147,7 +150,14 @@ class NewAssignment extends React.Component {
           </div>
         </div>
         <div className="new-assignment bottom">
-          <button onClick={addNewAssignment} className="new-assignment-button">
+          <button
+            onClick={e => {
+              toggleModal();
+              addNewAssignment(this.state, currentClass.class_id);
+              getTeacherData();
+            }}
+            className="new-assignment-button"
+          >
             Add Assignment
           </button>
         </div>
@@ -158,12 +168,12 @@ class NewAssignment extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    currentClass: state.assignmentList.current_class,
-    studentData: state.studentData.student_data
+    currentClass: state.teacherData.current_class,
+    studentData: state.teacherData.student_data
   };
 }
 
 export default connect(
   mapStateToProps,
-  { addNewAssignment }
+  { addNewAssignment, getTeacherData }
 )(NewAssignment);
