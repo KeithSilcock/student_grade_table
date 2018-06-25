@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { changeActiveClass, setActiveStudent } from "../actions";
 import "../assets/CSS/animations/drop_down_menu.css";
+import "../assets/CSS/drop_down.css";
 
 class DropDownMenu extends React.Component {
   constructor(props) {
@@ -72,7 +73,7 @@ class DropDownMenu extends React.Component {
             changeClass(item, dropDownContents[item].class_id);
             this.toggleDropDown();
           }}
-          className="drop-down-content"
+          className="drop-down content"
         >
           {`${item}`}
         </li>
@@ -82,13 +83,11 @@ class DropDownMenu extends React.Component {
 
     const displayText = Object.keys(currentClass).length ? `${currentClass.class_name}` : "Classes: ";
     return (
-      <div>
+      <div className="drop-down-container">
         <button onClick={this.toggleDropDown.bind(this)}>
           {`Class: ${displayText}`} {arrow}
         </button>
-        <ul className={"drop-down-container " + dropDownClass}>
-          {dropDownIsOpen ? dropDownList : null}
-        </ul>
+        <ul className={"drop-down list " + dropDownClass}>{dropDownIsOpen ? dropDownList : null}</ul>
       </div>
     );
   }
@@ -96,8 +95,8 @@ class DropDownMenu extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    currentClass: state.assignmentList.current_class,
-    classes: state.availableClasses.classes
+    currentClass: state.teacherData.current_class,
+    classes: state.teacherData.classes
   };
 }
 

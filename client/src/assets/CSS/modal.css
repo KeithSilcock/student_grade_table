@@ -5,6 +5,7 @@
   height: 100%;
 }
 .modal-background {
+  z-index: 3;
   background: rgb(50, 50, 50);
   background: rgba(50, 50, 50, 0.7);
 }

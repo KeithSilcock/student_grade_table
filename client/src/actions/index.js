@@ -8,22 +8,12 @@ export function incrementCount(count) {
   };
 }
 
-export function getStudentList() {
-  const path = "/api/get_student_data";
+export function getTeacherData() {
+  const path = "/api/get_teacher_data";
   const response = axios.get(path);
 
   return {
     type: types.GET_STUDENT_LIST,
-    payload: response
-  };
-}
-
-export function getStudentAssignmentList() {
-  const path = "/api/get_student_assignments";
-  const response = axios.get(path);
-
-  return {
-    type: types.GET_STUDENT_ASSIGNMENT_LIST,
     payload: response
   };
 }
@@ -62,5 +52,16 @@ export function setAvailableClasses(availableClasses) {
   return {
     type: types.SET_AVAILABLE_CLASSES,
     payload: availableClasses
+  };
+}
+
+export function addNewAssignment(assignmentData, class_id) {
+  const dataToSend = Object.assign(assignmentData, { class_id });
+  const path = "/api/add_new_assignment";
+  const response = axios.post(path, dataToSend);
+
+  return {
+    type: types.ADD_NEW_ASSIGNMENT,
+    payload: response
   };
 }

@@ -16,7 +16,6 @@ class TeacherPortal extends React.Component {
   }
 
   toggleModal() {
-    console.log("here");
     const { modalIsOpen } = this.state;
     this.setState({
       ...this.state,
@@ -28,7 +27,10 @@ class TeacherPortal extends React.Component {
     const { clickedStudent, modalIsOpen } = this.state;
 
     const modalDisplay = modalIsOpen ? (
-      <Modal modalData={<NewAssignment />} toggleModal={this.toggleModal} />
+      <Modal
+        modalData={<NewAssignment toggleModal={this.toggleModal} />}
+        toggleModal={this.toggleModal}
+      />
     ) : null;
 
     return (
