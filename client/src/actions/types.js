@@ -6,5 +6,6 @@ export default {
   CHANGE_ACTIVE_CLASS: "change_active_class",
   SET_AVAILABLE_CLASSES: "set_available_classes",
   SET_ACTIVE_STUDENT: "set_active_student",
-  ADD_NEW_ASSIGNMENT: "add_new_assignment"
+  ADD_NEW_ASSIGNMENT: "add_new_assignment",
+  REFRESHED: "refreshed"
 };

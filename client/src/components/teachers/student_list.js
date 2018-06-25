@@ -1,78 +1,25 @@
 import React from "react";
 import { connect } from "react-redux";
-import { teacherLogin, changeActiveClass, setAvailableClasses, setActiveStudent } from "../../actions";
+import {
+  teacherLogin,
+  getTeacherData,
+  changeActiveClass,
+  setAvailableClasses,
+  setActiveStudent
+} from "../../actions";
 import DropDownMenu from "../drop_down_menu";
 import { formatGrade, getLetterGrade } from "../../helper";
 
 import "../../assets/CSS/teacher_page.css";
 
 class StudentList extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      teacherData: {},
-      assignments: {}
-    };
-  }
-
   async componentWillMount() {
     try {
       await this.props.teacherLogin();
-      if (Object.keys(this.props.studentData).length) {
-        this.formatTeacherData();
-      }
+      await this.props.getTeacherData();
     } catch (err) {
       throw err;
     }
-  }
-
-  formatTeacherData() {
-    const { assignment_list, class_list, student_list } = this.props.studentData;
-    const { setAvailableClasses } = this.props;
-    // get all classes, assignments, and grades data formated
-
-    const teacherData = {};
-    // get all class data (and add the current teacher's data)
-    const classes = class_list.reduce((initObject, classInfo) => {
-      teacherData.first_name = classInfo.first_name;
-      teacherData.last_name = classInfo.last_name;
-
-      const classObj = {
-        [classInfo.class_name]: {
-          class_description: classInfo.description,
-          class_id: classInfo.class_id
-        }
-      };
-
-      return Object.assign(initObject, classObj);
-    }, {});
-
-    //get assignment data per student
-    const studentAssignments = {};
-    for (let index = 0; index < assignment_list.length; index++) {
-      const assignment = assignment_list[index];
-      try {
-        var existingArray = studentAssignments[assignment.student_id].assignments;
-      } catch (err) {
-        if (err.constructor == TypeError) {
-          existingArray = [];
-        } else {
-          throw err;
-        }
-      }
-
-      //formatting data
-      studentAssignments[assignment.student_id] = {
-        assignments: [...existingArray, assignment]
-      };
-    }
-
-    this.setState({
-      teacherData,
-      assignments: studentAssignments
-    });
-    setAvailableClasses(classes);
   }
 
   getGradeAverageFromAssignments(assignments, currentClass) {
@@ -89,16 +36,9 @@ class StudentList extends React.Component {
     return average;
   }
 
-  // removeActiveStudentOnClassChange(a, b) {
-  //   const { changeActiveClass, clickStudent } = this.props;
-  //   changeActiveClass(a, b);
-  //   clickStudent({});
-  // }
-
   render() {
-    const { teacherData, assignments } = this.state;
     const { student_list } = this.props.studentData;
-    const { currentClass, setActiveStudent, classes } = this.props;
+    const { currentClass, setActiveStudent, classes, teacherData, assignments } = this.props;
 
     if (student_list) {
       var studentData = student_list.map((item, index) => {
@@ -162,13 +102,22 @@ class StudentList extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    studentData: state.studentData.student_data,
-    currentClass: state.assignmentList.current_class,
-    classes: state.availableClasses.classes
+    teacherData: state.teacherData.teacherData,
+    assignments: state.teacherData.assignments,
+    studentData: state.teacherData.student_data,
+    currentClass: state.teacherData.current_class,
+    classes: state.teacherData.classes,
+    needsToRefresh: state.teacherData.needsToRefresh
   };
 }
 
 export default connect(
   mapStateToProps,
-  { teacherLogin, changeActiveClass, setAvailableClasses, setActiveStudent }
+  {
+    teacherLogin,
+    getTeacherData,
+    changeActiveClass,
+    setAvailableClasses,
+    setActiveStudent
+  }
 )(StudentList);
