@@ -7,7 +7,8 @@ const DEFAULT_STATE = {
   student_data: {},
   activeStudent: {},
   classes: {},
-  errors: []
+  errors: [],
+  modalIsOpen: false
 };
 
 export default function(state = DEFAULT_STATE, action) {
@@ -56,6 +57,11 @@ export default function(state = DEFAULT_STATE, action) {
     case types.SET_AVAILABLE_CLASSES:
       return { ...state, classes: action.payload };
 
+    //Misc...
+    case types.TOGGLE_MODAL:
+      const { modalIsOpen } = state;
+      return { ...state, modalIsOpen: !modalIsOpen };
+
     default:
       return state;
   }
@@ -85,7 +91,8 @@ export default function(state = DEFAULT_STATE, action) {
     for (let index = 0; index < assignment_list.length; index++) {
       const assignment = assignment_list[index];
       try {
-        var existingArray = studentAssignments[assignment.student_id].assignments;
+        var existingArray =
+          studentAssignments[assignment.student_id].assignments;
       } catch (err) {
         if (err.constructor == TypeError) {
           existingArray = [];

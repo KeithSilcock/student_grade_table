@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { toggleModal } from "../../actions";
 
 class AssignmentsTab extends React.Component {
   render() {
@@ -12,7 +13,10 @@ class AssignmentsTab extends React.Component {
 
     if (assignment_list && activeStudent) {
       var assignments = assignment_list.map((item, index) => {
-        if (item.class_id === currentClass.class_id && item.student_id === activeStudent.school_id) {
+        if (
+          item.class_id === currentClass.class_id &&
+          item.student_id === activeStudent.school_id
+        ) {
           return (
             <tr className="assignments-tab table-row" key={index}>
               <td>{item.assignment_name}</td>
@@ -39,11 +43,17 @@ class AssignmentsTab extends React.Component {
                 <tr>
                   <th className="sortableHeader" data-sort="name">
                     Assignment Name
-                    <div className="arrowSegment arrowname arrowUnsorted" data-sort="name" />
+                    <div
+                      className="arrowSegment arrowname arrowUnsorted"
+                      data-sort="name"
+                    />
                   </th>
                   <th className="sortableHeader" data-sort="grade">
                     Score
-                    <div className="arrowSegment arrowgrade arrowUnsorted" data-sort="grade" />
+                    <div
+                      className="arrowSegment arrowgrade arrowUnsorted"
+                      data-sort="grade"
+                    />
                   </th>
                 </tr>
               </thead>
@@ -71,5 +81,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  {}
+  { toggleModal }
 )(AssignmentsTab);
