@@ -1,26 +1,28 @@
-import React from 'react';
+import React from "react";
+import { connect } from "react-redux";
+import {} from "../actions";
+
+import "../assets/CSS/header.css";
 
 class Header extends React.Component {
-    constructor(props){
-        super(props);
-    }
+  render() {
+    const { teacherData } = this.props;
 
-    render() {
-        return (
-            <div className="container">
-                <div className="col-md-offset-1">
-                    <h1 className=".visible-md-* .visible-lg-* hidden-xs hidden-sm col-md-12 page-header"><strong>Student
-                        Grade Table</strong>
-                        <small className="col-md-offset-5">Grade Average : <span className="avgGrade">40</span></small>
-                    </h1>
-                    <h3 className=".visible-xs-* .visible-sm-* hidden-lg hidden-md col-xs-12"><strong>Student Grade
-                        Table</strong>
-                        <small className="col-xs-offset-5">Grade Average : <span className="avgGrade">40</span></small>
-                    </h3>
-                </div>
-            </div>
-        )
-    }
+    return (
+      <div className="header container">
+        <h3 className="header title">{`Welcome, ${teacherData.first_name} 
+        ${teacherData.last_name}`}</h3>
+      </div>
+    );
+  }
 }
 
-export default Header;
+function mapStateToProps(state) {
+  return {
+    teacherData: state.teacherData.teacherData
+  };
+}
+export default connect(
+  mapStateToProps,
+  {}
+)(Header);

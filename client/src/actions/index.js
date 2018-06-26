@@ -65,3 +65,9 @@ export function addNewAssignment(assignmentData, class_id) {
     payload: response
   };
 }
+
+export function toggleModal() {
+  return {
+    type: types.TOGGLE_MODAL
+  };
+}
