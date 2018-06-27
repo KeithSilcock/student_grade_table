@@ -71,3 +71,14 @@ export function toggleModal() {
     type: types.TOGGLE_MODAL
   };
 }
+
+export function deleteAssignment(assignment_id) {
+  const dataToSend = { assignment_id };
+  const path = "/api/delete_assignment";
+  const response = axios.post(path, dataToSend);
+
+  return {
+    type: types.DELETE_ASSIGNMENT,
+    payload: response
+  };
+}

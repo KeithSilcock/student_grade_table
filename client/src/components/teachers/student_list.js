@@ -107,7 +107,6 @@ function mapStateToProps(state) {
     studentData: state.teacherData.student_data,
     currentClass: state.teacherData.current_class,
     classes: state.teacherData.classes,
-    needsToRefresh: state.teacherData.needsToRefresh
   };
 }
 
