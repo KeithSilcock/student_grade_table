@@ -7,5 +7,6 @@ export default {
   SET_AVAILABLE_CLASSES: "set_available_classes",
   SET_ACTIVE_STUDENT: "set_active_student",
   ADD_NEW_ASSIGNMENT: "add_new_assignment",
-  REFRESHED: "refreshed"
+  TOGGLE_MODAL: "toggle_modal",
+  DELETE_ASSIGNMENT: "delete_assignment"
 };

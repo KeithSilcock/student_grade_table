@@ -17,7 +17,11 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
     //create new assignment in assignments table
     const query = `INSERT INTO assignments (assignment_name, teacher_id, class_id) 
     VALUES(?, ?, ?)`;
-    const inserts = [req.body.assignmentName, req.session.user_id, req.body.class_id];
+    const inserts = [
+      slashes.add(req.body.assignmentName),
+      req.session.user_id,
+      slashes.add(req.body.class_id)
+    ];
 
     const sqlQuery = mysql.format(query, inserts);
     dataBase.query(sqlQuery, (error, data, fields) => {
@@ -39,25 +43,28 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
 
       //format recieved data
       let queryStrings = "";
-      const assignmentValues = Object.keys(assignmentData).map((student_id, index) => {
-        const info = assignmentData[student_id];
-        queryStrings += `(?,?,?,?,?)`;
-        if (index !== Object.keys(assignmentData).length - 1) {
-          queryStrings += ",";
+      const assignmentValues = Object.keys(assignmentData).map(
+        (student_id, index) => {
+          const info = assignmentData[student_id];
+          queryStrings += `(?,?,?,?,?)`;
+          if (index !== Object.keys(assignmentData).length - 1) {
+            queryStrings += ",";
+          }
+          return [
+            assignment_id,
+            slashes.add(info.score),
+            slashes.add(info.points_total),
+            slashes.add(info.comments),
+            slashes.add(student_id)
+          ];
         }
-        return [
-          assignment_id,
-          slashes.add(info.score),
-          slashes.add(info.points_total),
-          slashes.add(info.comments),
-          slashes.add(student_id)
-        ];
-      });
+      );
 
       const query = `INSERT INTO student_assignments 
       (assignment_id, score, points_total, comments, student_id) 
       VALUES ${queryStrings}`;
 
+      //combining arrays
       const inserts = assignmentValues.reduce((prev, current) => {
         return [...prev, ...current];
       }, []);

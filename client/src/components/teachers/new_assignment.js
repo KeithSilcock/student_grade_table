@@ -1,7 +1,7 @@
 import React from "react";
 import DropDownMenu from "../drop_down_menu";
 import { connect } from "react-redux";
-import { addNewAssignment, getTeacherData } from "../../actions";
+import { addNewAssignment, getTeacherData, toggleModal } from "../../actions";
 
 import "../../assets/CSS/new_assignments.css";
 
@@ -72,7 +72,9 @@ class NewAssignment extends React.Component {
 
     const studentData = student_list.map((student, index) => {
       if (currentClass.class_id === student.class_id) {
-        const { comments, points_total, score } = this.state.assignmentData[student.school_id];
+        const { comments, points_total, score } = this.state.assignmentData[
+          student.school_id
+        ];
 
         return (
           <tr
@@ -139,13 +141,18 @@ class NewAssignment extends React.Component {
                 <tr>
                   <th className="sortableHeader" data-sort="name">
                     Student Name
-                    <div className="arrowSegment arrowname arrowUnsorted" data-sort="name" />
+                    <div
+                      className="arrowSegment arrowname arrowUnsorted"
+                      data-sort="name"
+                    />
                   </th>
                   <th>Student Score</th>
                   <th>Comments</th>
                 </tr>
               </thead>
-              <tbody className="studentTableBody col-xs-12">{studentData}</tbody>
+              <tbody className="studentTableBody col-xs-12">
+                {studentData}
+              </tbody>
             </table>
           </div>
         </div>
@@ -175,5 +182,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { addNewAssignment, getTeacherData }
+  { addNewAssignment, getTeacherData, toggleModal }
 )(NewAssignment);

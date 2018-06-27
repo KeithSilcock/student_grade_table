@@ -1,7 +1,12 @@
-.App {
+body {
   width: 100vw;
   height: 100vh;
-  background-color: rgb(238, 238, 238);
+  background-color: rgb(238, 238, 238) !important;
+}
+.App {
+  width: 96%;
+  height: 100%;
+  margin: 0 2%;
 }
 #dataTable {
   padding: 0;
@@ -46,9 +51,9 @@
   height: 10px;
   cursor: pointer;
 }
-.sortableHeader {
+/* .sortableHeader {
   cursor: pointer;
-}
+} */
 
 .arrowUnsorted {
   border-top: 3px solid grey;
