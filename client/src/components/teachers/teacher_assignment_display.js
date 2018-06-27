@@ -1,7 +1,14 @@
 import React, { Fragment } from "react";
 import { connect } from "react-redux";
-import { teacherLogin, getTeacherData, toggleModal } from "../../actions";
+import {
+  teacherLogin,
+  getTeacherData,
+  toggleModal,
+  deleteAssignment
+} from "../../actions";
 import DropDownMenu from "../drop_down_menu";
+
+import "../../assets/CSS/assignment-list.css";
 
 class TeacherAssignment extends React.Component {
   async componentWillMount() {
@@ -18,7 +25,9 @@ class TeacherAssignment extends React.Component {
       currentClass,
       studentData: { student_list, assignment_list },
       assignments,
-      toggleModal
+      toggleModal,
+      deleteAssignment,
+      getTeacherData
     } = this.props;
 
     //get all headers
@@ -31,19 +40,28 @@ class TeacherAssignment extends React.Component {
       ) {
         const assignment = assignment_list[assignmentIndex];
         if (assignment.class_id === currentClass.class_id) {
-          availableAssignments[assignment.assignment_name] = true;
+          availableAssignments[assignment.assignment_name] = assignment;
         }
       }
       var renderAssignmentHeaders = Object.keys(availableAssignments).map(
         (item, index) => {
           return (
             <Fragment key={index}>
-              <th className="sortableHeader" data-sort={item}>
-                {item}
-                <div
-                  className="arrowSegment arrowgrade arrowUnsorted"
-                  data-sort="grade"
-                />
+              <th className="assignment-list sortableHeader" data-sort={item}>
+                <div className="assignment-list assignment-header">
+                  <span>{item}</span>
+                  <div
+                    className="assignment-list delete"
+                    onClick={e => {
+                      deleteAssignment(
+                        availableAssignments[item].assignment_id
+                      );
+                      getTeacherData();
+                    }}
+                  >
+                    <span>&times;</span>
+                  </div>
+                </div>
               </th>
             </Fragment>
           );
@@ -126,6 +144,7 @@ export default connect(
   {
     teacherLogin,
     getTeacherData,
-    toggleModal
+    toggleModal,
+    deleteAssignment
   }
 )(TeacherAssignment);

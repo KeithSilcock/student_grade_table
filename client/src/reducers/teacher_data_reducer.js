@@ -43,8 +43,18 @@ export default function(state = DEFAULT_STATE, action) {
     case types.ADD_NEW_ASSIGNMENT:
       if (action.payload.data.success) {
         return {
+          ...state
+        };
+      } else {
+        return {
           ...state,
-          needsToRefresh: true
+          errors: [...state.errors, action.payload.data.errors]
+        };
+      }
+    case types.DELETE_ASSIGNMENT:
+      if (action.payload.data.success) {
+        return {
+          ...state
         };
       } else {
         return {
@@ -108,11 +118,5 @@ export default function(state = DEFAULT_STATE, action) {
     }
 
     return { teacherData, studentAssignments, classes };
-
-    // this.setState({
-    //   teacherData,
-    //   assignments: studentAssignments
-    // });
-    // setAvailableClasses(classes);
   }
 }

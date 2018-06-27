@@ -51,9 +51,9 @@ body {
   height: 10px;
   cursor: pointer;
 }
-.sortableHeader {
+/* .sortableHeader {
   cursor: pointer;
-}
+} */
 
 .arrowUnsorted {
   border-top: 3px solid grey;

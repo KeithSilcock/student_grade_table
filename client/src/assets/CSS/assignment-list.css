@@ -1,0 +1,20 @@
+.assignment-header {
+  display: flex;
+}
+.assignment-list.delete {
+  background-color: red;
+  width: 15px;
+  height: 15px;
+
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-self: flex-end;
+
+  cursor: pointer;
+}
+.assignment-list.delete span {
+  align-self: flex-end;
+  color: white;
+  font-size: 75%;
+}
