@@ -76,11 +76,15 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
       console.log("Reached user loggin query");
       if (!err) {
         if (data.length > 0) {
-          encrypt.compare(password, data[0].password, (err, compareResponse) => {
-            req.session.name = `${data[0].first_name} ${data[0].last_name}`;
-            req.session.user_id = school_id;
-            getStartingInfo(data[0].permissions);
-          });
+          encrypt.compare(
+            password,
+            data[0].password,
+            (err, compareResponse) => {
+              req.session.name = `${data[0].first_name} ${data[0].last_name}`;
+              req.session.user_id = school_id;
+              getStartingInfo(data[0].permissions);
+            }
+          );
         } else {
           output.errors = err;
           output.redirect = "/login";
