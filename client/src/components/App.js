@@ -15,7 +15,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Modal modalData={<NewAssignment />} />}
+        <Modal modalData={<NewAssignment />} />
         <Route exact path="/*" component={Header} />
         <Link to="/teacher-portal/student-list">Student List</Link>
         <Link to="/teacher-portal/assignment-list">Assignment List</Link>

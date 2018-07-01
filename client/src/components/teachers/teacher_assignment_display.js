@@ -10,6 +10,9 @@ import DropDownMenu from "../drop_down_menu";
 
 import "../../assets/CSS/assignment-list.css";
 
+//TODO fix issue where adding new assignment doesn't keep their
+// points total (if added at the top)
+
 class TeacherAssignment extends React.Component {
   async componentWillMount() {
     try {
