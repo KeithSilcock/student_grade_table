@@ -1,6 +1,6 @@
 module.exports = function(mysql, webserver, dataBase, encrypt) {
   webserver.get("/api/get_teacher_data", (req, res) => {
-    console.log("starting teacher log-in process");
+    console.log("starting teacher teacher data retrieval  process");
     const output = {
       success: false,
       data: {},
