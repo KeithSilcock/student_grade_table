@@ -12,6 +12,12 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
       // sessionID: null
     };
 
+    if (!req.session.user_id) {
+      output.errors.push("not logged in");
+      output.redirect = "/login";
+      res.json(output);
+    }
+
     //get data to make sure this is the correct teacher to delete this assignment
     const query = `SELECT assignments.teacher_id FROM assignments WHERE assignments.id=?`;
     const inserts = [slashes.add(req.body.assignment_id)];

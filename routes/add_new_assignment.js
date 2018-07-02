@@ -14,6 +14,12 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
       // sessionID: null
     };
 
+    if (!req.session.user_id) {
+      output.errors.push("not logged in");
+      output.redirect = "/login";
+      res.json(output);
+    }
+
     //create new assignment in assignments table
     const query = `INSERT INTO assignments (assignment_name, teacher_id, class_id) 
     VALUES(?, ?, ?)`;

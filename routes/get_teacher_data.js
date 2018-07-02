@@ -9,6 +9,12 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
       // sessionID: null
     };
 
+    if (!req.session.user_id) {
+      output.errors.push("not logged in");
+      output.redirect = "/login";
+      res.json(output);
+    }
+
     const query = `SELECT teachers.first_name, teachers.last_name, teachers.class_id, classes.class_name, classes.description
     FROM teachers
     JOIN classes ON teachers.class_id = classes.id

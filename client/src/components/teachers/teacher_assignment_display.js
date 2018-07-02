@@ -43,22 +43,24 @@ class TeacherAssignment extends React.Component {
       ) {
         const assignment = assignment_list[assignmentIndex];
         if (assignment.class_id === currentClass.class_id) {
-          availableAssignments[assignment.assignment_name] = assignment;
+          availableAssignments[assignment.assignment_id] = assignment;
         }
       }
       var renderAssignmentHeaders = Object.keys(availableAssignments).map(
-        (item, index) => {
+        (assignment_id, index) => {
+          const assignment = availableAssignments[assignment_id];
           return (
             <Fragment key={index}>
-              <th className="assignment-list sortableHeader" data-sort={item}>
+              <th
+                className="assignment-list sortableHeader"
+                data-sort={assignment.assignment_name}
+              >
                 <div className="assignment-list assignment-header">
-                  <span>{item}</span>
+                  <span>{assignment.assignment_name}</span>
                   <div
                     className="assignment-list delete"
                     onClick={e => {
-                      deleteAssignment(
-                        availableAssignments[item].assignment_id
-                      );
+                      deleteAssignment(assignment_id);
                       getTeacherData();
                     }}
                   >
