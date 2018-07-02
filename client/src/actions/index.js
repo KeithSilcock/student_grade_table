@@ -94,3 +94,8 @@ export function getStudentName(student_id) {
     payload: response
   };
 }
+export function clearGotStudentName() {
+  return {
+    type: types.CLEAR_GOT_STUDENT_NAME
+  };
+}
