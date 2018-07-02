@@ -10,7 +10,7 @@ class Header extends React.Component {
     const { teacherData } = this.props;
 
     return (
-      <div className="header container">
+      <div className="header header-container">
         <h3 className="header title">{`Welcome, ${teacherData.first_name} 
         ${teacherData.last_name}`}</h3>
         <AddNewStudent />

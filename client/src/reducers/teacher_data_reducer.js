@@ -74,11 +74,10 @@ export default function(state = DEFAULT_STATE, action) {
       return { ...state, modalIsOpen: !modalIsOpen };
 
     case types.GET_STUDENT_NAME:
-      debugger;
       if (action.payload.data.success) {
         return {
           ...state,
-          newStudentName: action.payload.data
+          newStudentName: action.payload.data.data.name
         };
       } else {
         return {
@@ -86,6 +85,11 @@ export default function(state = DEFAULT_STATE, action) {
           errors: [...state.errors, action.payload.data.errors]
         };
       }
+    case types.CLEAR_GOT_STUDENT_NAME:
+      return {
+        ...state,
+        newStudentName: ""
+      };
 
     default:
       return state;
