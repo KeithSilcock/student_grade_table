@@ -17,7 +17,7 @@ class NewAssignment extends React.Component {
     };
 
     this.changeInput = this.changeStudentInput.bind(this);
-    this.changeAssignmentInput = this.changeHeaderInput.bind(this);
+    this.changeAssignmentInput = this.changePointsTotalInput.bind(this);
   }
 
   componentWillMount() {
@@ -34,8 +34,8 @@ class NewAssignment extends React.Component {
       const student = student_list[studentIndex];
       assignmentData[student.school_id] = {
         comments: "",
-        points_total: 0,
-        score: 0
+        points_total: "",
+        score: ""
       };
     }
 
@@ -45,12 +45,41 @@ class NewAssignment extends React.Component {
     });
   }
 
-  changeHeaderInput(e) {
+  changeInputSimple(e) {
     const { name, value } = e.target;
 
     this.setState({
       ...this.state,
       [name]: value
+    });
+  }
+
+  changePointsTotalInput(e) {
+    const { assignmentData, canEditPointsTotal } = this.state;
+    const { name, value } = e.target;
+
+    var newAssignmentData = {};
+
+    for (let student_id in assignmentData) {
+      // let student = assignmentData[student_id];
+
+      if (!canEditPointsTotal[student_id]) {
+        newAssignmentData = {
+          ...newAssignmentData,
+          [student_id]: {
+            ...assignmentData[student_id],
+            [name]: value
+          }
+        };
+      }
+    }
+
+    newAssignmentData = Object.assign({ ...assignmentData }, newAssignmentData);
+
+    this.setState({
+      ...this.state,
+      assignmentData: newAssignmentData,
+      out_of: value
     });
   }
 
@@ -74,13 +103,12 @@ class NewAssignment extends React.Component {
 
   handleDifferentPointsTotal(e, school_id) {
     const { canEditPointsTotal } = this.state;
-    if (e.key === "Backspace") {
-      debugger;
-      this.setState({
-        ...this.state,
-        canEditPointsTotal: { ...canEditPointsTotal, [school_id]: true }
-      });
-    }
+    // if (e.key === "Backspace") {
+    this.setState({
+      ...this.state,
+      canEditPointsTotal: { ...canEditPointsTotal, [school_id]: true }
+    });
+    // }
   }
 
   render() {
@@ -160,7 +188,7 @@ class NewAssignment extends React.Component {
           <div className="new-assignment title">
             <span className="new-assignment text">Assignment: </span>
             <input
-              onChange={e => this.changeHeaderInput(e)}
+              onChange={e => this.changeInputSimple(e)}
               type="text"
               name="assignmentName"
               placeholder="Assignment Name"
@@ -168,9 +196,9 @@ class NewAssignment extends React.Component {
             />
             <span className="new-assignment total-score text">Out Of:</span>
             <input
-              onChange={e => this.changeHeaderInput(e)}
+              onChange={e => this.changePointsTotalInput(e)}
               type="text"
-              name="out_of"
+              name="points_total"
               placeholder="100"
               value={out_of}
             />
@@ -200,6 +228,13 @@ class NewAssignment extends React.Component {
           <button
             onClick={e => {
               toggleModal();
+              const {
+                assignmentName,
+                assignmentData,
+                out_of,
+                canEditPointsTotal
+              } = this.state;
+              debugger;
               addNewAssignment(this.state, currentClass.class_id);
               getTeacherData();
             }}

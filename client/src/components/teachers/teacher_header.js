@@ -1,8 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import {} from "../actions";
+import {} from "../../actions";
+import AddNewStudent from "./add_new_student";
 
-import "../assets/CSS/header.css";
+import "../../assets/CSS/header.css";
 
 class Header extends React.Component {
   render() {
@@ -12,6 +13,7 @@ class Header extends React.Component {
       <div className="header container">
         <h3 className="header title">{`Welcome, ${teacherData.first_name} 
         ${teacherData.last_name}`}</h3>
+        <AddNewStudent />
       </div>
     );
   }
