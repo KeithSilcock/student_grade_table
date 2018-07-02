@@ -1,0 +1,24 @@
+.add-new-student {
+}
+.add-new-student-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.add-new-student.input-container {
+}
+.add-new-student.input-container form {
+  position: absolute;
+  right: 2%;
+}
+.add-new-student.student-name-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.add-new-student.student-name-list .student-name {
+  background-color: white;
+  text-align: center;
+  font-size: 1.2em;
+  padding: 4px;
+}

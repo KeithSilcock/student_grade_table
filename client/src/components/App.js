@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route, Link } from "react-router-dom";
 
-import Header from "./header";
+import Header from "./teachers/teacher_header";
 import TeacherStudents from "./teachers/teacher_student_display";
 import StudentPortal from "./students/student_portal";
 import TeacherAssignments from "./teachers/teacher_assignment_display";

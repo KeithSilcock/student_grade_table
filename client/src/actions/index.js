@@ -57,6 +57,7 @@ export function setAvailableClasses(availableClasses) {
 
 export function addNewAssignment(assignmentData, class_id) {
   const dataToSend = Object.assign(assignmentData, { class_id });
+
   const path = "/api/add_new_assignment";
   const response = axios.post(path, dataToSend);
 
@@ -80,5 +81,21 @@ export function deleteAssignment(assignment_id) {
   return {
     type: types.DELETE_ASSIGNMENT,
     payload: response
+  };
+}
+
+export function getStudentName(student_id) {
+  const dataToSend = { student_id };
+  const path = "/api/get_student_name";
+  const response = axios.post(path, dataToSend);
+
+  return {
+    type: types.GET_STUDENT_NAME,
+    payload: response
+  };
+}
+export function clearGotStudentName() {
+  return {
+    type: types.CLEAR_GOT_STUDENT_NAME
   };
 }
