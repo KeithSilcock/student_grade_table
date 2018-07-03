@@ -77,7 +77,34 @@ export default function(state = DEFAULT_STATE, action) {
       if (action.payload.data.success) {
         return {
           ...state,
-          newStudentName: action.payload.data.data.name
+          newStudentName: {
+            first_name: action.payload.data.data.first_name,
+            last_name: action.payload.data.data.last_name
+          }
+        };
+      } else {
+        if (action.payload.data.errors.length) {
+          return {
+            ...state,
+            errors: [...state.errors, action.payload.data.errors]
+          };
+        } else {
+          return {
+            ...state,
+            newStudentName: { first_name: action.payload.data.data.first_name }
+          };
+        }
+      }
+    case types.CLEAR_GOT_STUDENT_NAME:
+      return {
+        ...state,
+        newStudentName: ""
+      };
+
+    case types.ADD_STUDENT_TO_CLASS:
+      if (action.payload.data.success) {
+        return {
+          ...state
         };
       } else {
         return {
@@ -85,11 +112,6 @@ export default function(state = DEFAULT_STATE, action) {
           errors: [...state.errors, action.payload.data.errors]
         };
       }
-    case types.CLEAR_GOT_STUDENT_NAME:
-      return {
-        ...state,
-        newStudentName: ""
-      };
 
     default:
       return state;

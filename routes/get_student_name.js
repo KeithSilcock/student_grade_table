@@ -20,19 +20,26 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
     }
 
     //create new assignment in assignments table
-    const query = `SELECT \`students\`.\`first_name\`,\`students\`.\`school_id\`, \`students\`.\`last_name\` 
-    FROM \`students\`
-    WHERE \`students\`.\`school_id\` = ?`;
+    const query = `SELECT \`users\`.\`first_name\`, \`users\`.\`last_name\`
+    FROM \`users\`
+    WHERE \`users\`.\`school_id\`=?`;
     const inserts = [slashes.add(req.body.student_id)];
 
     const sqlQuery = mysql.format(query, inserts);
     dataBase.query(sqlQuery, (error, data, fields) => {
       if (!error) {
-        output.data.name = `${data[0].first_name} ${data[0].last_name}`;
-        console.log("Student name: ", output.data.name);
+        if (data.length) {
+          output.data.first_name = data[0].first_name;
+          output.data.last_name = data[0].last_name;
+          console.log("Student name: ", data[0].first_name, data[0].last_name);
 
-        output.success = true;
-        res.json(output);
+          output.success = true;
+          res.json(output);
+        } else {
+          output.data.first_name = "<not found>";
+          res.json(output);
+          return;
+        }
       } else {
         output.errors = error;
         output.redirect = "/login";
