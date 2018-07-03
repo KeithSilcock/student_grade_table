@@ -14,6 +14,14 @@ import "../../assets/CSS/assignment-list.css";
 // points total (if added at the top)
 
 class TeacherAssignment extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      availableAssignments: {}
+    };
+  }
+
   async componentWillMount() {
     try {
       await this.props.teacherLogin();
@@ -23,19 +31,14 @@ class TeacherAssignment extends React.Component {
     }
   }
 
-  render() {
+  componentWillReceiveProps(nextProps) {
     const {
-      currentClass,
-      studentData: { student_list, assignment_list },
-      assignments,
-      toggleModal,
-      deleteAssignment,
-      getTeacherData
-    } = this.props;
+      studentData: { assignment_list },
+      currentClass
+    } = nextProps;
 
-    //get all headers
-    if (currentClass.class_name) {
-      const availableAssignments = {};
+    const availableAssignments = {};
+    if (assignment_list) {
       for (
         let assignmentIndex = 0;
         assignmentIndex < assignment_list.length;
@@ -46,6 +49,26 @@ class TeacherAssignment extends React.Component {
           availableAssignments[assignment.assignment_id] = assignment;
         }
       }
+    }
+    this.setState({
+      ...this.state,
+      availableAssignments
+    });
+  }
+
+  render() {
+    const { availableAssignments } = this.state;
+    const {
+      currentClass,
+      studentData: { student_list },
+      assignments,
+      toggleModal,
+      deleteAssignment,
+      getTeacherData
+    } = this.props;
+
+    //get all headers
+    if (currentClass.class_name) {
       var renderAssignmentHeaders = Object.keys(availableAssignments).map(
         (assignment_id, index) => {
           const assignment = availableAssignments[assignment_id];
@@ -78,17 +101,35 @@ class TeacherAssignment extends React.Component {
     if (currentClass.class_name) {
       var students_assignment_data = student_list.map((student, index1) => {
         if (student.class_id === currentClass.class_id) {
-          const assignment_row_data = assignments[
-            student.school_id
-          ].assignments.map((assignment, index2) => {
-            if (currentClass.class_id === assignment.class_id) {
-              return (
-                <td key={index2}>
-                  {assignment.score}/{assignment.points_total}
-                </td>
-              );
-            }
-          });
+          if (assignments[student.school_id]) {
+            var assignment_row_data = assignments[
+              student.school_id
+            ].assignments.map((assignment, index2) => {
+              if (currentClass.class_id === assignment.class_id) {
+                const redZeroClass = assignment.points_total ? "" : "red-zero";
+                return (
+                  <td key={index2}>
+                    <span>{assignment.score}</span>/<span
+                      className={redZeroClass}
+                    >
+                      {assignment.points_total}
+                    </span>
+                  </td>
+                );
+              }
+            });
+          } else {
+            var assignment_row_data = Object.keys(availableAssignments).map(
+              (assignment_id, index, array) => {
+                //need to add onclick that will allow for edit
+                return (
+                  <td>
+                    {0}/{0}
+                  </td>
+                );
+              }
+            );
+          }
           return (
             <tr key={index1}>
               <td>

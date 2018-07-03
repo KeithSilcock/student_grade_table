@@ -1,6 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getStudentName, clearGotStudentName } from "../../actions";
+import {
+  getStudentName,
+  clearGotStudentName,
+  addStudentToClass,
+  getTeacherData
+} from "../../actions";
 
 import "../../assets/CSS/add_new_student.css";
 
@@ -39,18 +44,44 @@ class AddNewStudent extends React.Component {
     clearGotStudentName();
   }
 
-  submitNewStudent(e) {
+  async submitNewStudent(e) {
+    //To Do: Add effect for confirmation
     e.preventDefault();
+    const { student_id } = this.state;
+    const {
+      addStudentToClass,
+      newStudentName,
+      currentClass,
+      getTeacherData
+    } = this.props;
 
-    debugger;
+    await addStudentToClass({
+      ...newStudentName,
+      school_id: student_id,
+      class_id: currentClass.class_id
+    });
+    getTeacherData();
+    this.toggleInput();
   }
   render() {
     const { displayIsOpen, student_id } = this.state;
     const { newStudentName } = this.props;
-    const studentNameItem =
-      newStudentName && student_id ? (
-        <li className="student-name">{newStudentName}</li>
-      ) : null;
+
+    if (student_id.length === 6 && newStudentName) {
+      if (newStudentName.first_name !== "<not found>") {
+        var studentNameItem = (
+          <li className="student-name">{`${newStudentName.first_name} ${
+            newStudentName.last_name
+          }`}</li>
+        );
+      } else {
+        var studentNameItem = (
+          <li className="student-name not-found">No Student Found</li>
+        );
+      }
+    } else {
+      var studentNameItem = null;
+    }
 
     const displayInput = displayIsOpen ? (
       <div className="add-new-student input-container">
@@ -93,5 +124,5 @@ function mapStateToProps(state) {
 }
 export default connect(
   mapStateToProps,
-  { getStudentName, clearGotStudentName }
+  { getStudentName, clearGotStudentName, addStudentToClass, getTeacherData }
 )(AddNewStudent);

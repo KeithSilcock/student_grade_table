@@ -17,10 +17,14 @@ class AssignmentsTab extends React.Component {
           item.class_id === currentClass.class_id &&
           item.student_id === activeStudent.school_id
         ) {
+          const redZeroClass = item.points_total ? "" : "red-zero";
           return (
-            <tr className="assignments-tab table-row" key={index}>
+            <tr className={`assignments-tab table-row`} key={index}>
               <td>{item.assignment_name}</td>
-              <td>{`${item.score}/${item.points_total}`}</td>
+              <td>
+                <span>{`${item.score}`}</span>/
+                <span className={redZeroClass}>{`${item.points_total}`}</span>
+              </td>
             </tr>
           );
         }

@@ -99,3 +99,14 @@ export function clearGotStudentName() {
     type: types.CLEAR_GOT_STUDENT_NAME
   };
 }
+
+export function addStudentToClass(student) {
+  const dataToSend = { ...student };
+  const path = "/api/add_student_to_class";
+  const response = axios.post(path, dataToSend);
+
+  return {
+    type: types.ADD_STUDENT_TO_CLASS,
+    payload: response
+  };
+}
