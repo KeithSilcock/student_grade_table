@@ -21,4 +21,12 @@
   text-align: center;
   font-size: 1.2em;
   padding: 4px;
+  border: 1px solid black;
+}
+.add-new-student.student-name-list .student-name.not-found {
+  background-color: rgb(255, 89, 89);
+  text-align: center;
+  font-size: 1.2em;
+  padding: 4px;
+  border: 1px solid black;
 }
