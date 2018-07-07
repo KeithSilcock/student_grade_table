@@ -7,18 +7,18 @@ import {
   deleteAssignment
 } from "../../actions";
 import DropDownMenu from "../drop_down_menu";
+import DoubleClickToEdit from "./double_click_editable";
 
 import "../../assets/CSS/assignment-list.css";
-
-//TODO fix issue where adding new assignment doesn't keep their
-// points total (if added at the top)
 
 class TeacherAssignment extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      availableAssignments: {}
+      availableAssignments: {},
+      editingOpen: false,
+      openInput_id: ""
     };
   }
 
@@ -56,8 +56,17 @@ class TeacherAssignment extends React.Component {
     });
   }
 
+  toggleEditMode(student_id) {
+    const { editingOpen } = this.state;
+    this.setState({
+      ...this.state,
+      editingOpen: !editingOpen,
+      openInput_id: student_id
+    });
+  }
+
   render() {
-    const { availableAssignments } = this.state;
+    const { availableAssignments, editingOpen, openInput_id } = this.state;
     const {
       currentClass,
       studentData: { student_list },
@@ -101,19 +110,39 @@ class TeacherAssignment extends React.Component {
     if (currentClass.class_name) {
       var students_assignment_data = student_list.map((student, index1) => {
         if (student.class_id === currentClass.class_id) {
+          //if they are editing a grade, mark student name
+          //in color to indicate editing
+          var studentEditOpenClass =
+            editingOpen && openInput_id === student.school_id
+              ? "editing-student"
+              : "";
+
           if (assignments[student.school_id]) {
             var assignment_row_data = assignments[
               student.school_id
             ].assignments.map((assignment, index2) => {
               if (currentClass.class_id === assignment.class_id) {
                 const redZeroClass = assignment.points_total ? "" : "red-zero";
+
                 return (
-                  <td key={index2}>
-                    <span>{assignment.score}</span>/<span
-                      className={redZeroClass}
-                    >
-                      {assignment.points_total}
-                    </span>
+                  <td
+                    key={index2}
+                    className={`assignment-list ${studentEditOpenClass}`}
+                  >
+                    <div className="assignment-list assignment">
+                      <DoubleClickToEdit
+                        valueName="score"
+                        objectData={assignment}
+                        toggleEditMode={e => this.toggleEditMode(e)}
+                      />
+                      <span className="assignment-list spacer">/</span>
+                      <DoubleClickToEdit
+                        valueName="points_total"
+                        objectData={assignment}
+                        className={redZeroClass}
+                        toggleEditMode={e => this.toggleEditMode(e)}
+                      />
+                    </div>
                   </td>
                 );
               }
@@ -132,7 +161,7 @@ class TeacherAssignment extends React.Component {
           }
           return (
             <tr key={index1}>
-              <td>
+              <td className={studentEditOpenClass}>
                 {student.first_name} {student.last_name}
               </td>
               {assignment_row_data}
