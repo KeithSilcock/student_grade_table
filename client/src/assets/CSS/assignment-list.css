@@ -18,3 +18,14 @@
   color: white;
   font-size: 75%;
 }
+.assignment-list.assignment {
+  display: flex;
+}
+.assignment-list .editable-container {
+}
+.assignment-list.spacer {
+  width: 5%;
+}
+.editing-student {
+  background-color: rgb(207, 207, 207);
+}

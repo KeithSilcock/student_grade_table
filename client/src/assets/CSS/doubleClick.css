@@ -1,0 +1,10 @@
+.editable-container {
+  width: 10%;
+}
+.editable-container span {
+}
+.editable-container input {
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
