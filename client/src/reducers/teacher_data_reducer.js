@@ -63,6 +63,17 @@ export default function(state = DEFAULT_STATE, action) {
           errors: [...state.errors, action.payload.data.errors]
         };
       }
+    case types.UPDATE_SCORE:
+      if (action.payload.data.success) {
+        return {
+          ...state
+        };
+      } else {
+        return {
+          ...state,
+          errors: [...state.errors, action.payload.data.errors]
+        };
+      }
 
     //classes
     case types.SET_AVAILABLE_CLASSES:

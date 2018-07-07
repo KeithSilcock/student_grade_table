@@ -1,4 +1,6 @@
 import React from "react";
+import { connect } from "react-redux";
+import { changeScore, getTeacherData } from "../../actions";
 
 import "../../assets/CSS/doubleClick.css";
 
@@ -23,6 +25,30 @@ class DoubleClickToEdit extends React.Component {
     this.state;
   }
 
+  onChangeValue(e) {
+    const { name, value } = e.target;
+
+    this.setState({
+      ...this.state,
+      currentName: name,
+      currentValue: value
+    });
+  }
+  async onInputSubmit(e, studentData) {
+    e.preventDefault();
+    const { currentName, currentValue } = this.state;
+    const { student_assignment_id, assignment_id } = studentData;
+
+    const dataToSend = {
+      column_name: currentName,
+      column_value: currentValue,
+      assignment_id,
+      student_assignment_id
+    };
+    await changeScore(dataToSend);
+    this.closeEditMode();
+    this.props.getTeacherData();
+  }
   openEditMode(e) {
     const { toggleEditMode, objectData } = this.props;
     this.setState(
@@ -50,14 +76,17 @@ class DoubleClickToEdit extends React.Component {
     const { valueName, objectData } = this.props;
 
     const renderInput = inputIsOpen ? (
-      <input
-        autoFocus
-        size="5"
-        onBlur={e => this.closeEditMode(e)}
-        type="text"
-        name={currentName}
-        value={currentValue}
-      />
+      <form onSubmit={e => this.onInputSubmit(e, objectData)}>
+        <input
+          autoFocus
+          size="5"
+          onChange={e => this.onChangeValue(e)}
+          onBlur={e => this.closeEditMode(e)}
+          type="text"
+          name={currentName}
+          value={currentValue}
+        />
+      </form>
     ) : (
       <span>{objectData[valueName]}</span>
     );
@@ -73,4 +102,11 @@ class DoubleClickToEdit extends React.Component {
   }
 }
 
-export default DoubleClickToEdit;
+function mapStateToProps(state) {
+  return null;
+}
+
+export default connect(
+  mapStateToProps,
+  { changeScore, getTeacherData }
+)(DoubleClickToEdit);

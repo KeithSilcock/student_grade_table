@@ -1,13 +1,6 @@
 import axios from "axios";
 import types from "./types";
 
-export function incrementCount(count) {
-  return {
-    type: types.INCREMENT_COUNT,
-    payload: ++count
-  };
-}
-
 export function getTeacherData() {
   const path = "/api/get_teacher_data";
   const response = axios.get(path);
@@ -107,6 +100,16 @@ export function addStudentToClass(student) {
 
   return {
     type: types.ADD_STUDENT_TO_CLASS,
+    payload: response
+  };
+}
+
+export function changeScore(assignment_info) {
+  const path = "/api/update_score";
+  const response = axios.post(path, assignment_info);
+
+  return {
+    type: types.UPDATE_SCORE,
     payload: response
   };
 }
