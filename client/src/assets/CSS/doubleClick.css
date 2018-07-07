@@ -1,5 +1,8 @@
-.editable-container {
+.teacher-assignment-list > .editable-container {
   width: 10%;
+}
+.assignment-list > .editable-container {
+  width: 15%;
 }
 .editable-container span {
 }
