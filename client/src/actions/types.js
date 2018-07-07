@@ -11,5 +11,6 @@ export default {
   DELETE_ASSIGNMENT: "delete_assignment",
   GET_STUDENT_NAME: "get_student_name",
   CLEAR_GOT_STUDENT_NAME: "clear_got_student_name",
-  ADD_STUDENT_TO_CLASS: "add_student_to_class"
+  ADD_STUDENT_TO_CLASS: "add_student_to_class",
+  UPDATE_SCORE: "update_score"
 };
