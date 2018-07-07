@@ -56,7 +56,7 @@ class DoubleClickToEdit extends React.Component {
         inputIsOpen: true
       },
       () => {
-        toggleEditMode(objectData.student_id);
+        if (toggleEditMode) toggleEditMode(objectData.student_id);
       }
     );
   }
@@ -67,7 +67,7 @@ class DoubleClickToEdit extends React.Component {
         inputIsOpen: false
       },
       () => {
-        toggleEditMode(objectData.student_id);
+        if (toggleEditMode) toggleEditMode(objectData.student_id);
       }
     );
   }

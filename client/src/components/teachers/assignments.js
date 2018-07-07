@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { toggleModal } from "../../actions";
+import DoubleClickToEdit from "./double_click_editable";
 
 class AssignmentsTab extends React.Component {
   render() {
@@ -22,8 +23,15 @@ class AssignmentsTab extends React.Component {
             <tr className={`assignments-tab table-row`} key={index}>
               <td>{item.assignment_name}</td>
               <td>
-                <span>{`${item.score}`}</span>/
-                <span className={redZeroClass}>{`${item.points_total}`}</span>
+                <div className="assignment-list assignment">
+                  <DoubleClickToEdit valueName="score" objectData={item} />
+                  <span className="assignment-list spacer">/</span>
+                  <DoubleClickToEdit
+                    valueName="points_total"
+                    objectData={item}
+                    className={redZeroClass}
+                  />
+                </div>
               </td>
             </tr>
           );

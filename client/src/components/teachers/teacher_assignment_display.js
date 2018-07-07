@@ -129,7 +129,7 @@ class TeacherAssignment extends React.Component {
                     key={index2}
                     className={`assignment-list ${studentEditOpenClass}`}
                   >
-                    <div className="assignment-list assignment">
+                    <div className="teacher-assignment-list assignment">
                       <DoubleClickToEdit
                         valueName="score"
                         objectData={assignment}

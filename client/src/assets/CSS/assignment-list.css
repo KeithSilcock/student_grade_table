@@ -21,6 +21,9 @@
 .assignment-list.assignment {
   display: flex;
 }
+.teacher-assignment-list.assignment {
+  display: flex;
+}
 .assignment-list .editable-container {
 }
 .assignment-list.spacer {
