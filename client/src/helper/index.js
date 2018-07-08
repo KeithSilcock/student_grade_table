@@ -1,5 +1,5 @@
-export function formatGrade(grade) {
-  return `${(grade * 100).toFixed(1)}%`;
+export function formatGrade(grade, to = 1) {
+  return `${(grade * 100).toFixed(to)}%`;
 }
 
 export function getLetterGrade(grade) {
@@ -22,7 +22,11 @@ export function getLetterGrade(grade) {
     return "A+";
   }
   const letterArtifact =
-    symbols[Math.floor(((grade - 0.59) * 10 - Math.floor((grade - 0.59) * 10)) * symbols.length)];
+    symbols[
+      Math.floor(
+        ((grade - 0.59) * 10 - Math.floor((grade - 0.59) * 10)) * symbols.length
+      )
+    ];
 
   return `${letterGrade}${letterArtifact}`;
 }
