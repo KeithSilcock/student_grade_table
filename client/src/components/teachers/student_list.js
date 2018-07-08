@@ -46,35 +46,42 @@ class StudentList extends React.Component {
       setActiveStudent,
       classes,
       teacherData,
+      activeStudent,
       assignments
     } = this.props;
 
     if (student_list) {
-      var studentData = student_list.map((item, index) => {
-        if (item.class_id === currentClass.class_id) {
-          if (assignments[item.school_id]) {
+      var studentData = student_list.map((student, index) => {
+        if (student.class_id === currentClass.class_id) {
+          if (assignments[student.school_id]) {
             var gradeAverage = this.getGradeAverageFromAssignments(
-              assignments[item.school_id].assignments,
-              item.class_id
+              assignments[student.school_id].assignments,
+              student.class_id
             );
           } else {
             var gradeAverage = 0;
           }
+
+          const selectedStudentClass =
+            activeStudent.school_id === student.school_id
+              ? "selected-student"
+              : "";
+
           return (
             <tr
               key={index}
-              className="teacher-student-table-row"
+              className={`teacher-student-table-row ${selectedStudentClass}`}
               onClick={e => {
                 const studentData = {
-                  firstName: item.first_name,
-                  lastName: item.last_name,
-                  school_id: item.school_id
+                  firstName: student.first_name,
+                  lastName: student.last_name,
+                  school_id: student.school_id
                 };
                 setActiveStudent(studentData);
               }}
             >
               <td>
-                {item.first_name} {item.last_name}
+                {student.first_name} {student.last_name}
               </td>
               <td>{`${formatGrade(gradeAverage)}  ${getLetterGrade(
                 gradeAverage
@@ -130,7 +137,8 @@ function mapStateToProps(state) {
     assignments: state.teacherData.assignments,
     studentData: state.teacherData.student_data,
     currentClass: state.teacherData.current_class,
-    classes: state.teacherData.classes
+    classes: state.teacherData.classes,
+    activeStudent: state.teacherData.activeStudent
   };
 }
 

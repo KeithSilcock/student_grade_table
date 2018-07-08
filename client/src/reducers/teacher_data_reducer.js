@@ -137,7 +137,6 @@ export default function(state = DEFAULT_STATE, action) {
     const classes = class_list.reduce((initObject, classInfo) => {
       teacherData.first_name = classInfo.first_name;
       teacherData.last_name = classInfo.last_name;
-
       const classObj = {
         [classInfo.class_name]: {
           class_description: classInfo.description,

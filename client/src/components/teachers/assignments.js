@@ -21,7 +21,12 @@ class AssignmentsTab extends React.Component {
           const redZeroClass = item.points_total ? "" : "red-zero";
           return (
             <tr className={`assignments-tab table-row`} key={index}>
-              <td>{item.assignment_name}</td>
+              <td>
+                <DoubleClickToEdit
+                  valueName="assignment_name"
+                  objectData={item}
+                />
+              </td>
               <td>
                 <div className="assignment-list assignment">
                   <DoubleClickToEdit valueName="score" objectData={item} />

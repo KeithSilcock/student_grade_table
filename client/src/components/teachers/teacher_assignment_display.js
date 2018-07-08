@@ -8,6 +8,7 @@ import {
 } from "../../actions";
 import DropDownMenu from "../drop_down_menu";
 import DoubleClickToEdit from "./double_click_editable";
+import { formatGrade } from "../../helper";
 
 import "../../assets/CSS/assignment-list.css";
 
@@ -69,12 +70,41 @@ class TeacherAssignment extends React.Component {
     const { availableAssignments, editingOpen, openInput_id } = this.state;
     const {
       currentClass,
-      studentData: { student_list },
+      studentData: { student_list, assignment_list },
       assignments,
       toggleModal,
       deleteAssignment,
       getTeacherData
     } = this.props;
+
+    if (assignment_list && Object.keys(currentClass).length) {
+      var averageGradePerAssignment = assignment_list.reduce(
+        (prev, assignment) => {
+          if (assignment.class_id === currentClass.class_id) {
+            if (!prev[assignment.assignment_id]) {
+              const startingAvg = { ...prev };
+              startingAvg[assignment.assignment_id] = {
+                avg: assignment.score / assignment.points_total,
+                count: 1
+              };
+              return Object.assign(prev, startingAvg);
+            }
+
+            const continuingAvg = { ...prev };
+            continuingAvg[assignment.assignment_id] = {
+              avg:
+                continuingAvg[assignment.assignment_id].avg +
+                assignment.score / assignment.points_total,
+              count: ++continuingAvg[assignment.assignment_id].count
+            };
+            return Object.assign(prev, continuingAvg);
+          } else {
+            return prev;
+          }
+        },
+        {}
+      );
+    }
 
     //get all headers
     if (currentClass.class_name) {
@@ -88,7 +118,12 @@ class TeacherAssignment extends React.Component {
                 data-sort={assignment.assignment_name}
               >
                 <div className="assignment-list assignment-header">
-                  <span>{assignment.assignment_name}</span>
+                  <DoubleClickToEdit
+                    valueName="assignment_name"
+                    objectData={assignment}
+                    toggleEditMode={e => this.toggleEditMode(e)}
+                  />
+                  {/* <span>{assignment.assignment_name}</span> */}
                   <div
                     className="assignment-list delete"
                     onClick={e => {
@@ -171,6 +206,23 @@ class TeacherAssignment extends React.Component {
       });
     }
 
+    //get averages for all assignments
+    if (averageGradePerAssignment) {
+      var renderAvgPerAssignment = Object.keys(averageGradePerAssignment).map(
+        (assignment_id, index) => {
+          return (
+            <td className="assignment-list average" key={index}>
+              {formatGrade(
+                averageGradePerAssignment[assignment_id].avg /
+                  averageGradePerAssignment[assignment_id].count,
+                2
+              )}
+            </td>
+          );
+        }
+      );
+    }
+
     return (
       <div className="assignment-list-container">
         <div className="assignment-list head">
@@ -191,6 +243,11 @@ class TeacherAssignment extends React.Component {
               </tr>
             </thead>
             <tbody className="studentTableBody col-xs-12">
+              <tr className=" average">
+                <td>Class Average</td>
+                {renderAvgPerAssignment}
+              </tr>
+
               {students_assignment_data}
             </tbody>
           </table>

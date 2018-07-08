@@ -23,28 +23,62 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
     const clean_column_name = slashes.add(req.body.column_name);
     const clean_column_value = slashes.add(req.body.column_value);
 
-    //get data to make sure this is the correct teacher to delete this assignment
-    const query = `SELECT assignments.teacher_id FROM assignments WHERE assignments.id=?`;
-    const inserts = [clean_assignment_id];
+    //Determine which table to update
+    if (clean_column_name === "assignment_name") {
+      updateAssignmentName();
+    } else {
+      updateScore();
+    }
 
-    const sqlQuery = mysql.format(query, inserts);
-    dataBase.query(sqlQuery, (error, data, fields) => {
-      if (!error) {
-        // perform check to see if current teacher change score
+    function updateAssignmentName() {
+      const query = `UPDATE \`assignments\` 
+      SET \`assignments\`.?? = ? 
+      WHERE \`assignments\`.\`id\` = ? AND \`assignments\`.\`teacher_id\`=?`;
 
-        if (data[0].teacher_id === req.session.user_id) {
-          changeScore();
+      const inserts = [
+        clean_column_name,
+        clean_column_value,
+        clean_assignment_id,
+        req.session.user_id
+      ];
+
+      const sqlQuery = mysql.format(query, inserts);
+      dataBase.query(sqlQuery, (error, data, fields) => {
+        if (!error) {
+          output.success = true;
+          res.json(output);
         } else {
-          output.errors = "Incorrect user."; // log this as is likely someone nefarious
+          output.errors = error;
           output.redirect = "/login";
           res.json(output);
         }
-      } else {
-        output.errors = error;
-        output.redirect = "/login";
-        res.json(output);
-      }
-    });
+      });
+    }
+
+    function updateScore() {
+      //get data to make sure this is the correct teacher to delete this assignment
+      const query = `SELECT assignments.teacher_id FROM assignments WHERE assignments.id=?`;
+      const inserts = [clean_assignment_id];
+
+      const sqlQuery = mysql.format(query, inserts);
+      dataBase.query(sqlQuery, (error, data, fields) => {
+        if (!error) {
+          // perform check to see if current teacher change score
+
+          if (data[0].teacher_id === req.session.user_id) {
+            changeScore();
+          } else {
+            output.errors = "Incorrect user."; // log this as is likely someone nefarious
+            output.redirect = "/login";
+            res.json(output);
+          }
+        } else {
+          output.errors = error;
+          output.redirect = "/login";
+          res.json(output);
+        }
+      });
+    }
 
     function changeScore() {
       const query = `UPDATE student_assignments 
