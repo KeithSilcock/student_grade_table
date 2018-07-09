@@ -109,7 +109,9 @@ class AddNewStudent extends React.Component {
 
     return (
       <div className="add-new-student add-new-student-container">
-        <button onClick={e => this.toggleInput(e)}>Add new student</button>
+        <button className="standard-button" onClick={e => this.toggleInput(e)}>
+          Add new student
+        </button>
         {displayInput}
       </div>
     );

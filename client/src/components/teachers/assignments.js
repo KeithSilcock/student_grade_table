@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import { toggleModal } from "../../actions";
 import DoubleClickToEdit from "./double_click_editable";
 
+//Uses css from teacher_page.css
+
 class AssignmentsTab extends React.Component {
   render() {
     const {
@@ -20,21 +22,29 @@ class AssignmentsTab extends React.Component {
         ) {
           const redZeroClass = item.points_total ? "" : "red-zero";
           return (
-            <tr className={`assignments-tab table-row`} key={index}>
-              <td>
+            <tr className={`roster-assignment table-row`} key={index}>
+              <td className="roster-assignment assignment-name">
                 <DoubleClickToEdit
+                  classToGive="roster-assignment double-click-name"
                   valueName="assignment_name"
                   objectData={item}
+                  inputSize={15}
                 />
               </td>
-              <td>
-                <div className="assignment-list assignment">
-                  <DoubleClickToEdit valueName="score" objectData={item} />
-                  <span className="assignment-list spacer">/</span>
+              <td className="roster-assignment points">
+                <div className="roster-assignment score-box">
                   <DoubleClickToEdit
-                    valueName="points_total"
+                    inputSize={4}
+                    classToGive="score"
+                    valueName="score"
                     objectData={item}
-                    className={redZeroClass}
+                  />
+                  <span className="roster-assignment spacer">/</span>
+                  <DoubleClickToEdit
+                    inputSize={4}
+                    classToGive={`points_total ${redZeroClass}`}
+                    valueName={`points_total`}
+                    objectData={item}
                   />
                 </div>
               </td>
@@ -45,18 +55,18 @@ class AssignmentsTab extends React.Component {
     }
 
     const headerName = activeStudent.firstName
-      ? `Assignments for: ${activeStudent.firstName} ${activeStudent.lastName}`
+      ? `${activeStudent.firstName} ${activeStudent.lastName}: `
       : "Assignments";
 
     return (
-      <div className="assignment-tab-container">
-        <div className="assignment-box-top">
-          <div className="assignment-tab-header">
-            <h5>{headerName}</h5>
+      <div className="roster-assignment container">
+        <div className="roster-assignment top">
+          <div className="roster-assignment header">
+            <h2>{headerName}</h2>
           </div>
-          <div className="assignment-tab-content">
-            <table className="student-list-container student-list table">
-              <thead className="col-xs-12 assignment-sidebar-header">
+          <div className="roster-assignment content">
+            <table className="roster-assignment table">
+              <thead className="roster-assignment table-head">
                 <tr>
                   <th className="sortableHeader" data-sort="name">
                     Assignment Name
@@ -74,12 +84,14 @@ class AssignmentsTab extends React.Component {
                   </th>
                 </tr>
               </thead>
-              <tbody>{assignments}</tbody>
+              <tbody className="roster-assignment table-body">
+                {assignments}
+              </tbody>
             </table>
           </div>
         </div>
-        <div className="assignment-footer">
-          <button className="new-assignment-button" onClick={toggleModal}>
+        <div className="roster-assignment footer">
+          <button className="standard-button" onClick={toggleModal}>
             <span>Create New Assignment</span>
           </button>
         </div>
