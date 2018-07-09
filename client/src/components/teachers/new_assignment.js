@@ -238,7 +238,7 @@ class NewAssignment extends React.Component {
               addNewAssignment(this.state, currentClass.class_id);
               getTeacherData();
             }}
-            className="new-assignment-button"
+            className="standard-button"
           >
             Add Assignment
           </button>

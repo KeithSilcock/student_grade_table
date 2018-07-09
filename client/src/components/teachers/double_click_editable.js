@@ -56,7 +56,7 @@ class DoubleClickToEdit extends React.Component {
         inputIsOpen: true
       },
       () => {
-        toggleEditMode(objectData.student_id);
+        if (toggleEditMode) toggleEditMode(objectData.student_id);
       }
     );
   }
@@ -67,19 +67,23 @@ class DoubleClickToEdit extends React.Component {
         inputIsOpen: false
       },
       () => {
-        toggleEditMode(objectData.student_id);
+        if (toggleEditMode) toggleEditMode(objectData.student_id);
       }
     );
   }
   render() {
     const { inputIsOpen, currentName, currentValue } = this.state;
-    const { valueName, objectData } = this.props;
+    const { valueName, objectData, inputSize } = this.props;
 
     const renderInput = inputIsOpen ? (
-      <form onSubmit={e => this.onInputSubmit(e, objectData)}>
+      <form
+        className="editable-form"
+        onSubmit={e => this.onInputSubmit(e, objectData)}
+      >
         <input
+          className="editable-input"
           autoFocus
-          size="5"
+          size={inputSize}
           onChange={e => this.onChangeValue(e)}
           onBlur={e => this.closeEditMode(e)}
           type="text"
@@ -88,7 +92,7 @@ class DoubleClickToEdit extends React.Component {
         />
       </form>
     ) : (
-      <span>{objectData[valueName]}</span>
+      <span className="editable-span">{objectData[valueName]}</span>
     );
 
     return (

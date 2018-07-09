@@ -63,20 +63,3 @@
 .new-assignment.points_total {
   width: 50px;
 }
-
-.new-assignment-button {
-  border-radius: 10px;
-  border-color: rgb(35, 179, 204);
-  background-color: rgb(20, 160, 216);
-  color: white;
-
-  cursor: pointer;
-}
-.new-assignment-button span {
-  width: 100%;
-
-  color: white;
-
-  font-size: 1em;
-  line-height: 0.9em;
-}

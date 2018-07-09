@@ -1,50 +1,92 @@
-.teacher-portal-container {
-  width: 100vw;
-  height: 80vh;
-  display: flex;
+/* Roster Student List */
+.roster {
 }
-
-.teacher.left-container {
-  width: 65%;
-  height: 100%;
-  padding: 0 2.5%;
-
-  border: 1px solid black;
-}
-
-.teacher.right-container {
-  width: 34%;
-  height: 100%;
-  border: 1px solid black;
-}
-
-.teacher-student-table-row {
-  background-color: white;
-  cursor: pointer;
-}
-.assignments-tab.table-row {
-  background-color: white;
-}
-
-.assignment-tab-container {
-  width: 100%;
-  height: 100%;
+.roster.container {
   display: flex;
   flex-flow: column;
-  justify-content: space-between;
 }
-.assignment-tab-header {
+.roster.header * {
+  margin: 0;
+  background-color: rgb(196, 196, 196);
+}
+.roster.table {
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+}
+.roster.table-head tr {
+  border-bottom: 2px solid rgb(173, 173, 173);
+
+  padding: 1% 2% 0 2%;
   display: flex;
   justify-content: space-between;
 }
-.assignment-box-top {
-  overflow-y: auto;
+.roster.data-row {
+  padding: 10px 2%;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgb(200, 200, 200);
 }
-.assignment-footer {
+
+/* Roster Assignments */
+.roster-assignment {
+}
+.roster-assignment.container {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+.roster-assignment.top {
+  display: flex;
+  flex-flow: column;
+  height: 95%;
+}
+.roster-assignment.header * {
+  margin: 0;
+  /* margin-bottom: 2%; */
+  background-color: rgb(196, 196, 196);
+}
+.roster-assignment.table {
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+}
+.roster-assignment.table-head tr {
+  padding: 1.9% 8% 0 8%;
+  display: flex;
+  /* padding: 0 8%; */
+  justify-content: space-between;
+  border-bottom: 2px solid rgb(173, 173, 173);
+}
+.roster-assignment.table-body tr {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 5px 5px;
+  border-bottom: 1px solid rgb(200, 200, 200);
+}
+
+.roster-assignment.assignment-name {
+  width: 60%;
+}
+.roster-assignment.points {
+  /* width: 40%; */
+}
+.roster-assignment.score-box {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.roster-assignment.footer {
+  height: 5%;
   display: flex;
   justify-content: center;
 }
 
+/* Roster Misc */
 .red-zero {
   background-color: red;
+}
+.selected-student {
+  background-color: rgb(218, 218, 218);
 }

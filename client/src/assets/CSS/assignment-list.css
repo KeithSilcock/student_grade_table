@@ -21,6 +21,9 @@
 .assignment-list.assignment {
   display: flex;
 }
+.teacher-assignment-list.assignment {
+  display: flex;
+}
 .assignment-list .editable-container {
 }
 .assignment-list.spacer {
@@ -28,4 +31,8 @@
 }
 .editing-student {
   background-color: rgb(207, 207, 207);
+}
+
+.average {
+  background-color: rgb(221, 248, 255);
 }
