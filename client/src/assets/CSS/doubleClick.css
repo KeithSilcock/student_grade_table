@@ -1,13 +1,15 @@
-.teacher-assignment-list > .editable-container {
-  width: 10%;
-}
-.assignment-list > .editable-container {
-  width: 15%;
-}
-.editable-container span {
-}
-.editable-container input {
+.editable-container {
   position: relative;
+  width: auto;
   width: 100%;
-  text-align: center;
+}
+.editable-form {
+  /* transform: translateX(-50%); */
+  /* position: absolute; */
+  /* width: 50%; */
+}
+.editable-input {
+  /* width: 100%; */
+}
+.editable-span {
 }

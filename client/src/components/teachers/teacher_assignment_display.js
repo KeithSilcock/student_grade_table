@@ -225,9 +225,6 @@ class TeacherAssignment extends React.Component {
 
     return (
       <div className="assignment-list-container">
-        <div className="assignment-list head">
-          <DropDownMenu />
-        </div>
         <div className="assignment-list content">
           <table className="assignment-list table">
             <thead className="col-xs-12">
@@ -253,7 +250,10 @@ class TeacherAssignment extends React.Component {
           </table>
         </div>
         <div className="assignment-list footer">
-          <button className="new-assignment-button" onClick={toggleModal}>
+          <button
+            className="new-assignment-button standard-button"
+            onClick={toggleModal}
+          >
             <span>Create New Assignment</span>
           </button>
         </div>
