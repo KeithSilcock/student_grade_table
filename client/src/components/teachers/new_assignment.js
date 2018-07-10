@@ -1,7 +1,7 @@
 import React from "react";
 import DropDownMenu from "../drop_down_menu";
 import { connect } from "react-redux";
-import { addNewAssignment, getTeacherData, toggleModal } from "../../actions";
+import { addNewAssignment, getTeacherData } from "../../actions";
 
 import "../../assets/CSS/new_assignments.css";
 
@@ -117,7 +117,6 @@ class NewAssignment extends React.Component {
       studentData: { student_list },
       currentClass,
       addNewAssignment,
-      toggleModal,
       getTeacherData
     } = this.props;
 
@@ -227,7 +226,6 @@ class NewAssignment extends React.Component {
         <div className="new-assignment bottom">
           <button
             onClick={e => {
-              toggleModal();
               const {
                 assignmentName,
                 assignmentData,
@@ -256,5 +254,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { addNewAssignment, getTeacherData, toggleModal }
+  { addNewAssignment, getTeacherData }
 )(NewAssignment);

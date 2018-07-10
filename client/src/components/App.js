@@ -21,13 +21,16 @@ class App extends Component {
           integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
           crossorigin="anonymous"
         />
-        <Modal modalData={<NewAssignment />} />
-        <Route path="/teacher-portal/:location" component={Header} />
+        <Route path="/teacher-portal/:location?" component={Header} />
 
         <Route path="/teacher-portal/student-list" component={StudentRoster} />
         <Route
           path="/teacher-portal/assignment-list"
           component={TeacherAssignments}
+        />
+        <Route
+          path="/teacher-portal/new-assignment"
+          component={NewAssignment}
         />
         <Route path="/student-portal" component={StudentPortal} />
       </div>

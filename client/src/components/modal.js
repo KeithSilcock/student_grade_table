@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { toggleModal } from "../actions";
+import {} from "../actions";
 import "../assets/CSS/modal.css";
 
 class Modal extends React.Component {
@@ -8,10 +8,10 @@ class Modal extends React.Component {
     function stopPropigation(e) {
       e.stopPropagation();
     }
-    const { toggleModal, modalData, modalIsOpen } = this.props;
+    const { modalData, modalIsOpen } = this.props;
 
     const modalRender = modalIsOpen ? (
-      <div className={"display-modal modal-background"} onClick={toggleModal}>
+      <div className={"display-modal modal-background"} onClick={null}>
         <div
           className="display-modal modal-frame"
           onClick={e => stopPropigation(e)}
@@ -32,5 +32,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { toggleModal }
+  {}
 )(Modal);

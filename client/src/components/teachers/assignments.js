@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { toggleModal } from "../../actions";
+import {} from "../../actions";
 import DoubleClickToEdit from "./double_click_editable";
 
 //Uses css from teacher_page.css
@@ -91,9 +91,9 @@ class AssignmentsTab extends React.Component {
           </div>
         </div>
         <div className="roster-assignment footer">
-          <button className="standard-button" onClick={toggleModal}>
+          {/* <button className="standard-button" onClick={toggleModal}>
             <span>Create New Assignment</span>
-          </button>
+          </button> */}
         </div>
       </div>
     );
@@ -110,5 +110,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { toggleModal }
+  {}
 )(AssignmentsTab);
