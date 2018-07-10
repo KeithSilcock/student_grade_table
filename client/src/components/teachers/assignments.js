@@ -28,7 +28,7 @@ class AssignmentsTab extends React.Component {
                   classToGive="roster-assignment double-click-name"
                   valueName="assignment_name"
                   objectData={item}
-                  inputSize={15}
+                  inputSize={12}
                 />
               </td>
               <td className="roster-assignment points">

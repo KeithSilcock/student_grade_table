@@ -1,6 +1,98 @@
-.assignment-header {
+.assignment-list.container {
+  width: 100%;
+  height: 85%;
+}
+.assignment-list.content {
+  width: 100%;
+  height: 90%;
+
+  box-sizing: border-box;
+  border-radius: 0 0 10px 10px;
+  border: 2px solid rgb(194, 194, 194);
+}
+.assignment-list.footer {
+  height: 10%;
+  width: 100%;
+}
+.assignment-list.table {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column wrap;
+  overflow: auto;
+}
+.assignment-list.table-header,
+.assignment-list.table-body {
+  width: 100%;
   display: flex;
 }
+.assignment-list.table-body {
+  flex-flow: column;
+}
+.assignment-list.table-header tr,
+.assignment-list.table-body tr {
+  display: flex;
+  width: 100%;
+}
+.assignment-list.table-header tr th,
+.assignment-list.table-body tr td {
+  /* padding: 0 2.5%; */
+  width: 10%;
+  min-width: 10%;
+  text-align: center;
+}
+
+.assignment-list.table-header tr th {
+  /* padding-top: 5px; */
+}
+.assignment-list.table-header tr th {
+  border-bottom: 2px solid rgb(173, 173, 173);
+}
+.assignment-list.table-header tr th {
+  border-left: 1px solid rgb(173, 173, 173);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+}
+.assignment-list.table-header tr th:first-child {
+  border-left: none;
+}
+.assignment-list.table-header tr th:last-child {
+  border-right: 1px solid rgb(173, 173, 173);
+}
+
+.assignment-list.table-body tr td {
+  border-bottom: 1px solid rgb(200, 200, 200);
+  background-color: rgb(250, 250, 250);
+}
+.assignment-list.table-body tr td {
+  border-left: 1px solid rgb(173, 173, 173);
+}
+.assignment-list.table-body tr td:first-child {
+  border-left: none;
+}
+.assignment-list.table-body tr td:last-child {
+  border-right: 1px solid rgb(173, 173, 173);
+}
+
+.assignment-list.assignment-name,
+.assignment-list.student-name {
+  display: flex;
+  flex-flow: row !important;
+}
+.assignment-list.assignment {
+  display: flex;
+  justify-content: center;
+}
+
+.assignment-list .editable-container {
+  align-self: center;
+}
+.editable-input {
+  text-align: center;
+}
+
 .assignment-list.delete {
   background-color: red;
   width: 15px;
@@ -12,27 +104,21 @@
   align-self: flex-end;
 
   cursor: pointer;
+  align-self: flex-end;
 }
 .assignment-list.delete span {
   align-self: flex-end;
   color: white;
   font-size: 75%;
 }
-.assignment-list.assignment {
-  display: flex;
-}
-.teacher-assignment-list.assignment {
-  display: flex;
-}
-.assignment-list .editable-container {
-}
+
 .assignment-list.spacer {
   width: 5%;
 }
 .editing-student {
-  background-color: rgb(207, 207, 207);
+  background-color: rgb(207, 207, 207) !important;
 }
 
-.average {
-  background-color: rgb(221, 248, 255);
+.assignment-list.average {
+  background-color: rgb(221, 248, 255) !important;
 }

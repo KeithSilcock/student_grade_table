@@ -61,10 +61,12 @@ class DoubleClickToEdit extends React.Component {
     );
   }
   closeEditMode(e) {
-    const { toggleEditMode, objectData } = this.props;
+    const { toggleEditMode, objectData, valueName } = this.props;
     this.setState(
       {
-        inputIsOpen: false
+        inputIsOpen: false,
+        currentName: valueName,
+        currentValue: objectData[valueName]
       },
       () => {
         if (toggleEditMode) toggleEditMode(objectData.student_id);
