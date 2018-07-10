@@ -1,0 +1,14 @@
+.assignment-deleting-animation {
+  animation-name: deleteShrinkLeft;
+  animation-duration: 1s;
+  will-change: tranform;
+  transform-origin: left;
+}
+@keyframes deleteShrinkLeft {
+  0% {
+    transform: scaleX(1);
+  }
+  100% {
+    transform: scaleX(0);
+  }
+}

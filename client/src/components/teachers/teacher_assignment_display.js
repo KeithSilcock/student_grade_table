@@ -1,16 +1,12 @@
 import React, { Fragment } from "react";
 import { connect } from "react-redux";
-import {
-  teacherLogin,
-  getTeacherData,
-  toggleModal,
-  deleteAssignment
-} from "../../actions";
+import { teacherLogin, getTeacherData, deleteAssignment } from "../../actions";
 import DropDownMenu from "../drop_down_menu";
 import DoubleClickToEdit from "./double_click_editable";
 import { formatGrade } from "../../helper";
 
 import "../../assets/CSS/assignment-list.css";
+import "../../assets/CSS/animations/delete_anim.css";
 
 class TeacherAssignment extends React.Component {
   constructor(props) {
@@ -19,7 +15,8 @@ class TeacherAssignment extends React.Component {
     this.state = {
       availableAssignments: {},
       editingOpen: false,
-      openInput_id: ""
+      openInput_id: "",
+      pressedDelete: { bool: false, id: "" }
     };
   }
 
@@ -57,6 +54,20 @@ class TeacherAssignment extends React.Component {
     });
   }
 
+  deleteAnimation(assignmentData) {
+    this.setState({
+      ...this.state,
+      pressedDelete: { bool: true, id: assignmentData }
+    });
+    setTimeout(() => {
+      getTeacherData();
+      this.setState({
+        ...this.state,
+        pressedDelete: { bool: false, id: "" }
+      });
+    }, 1000);
+  }
+
   toggleEditMode(student_id) {
     const { editingOpen } = this.state;
     this.setState({
@@ -67,12 +78,16 @@ class TeacherAssignment extends React.Component {
   }
 
   render() {
-    const { availableAssignments, editingOpen, openInput_id } = this.state;
+    const {
+      availableAssignments,
+      editingOpen,
+      openInput_id,
+      pressedDelete
+    } = this.state;
     const {
       currentClass,
       studentData: { student_list, assignment_list },
       assignments,
-      toggleModal,
       deleteAssignment,
       getTeacherData
     } = this.props;
@@ -111,17 +126,23 @@ class TeacherAssignment extends React.Component {
       var renderAssignmentHeaders = Object.keys(availableAssignments).map(
         (assignment_id, index) => {
           const assignment = availableAssignments[assignment_id];
+
+          const deleteAnimationClasses =
+            pressedDelete.bool && pressedDelete.id === assignment_id
+              ? "assignment-deleting-animation"
+              : "";
+
           return (
             <Fragment key={index}>
               <th
-                className="assignment-list sortableHeader"
+                className={`assignment-list sortableHeader ${deleteAnimationClasses}`}
                 data-sort={assignment.assignment_name}
               >
                 <div
                   className="assignment-list delete"
                   onClick={e => {
                     deleteAssignment(assignment_id);
-                    getTeacherData();
+                    this.deleteAnimation(assignment_id);
                   }}
                 >
                   <span>&times;</span>
@@ -158,8 +179,17 @@ class TeacherAssignment extends React.Component {
               if (currentClass.class_id === assignment.class_id) {
                 const redZeroClass = assignment.points_total ? "" : "red-zero";
 
+                const deleteAnimationClasses =
+                  pressedDelete.bool &&
+                  pressedDelete.id == assignment.assignment_id
+                    ? "assignment-deleting-animation"
+                    : "";
+
                 return (
-                  <td key={index2} className={`assignment-list`}>
+                  <td
+                    key={index2}
+                    className={`assignment-list ${deleteAnimationClasses}`}
+                  >
                     <div className="assignment-list assignment">
                       <DoubleClickToEdit
                         inputSize={4}
@@ -208,8 +238,16 @@ class TeacherAssignment extends React.Component {
     if (averageGradePerAssignment) {
       var renderAvgPerAssignment = Object.keys(averageGradePerAssignment).map(
         (assignment_id, index) => {
+          const deleteAnimationClasses =
+            pressedDelete.bool && pressedDelete.id == assignment_id
+              ? "assignment-deleting-animation"
+              : "";
+
           return (
-            <td className="assignment-list average" key={index}>
+            <td
+              className={`assignment-list average ${deleteAnimationClasses}`}
+              key={index}
+            >
               {formatGrade(
                 averageGradePerAssignment[assignment_id].avg /
                   averageGradePerAssignment[assignment_id].count,
@@ -270,7 +308,6 @@ export default connect(
   {
     teacherLogin,
     getTeacherData,
-    toggleModal,
     deleteAssignment
   }
 )(TeacherAssignment);
