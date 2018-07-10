@@ -94,6 +94,7 @@ class AddNewStudent extends React.Component {
             className="add-new-student input"
             name="student_id"
             autoFocus
+            onBlur={e => this.toggleInput(e)}
             onChange={e => {
               this.changeInput(e);
             }}

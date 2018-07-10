@@ -234,7 +234,6 @@ class NewAssignment extends React.Component {
                 out_of,
                 canEditPointsTotal
               } = this.state;
-              debugger;
               addNewAssignment(this.state, currentClass.class_id);
               getTeacherData();
             }}

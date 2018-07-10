@@ -5,9 +5,12 @@
   display: flex;
   flex-flow: column;
 }
-.roster.header * {
-  margin: 0;
+.roster.header {
   background-color: rgb(196, 196, 196);
+}
+.roster.header h2 {
+  text-align: center;
+  margin: 0;
 }
 .roster.table {
   width: 100%;
@@ -20,6 +23,9 @@
   padding: 1% 2% 0 2%;
   display: flex;
   justify-content: space-between;
+}
+.roster.table-body tr {
+  background-color: rgb(250, 250, 250);
 }
 .roster.data-row {
   padding: 10px 2%;
@@ -41,10 +47,12 @@
   flex-flow: column;
   height: 95%;
 }
-.roster-assignment.header * {
-  margin: 0;
-  /* margin-bottom: 2%; */
+.roster-assignment.header {
   background-color: rgb(196, 196, 196);
+}
+.roster-assignment.header h2 {
+  margin: 0;
+  text-align: center;
 }
 .roster-assignment.table {
   display: flex;
@@ -63,6 +71,7 @@
   justify-content: space-evenly;
   padding: 5px 5px;
   border-bottom: 1px solid rgb(200, 200, 200);
+  background-color: rgb(250, 250, 250);
 }
 
 .roster-assignment.assignment-name {

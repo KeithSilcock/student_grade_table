@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import {} from "../../actions";
+import { toggleModal } from "../../actions";
 import AddNewStudent from "./add_new_student";
 import ClassTabs from "../class_tabs";
 
@@ -9,7 +9,7 @@ import "../../assets/CSS/header.css";
 
 class Header extends React.Component {
   render() {
-    const { teacherData } = this.props;
+    const { teacherData, toggleModal } = this.props;
 
     if (this.props.match.params.location === "student-list") {
       var rosterClass = "selected";
@@ -39,6 +39,9 @@ class Header extends React.Component {
         </div>
         <div className="header header-bottom">
           <ClassTabs />
+          <button className=" assignment-list tab-button" onClick={toggleModal}>
+            <span>Create New Assignment</span>
+          </button>
         </div>
       </div>
     );
@@ -52,5 +55,5 @@ function mapStateToProps(state) {
 }
 export default connect(
   mapStateToProps,
-  {}
+  { toggleModal }
 )(Header);

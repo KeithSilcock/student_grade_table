@@ -117,22 +117,21 @@ class TeacherAssignment extends React.Component {
                 className="assignment-list sortableHeader"
                 data-sort={assignment.assignment_name}
               >
-                <div className="assignment-list assignment-header">
+                <div
+                  className="assignment-list delete"
+                  onClick={e => {
+                    deleteAssignment(assignment_id);
+                    getTeacherData();
+                  }}
+                >
+                  <span>&times;</span>
+                </div>
+                <div className="assignment-list assignment-name">
                   <DoubleClickToEdit
                     valueName="assignment_name"
                     objectData={assignment}
                     toggleEditMode={e => this.toggleEditMode(e)}
                   />
-                  {/* <span>{assignment.assignment_name}</span> */}
-                  <div
-                    className="assignment-list delete"
-                    onClick={e => {
-                      deleteAssignment(assignment_id);
-                      getTeacherData();
-                    }}
-                  >
-                    <span>&times;</span>
-                  </div>
                 </div>
               </th>
             </Fragment>
@@ -160,18 +159,17 @@ class TeacherAssignment extends React.Component {
                 const redZeroClass = assignment.points_total ? "" : "red-zero";
 
                 return (
-                  <td
-                    key={index2}
-                    className={`assignment-list ${studentEditOpenClass}`}
-                  >
-                    <div className="teacher-assignment-list assignment">
+                  <td key={index2} className={`assignment-list`}>
+                    <div className="assignment-list assignment">
                       <DoubleClickToEdit
+                        inputSize={4}
                         valueName="score"
                         objectData={assignment}
                         toggleEditMode={e => this.toggleEditMode(e)}
                       />
                       <span className="assignment-list spacer">/</span>
                       <DoubleClickToEdit
+                        inputSize={4}
                         valueName="points_total"
                         objectData={assignment}
                         className={redZeroClass}
@@ -195,7 +193,7 @@ class TeacherAssignment extends React.Component {
             );
           }
           return (
-            <tr key={index1}>
+            <tr key={index1} className={`${studentEditOpenClass}`}>
               <td className={studentEditOpenClass}>
                 {student.first_name} {student.last_name}
               </td>
@@ -224,12 +222,15 @@ class TeacherAssignment extends React.Component {
     }
 
     return (
-      <div className="assignment-list-container">
+      <div className="assignment-list container">
         <div className="assignment-list content">
           <table className="assignment-list table">
-            <thead className="col-xs-12">
+            <thead className="assignment-list table-header">
               <tr>
-                <th className="sortableHeader" data-sort="name">
+                <th
+                  className="assignment-list student-name sortableHeader"
+                  data-sort="name"
+                >
                   Student Name
                   <div
                     className="arrowSegment arrowname arrowUnsorted"
@@ -239,8 +240,8 @@ class TeacherAssignment extends React.Component {
                 {renderAssignmentHeaders}
               </tr>
             </thead>
-            <tbody className="studentTableBody col-xs-12">
-              <tr className=" average">
+            <tbody className="assignment-list table-body">
+              <tr className="assignment-list average">
                 <td>Class Average</td>
                 {renderAvgPerAssignment}
               </tr>
@@ -249,14 +250,7 @@ class TeacherAssignment extends React.Component {
             </tbody>
           </table>
         </div>
-        <div className="assignment-list footer">
-          <button
-            className="new-assignment-button standard-button"
-            onClick={toggleModal}
-          >
-            <span>Create New Assignment</span>
-          </button>
-        </div>
+        <div className="assignment-list footer" />
       </div>
     );
   }

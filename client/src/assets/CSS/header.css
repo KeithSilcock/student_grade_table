@@ -36,4 +36,13 @@
 }
 
 .header-bottom {
+  display: flex;
+  justify-content: space-between;
+}
+.tab-button {
+  border-radius: 10px 10px 0 0;
+  border-color: rgb(35, 179, 204);
+  background-color: rgb(20, 160, 216);
+  color: white;
+  cursor: pointer;
 }
