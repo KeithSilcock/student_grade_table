@@ -8,7 +8,6 @@ const DEFAULT_STATE = {
   activeStudent: {},
   classes: {},
   errors: [],
-  modalIsOpen: false,
   newStudentName: ""
 };
 
@@ -80,10 +79,6 @@ export default function(state = DEFAULT_STATE, action) {
       return { ...state, classes: action.payload };
 
     //Misc...
-    case types.TOGGLE_MODAL:
-      const { modalIsOpen } = state;
-      return { ...state, modalIsOpen: !modalIsOpen };
-
     case types.GET_STUDENT_NAME:
       if (action.payload.data.success) {
         return {

@@ -97,5 +97,5 @@
   background-color: red;
 }
 .selected-student {
-  background-color: rgb(218, 218, 218);
+  background-color: rgb(218, 218, 218) !important;
 }

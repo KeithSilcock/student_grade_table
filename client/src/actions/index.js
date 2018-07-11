@@ -60,12 +60,6 @@ export function addNewAssignment(assignmentData, class_id) {
   };
 }
 
-export function toggleModal() {
-  return {
-    type: types.TOGGLE_MODAL
-  };
-}
-
 export function deleteAssignment(assignment_id) {
   const dataToSend = { assignment_id };
   const path = "/api/delete_assignment";
