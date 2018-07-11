@@ -12,6 +12,13 @@ import { formatGrade, getLetterGrade } from "../../helper";
 import "../../assets/CSS/teacher_page.css";
 
 class StudentList extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      highlightedStudent_id: ""
+    };
+  }
   async componentWillMount() {
     try {
       await this.props.teacherLogin();
@@ -19,6 +26,13 @@ class StudentList extends React.Component {
     } catch (err) {
       throw err;
     }
+  }
+
+  clickedStudent() {
+    this.setState({
+      ...this.state,
+      highlightedStudent_id: true
+    });
   }
 
   getGradeAverageFromAssignments(assignments, currentClass) {

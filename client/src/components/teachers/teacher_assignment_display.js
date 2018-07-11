@@ -188,7 +188,7 @@ class TeacherAssignment extends React.Component {
                 return (
                   <td
                     key={index2}
-                    className={`assignment-list ${deleteAnimationClasses}`}
+                    className={`assignment-list ${deleteAnimationClasses} ${studentEditOpenClass}`}
                   >
                     <div className="assignment-list assignment">
                       <DoubleClickToEdit
