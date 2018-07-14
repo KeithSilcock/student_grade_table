@@ -51,7 +51,7 @@
 .assignment-list.table-header tr th {
   border-left: 1px solid rgb(173, 173, 173);
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   flex-flow: column;
 }
