@@ -17,7 +17,7 @@ class NewAssignment extends React.Component {
     this.state = {
       assignmentName: "",
       assignmentData: {},
-      out_of: findRandNumberBetween(25, 100),
+      out_of: "",
       canEditPointsTotal: {}
     };
 
@@ -48,6 +48,7 @@ class NewAssignment extends React.Component {
       this.setState({
         ...this.state,
         assignmentData,
+        out_of: findRandNumberBetween(25, 100),
         assignmentName: homeworkRandomizer(this.props.currentClass.class_name)
       });
     }
