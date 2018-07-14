@@ -1,0 +1,59 @@
+.login {
+}
+.login.container {
+  width: 96%;
+  margin: auto;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+}
+.login.header {
+  width: 100%;
+  border-bottom: 1px solid rgb(168, 194, 199);
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+.login.header h1 {
+  margin: 0;
+}
+.login-boxes {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: row;
+  box-sizing: border-box;
+}
+.teacher-login.container,
+.student-login.container {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+.teacher-login.container {
+  border-right: 2px solid rgb(194, 194, 194);
+}
+
+.teacher-login.header,
+.student-login.header {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+
+  width: 60%;
+  height: 10%;
+}
+.teacher-login.header h4,
+.student-login.header h4 {
+  margin: 0;
+}
+
+.teacher-login form,
+.student-login form {
+  width: 60%;
+  height: 50%;
+  border: 1px solid black;
+}
