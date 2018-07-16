@@ -22,7 +22,7 @@ export default function(WrappedComponent) {
 
   function mapStateToProps(state) {
     return {
-      logged_in: state.loginReducer.logged_in
+      logged_in: state.teacherData.logged_in
     };
   }
 

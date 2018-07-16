@@ -9,11 +9,46 @@ const DEFAULT_STATE = {
   activeStudent: {},
   classes: {},
   errors: [],
-  newStudentName: ""
+  newStudentName: "",
+  logged_in: false,
+  permissions: null
 };
 
 export default function(state = DEFAULT_STATE, action) {
   switch (action.type) {
+    case types.LOGIN:
+      if (action.payload.data.success) {
+        return {
+          ...state,
+          logged_in: true,
+          permissions: action.payload.data.data.permissions
+        };
+      } else {
+        if (action.payload.data.redirect === "/login") {
+          return {
+            ...state,
+            logged_in: false
+          };
+        }
+        return {
+          ...state,
+          errors: [...state.errors, action.payload.data.errors]
+        };
+      }
+
+    case types.LOGOUT:
+      if (action.payload.data.success) {
+        return {
+          ...state,
+          logged_in: false,
+          permissions: null
+        };
+      } else {
+        return {
+          ...state,
+          errors: [...state.errors, action.payload.data.errors]
+        };
+      }
     //student list
     case types.GET_STUDENT_LIST:
       if (action.payload.data.success) {
@@ -27,6 +62,12 @@ export default function(state = DEFAULT_STATE, action) {
           roster: data.roster
         };
       } else {
+        if (action.payload.data.redirect === "/login") {
+          return {
+            ...state,
+            logged_in: false
+          };
+        }
         return {
           ...state,
           errors: [...state.errors, action.payload.data.errors]
@@ -48,6 +89,12 @@ export default function(state = DEFAULT_STATE, action) {
           ...state
         };
       } else {
+        if (action.payload.data.redirect === "/login") {
+          return {
+            ...state,
+            logged_in: false
+          };
+        }
         return {
           ...state,
           errors: [...state.errors, action.payload.data.errors]
@@ -59,6 +106,12 @@ export default function(state = DEFAULT_STATE, action) {
           ...state
         };
       } else {
+        if (action.payload.data.redirect === "/login") {
+          return {
+            ...state,
+            logged_in: false
+          };
+        }
         return {
           ...state,
           errors: [...state.errors, action.payload.data.errors]
@@ -70,6 +123,12 @@ export default function(state = DEFAULT_STATE, action) {
           ...state
         };
       } else {
+        if (action.payload.data.redirect === "/login") {
+          return {
+            ...state,
+            logged_in: false
+          };
+        }
         return {
           ...state,
           errors: [...state.errors, action.payload.data.errors]
@@ -91,6 +150,12 @@ export default function(state = DEFAULT_STATE, action) {
           }
         };
       } else {
+        if (action.payload.data.redirect === "/login") {
+          return {
+            ...state,
+            logged_in: false
+          };
+        }
         if (action.payload.data.errors.length) {
           return {
             ...state,
@@ -115,6 +180,12 @@ export default function(state = DEFAULT_STATE, action) {
           ...state
         };
       } else {
+        if (action.payload.data.redirect === "/login") {
+          return {
+            ...state,
+            logged_in: false
+          };
+        }
         return {
           ...state,
           errors: [...state.errors, action.payload.data.errors]

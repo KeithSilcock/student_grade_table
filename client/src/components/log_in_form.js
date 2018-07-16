@@ -7,9 +7,29 @@ class LogInForm extends React.Component {
     super(props);
 
     this.state = {
-      user_name: "ghi789",
-      password: "abc123456"
+      user_name: "",
+      password: ""
     };
+  }
+
+  componentDidMount() {
+    switch (this.props.userType) {
+      case "Administrator":
+        this.setState({
+          ...this.state,
+          user_name: "ghi789",
+          password: "abc123456"
+        });
+        break;
+      default:
+        this.setState({
+          ...this.state,
+          user_name: "abc123",
+          password: "abc123456"
+        });
+
+        break;
+    }
   }
 
   handleOnChange(e) {

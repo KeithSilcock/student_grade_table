@@ -11,8 +11,11 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
       redirect: ""
       // sessionID: null
     };
-
-    if (!req.session.user_id) {
+    if (
+      !req.session.user_id ||
+      typeof req.session.permissions[1] === "undefined" ||
+      req.session.permissions[1] < 1
+    ) {
       output.errors.push("not logged in");
       output.redirect = "/login";
       res.json(output);

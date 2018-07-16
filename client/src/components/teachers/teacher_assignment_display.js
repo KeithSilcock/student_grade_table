@@ -59,17 +59,26 @@ class TeacherAssignment extends React.Component {
   }
 
   deleteAnimation(assignmentData) {
-    this.setState({
-      ...this.state,
-      pressedDelete: { bool: true, id: assignmentData }
-    });
-    setTimeout(() => {
-      getTeacherData();
-      this.setState({
+    this.setState(
+      {
         ...this.state,
-        pressedDelete: { bool: false, id: "" }
-      });
-    }, 1000);
+        pressedDelete: { bool: true, id: assignmentData }
+      },
+      () => {
+        this.props.getTeacherData();
+      }
+    );
+    var thisTimeout = setTimeout(() => {
+      this.setState(
+        {
+          ...this.state,
+          pressedDelete: { bool: false, id: "" }
+        },
+        () => {
+          clearTimeout(thisTimeout);
+        }
+      );
+    }, 500);
   }
 
   toggleEditMode(student_id) {

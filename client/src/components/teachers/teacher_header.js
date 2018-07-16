@@ -34,7 +34,7 @@ class Header extends React.Component {
     }
     const exitNewAssignmentButton =
       this.props.match.params[0] === "new-assignment" ? (
-        <button onClick={e => this.navBack()} class="header cancel-button">
+        <button onClick={e => this.navBack()} className="header cancel-button">
           Cancel
         </button>
       ) : null;
@@ -66,7 +66,7 @@ class Header extends React.Component {
           <AddNewStudent />
         </div>
         <div className="header header-bottom">
-          <ClassTabs />
+          <ClassTabs userType={`teacher`} />
           <div className="header buttons">
             <button
               className=" assignment-list tab-button"
