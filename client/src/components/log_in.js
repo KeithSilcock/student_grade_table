@@ -9,7 +9,7 @@ class LogIn extends React.Component {
     if (this.props.logged_in) {
       if (this.props.permissions.length > 1) {
         //they are a teacher, redirect to teacher page
-        this.props.history.push("/teacher-portal/student-list");
+        this.props.history.push("/teacher-portal/assignment-list");
       } else {
         //they are a student, redirect to student page
         this.props.history.push("/student-portal/classes");
