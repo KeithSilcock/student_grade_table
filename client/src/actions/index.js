@@ -12,7 +12,6 @@ export function getTeacherData() {
 
 export function getStudentData() {
   const path = "/api/get_data_for_student";
-  debugger;
   const response = axios.get(path);
   return {
     type: types.GET_STUDENT_DATA,

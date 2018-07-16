@@ -14,7 +14,7 @@ class Header extends React.Component {
 
   componentDidMount() {
     if (!this.props.recentPage) {
-      this.props.setRecentPage("/teacher-portal/student-list");
+      this.props.setRecentPage("/teacher-portal/assignment-list");
     }
   }
 

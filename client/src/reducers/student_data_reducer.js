@@ -15,7 +15,13 @@ export default function(state = DEFAULT_STATE, action) {
       debugger;
       if (action.payload.data.success) {
         return {
-          ...state
+          ...state,
+          assignments: action.payload.data.data.assignments,
+          classes: action.payload.data.data.classes,
+          student_data: {
+            name: action.payload.data.data.name,
+            id: action.payload.data.data.id
+          }
         };
       } else {
         if (action.payload.data.redirect === "/login") {
