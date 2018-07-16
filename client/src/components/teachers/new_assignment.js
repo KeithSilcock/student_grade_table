@@ -29,6 +29,7 @@ class NewAssignment extends React.Component {
     const {
       studentData: { student_list }
     } = this.props;
+    const outOf = findRandNumberBetween(25, 100);
 
     if (student_list) {
       const assignmentData = {};
@@ -39,16 +40,18 @@ class NewAssignment extends React.Component {
       ) {
         const student = student_list[studentIndex];
         assignmentData[student.school_id] = {
-          comments: "",
-          points_total: "",
-          score: ""
+          comments: commentRandomizer(
+            `${student.first_name} ${student.last_name}`
+          ),
+          points_total: outOf,
+          score: findRandNumberBetween(0, outOf)
         };
       }
 
       this.setState({
         ...this.state,
         assignmentData,
-        out_of: findRandNumberBetween(25, 100),
+        out_of: outOf,
         assignmentName: homeworkRandomizer(this.props.currentClass.class_name)
       });
     }
@@ -164,7 +167,7 @@ class NewAssignment extends React.Component {
                     }
                     type="text"
                     name={`score`}
-                    value={findRandNumberBetween(0, out_of)}
+                    value={score}
                   />
                 }/{
                   <input
@@ -187,9 +190,7 @@ class NewAssignment extends React.Component {
                   cols="30"
                   rows="2"
                   onChange={e => this.changeStudentInput(e, student.school_id)}
-                  value={commentRandomizer(
-                    `${student.first_name} ${student.last_name}`
-                  )}
+                  value={comments}
                 />
               </td>
             </tr>
@@ -257,7 +258,7 @@ class NewAssignment extends React.Component {
                 canEditPointsTotal
               } = this.state;
               addNewAssignment(this.state, currentClass.class_id);
-              getTeacherData();
+              this.props.history.push(this.props.recentPage);
             }}
             className="standard-button"
           >
@@ -272,7 +273,8 @@ class NewAssignment extends React.Component {
 function mapStateToProps(state) {
   return {
     currentClass: state.teacherData.current_class,
-    studentData: state.teacherData.student_data
+    studentData: state.teacherData.student_data,
+    recentPage: state.navData.recentPage
   };
 }
 

@@ -1,8 +1,9 @@
 .assignment-deleting-animation {
   animation-name: deleteShrinkLeft;
-  animation-duration: 1s;
+  animation-duration: 0.5s;
   will-change: tranform;
   transform-origin: left;
+  animation-fill-mode: forwards;
 }
 @keyframes deleteShrinkLeft {
   0% {

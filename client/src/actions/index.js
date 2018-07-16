@@ -10,6 +10,15 @@ export function getTeacherData() {
   };
 }
 
+export function getStudentData() {
+  const path = "/api/get_data_for_student";
+  const response = axios.get(path);
+  return {
+    type: types.GET_STUDENT_DATA,
+    payload: response
+  };
+}
+
 export function login(dataToSend = {}) {
   const path = "/api/login";
   dataToSend = {

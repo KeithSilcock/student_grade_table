@@ -1,6 +1,13 @@
 import React from "react";
+import { connect } from "react-redux";
+import { getStudentData } from "../../actions";
 
 class StudentPortal extends React.Component {
+  componentDidMount() {
+    //get starting data
+    this.props.getStudentData();
+  }
+
   render() {
     return (
       <div>
@@ -10,4 +17,9 @@ class StudentPortal extends React.Component {
   }
 }
 
-export default StudentPortal;
+function mapStateToProps(state) {}
+
+export default connect(
+  mapStateToProps,
+  { getStudentData }
+)(StudentPortal);

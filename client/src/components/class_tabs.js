@@ -5,27 +5,27 @@ import { changeActiveClass, setActiveStudent } from "../actions";
 import "../assets/CSS/class_tabs.css";
 
 class ClassTabs extends React.Component {
-  componentDidMount() {
-    const { classes, changeActiveClass, currentClass } = this.props;
-    if (Object.keys(classes).length && !currentClass.class_id) {
-      const firstClass = Object.keys(classes)[0];
-
-      changeActiveClass(firstClass, classes[firstClass].class_id);
-    }
-  }
-
   render() {
-    const {
-      classes,
-      changeActiveClass: changeClass,
-      currentClass,
-      setActiveStudent
-    } = this.props;
+    if (this.props.userType === "student") {
+      var {
+        classes_S: classes,
+        changeActiveClass: changeClass,
+        currentClass_S: currentClass,
+        setActiveStudent
+      } = this.props;
+    } else {
+      var {
+        classes_T: classes,
+        changeActiveClass: changeClass,
+        currentClass_T: currentClass,
+        setActiveStudent
+      } = this.props;
+    }
 
     //if no current class, set current class
     if (Object.keys(classes).length && !currentClass.class_id) {
       const firstClass = Object.keys(classes)[0];
-
+      debugger;
       changeClass(firstClass, classes[firstClass].class_id);
     }
 
@@ -57,8 +57,10 @@ class ClassTabs extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    currentClass: state.teacherData.current_class,
-    classes: state.teacherData.classes
+    currentClass_T: state.teacherData.current_class,
+    classes_T: state.teacherData.classes,
+    currentClass_S: state.teacherData.current_class,
+    classes_S: state.teacherData.classes
   };
 }
 

@@ -12,5 +12,8 @@ export default {
   ADD_STUDENT_TO_CLASS: "add_student_to_class",
   UPDATE_SCORE: "update_score",
   SET_RECENT_PAGE: "set_recent_page",
-  LOGOUT: "logout"
+  LOGOUT: "logout",
+  NAVIGATE_BACK: "navigate_back",
+  //Student data
+  GET_STUDENT_DATA: "get_student_data"
 };
