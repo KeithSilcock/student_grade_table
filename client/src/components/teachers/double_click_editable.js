@@ -25,6 +25,12 @@ class DoubleClickToEdit extends React.Component {
     this.state;
   }
 
+  closeInputOnEscape(e) {
+    if (e.key === "Escape") {
+      this.closeEditMode();
+    }
+  }
+
   onChangeValue(e) {
     const { name, value } = e.target;
 
@@ -51,6 +57,7 @@ class DoubleClickToEdit extends React.Component {
   }
   openEditMode(e) {
     const { toggleEditMode, objectData } = this.props;
+    this.state;
     this.setState(
       {
         inputIsOpen: true
@@ -64,9 +71,9 @@ class DoubleClickToEdit extends React.Component {
     const { toggleEditMode, objectData, valueName } = this.props;
     this.setState(
       {
-        inputIsOpen: false,
-        currentName: valueName,
-        currentValue: objectData[valueName]
+        inputIsOpen: false
+        // currentName: valueName,
+        // currentValue: objectData[valueName]
       },
       () => {
         if (toggleEditMode) toggleEditMode(objectData.student_id);
@@ -83,6 +90,7 @@ class DoubleClickToEdit extends React.Component {
         onSubmit={e => this.onInputSubmit(e, objectData)}
       >
         <input
+          onKeyDown={e => this.closeInputOnEscape(e)}
           className="editable-input"
           autoFocus
           size={inputSize}

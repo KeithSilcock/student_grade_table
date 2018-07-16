@@ -14,6 +14,7 @@
 module.exports = (mysql, webserver, database, encrypt) => {
   require(`./_loggin.js`)(mysql, webserver, database, encrypt);
   require(`./get_teacher_data.js`)(mysql, webserver, database, encrypt);
+  require(`./get_data_for_student.js`)(mysql, webserver, database, encrypt);
   require(`./add_new_assignment.js`)(mysql, webserver, database, encrypt);
   require(`./delete_assignment.js`)(mysql, webserver, database, encrypt);
   require(`./get_student_data.js`)(mysql, webserver, database, encrypt);

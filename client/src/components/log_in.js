@@ -12,7 +12,7 @@ class LogIn extends React.Component {
         this.props.history.push("/teacher-portal/student-list");
       } else {
         //they are a student, redirect to student page
-        this.props.history.push("/student-portal");
+        this.props.history.push("/student-portal/classes");
       }
     }
   }
@@ -57,8 +57,8 @@ class LogIn extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    logged_in: state.loginReducer.logged_in,
-    permissions: state.loginReducer.permissions
+    logged_in: state.teacherData.logged_in,
+    permissions: state.teacherData.permissions
   };
 }
 

@@ -4,8 +4,6 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
   webserver.post("/api/add_student_to_class", (req, res) => {
     console.log("starting to add new assignment");
 
-    req.session;
-
     const output = {
       success: false,
       data: {},
@@ -14,7 +12,11 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
       // sessionID: null
     };
 
-    if (!req.session.user_id) {
+    if (
+      !req.session.user_id ||
+      typeof req.session.permissions[2] === "undefined" ||
+      req.session.permissions[2] < 1
+    ) {
       output.errors.push("not logged in");
       output.redirect = "/login";
       res.json(output);

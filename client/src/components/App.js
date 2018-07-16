@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Route, Link } from "react-router-dom";
 
 import TeacherHeader from "./teachers/teacher_header";
+import StudentHeader from "./students/student_header";
 import StudentRoster from "./teachers/teacher_student_display";
 import StudentPortal from "./students/student_portal";
 import TeacherAssignments from "./teachers/teacher_assignment_display";
@@ -29,7 +30,6 @@ class App extends Component {
           path="/teacher-portal/*"
           component={CheckLoggedIn(TeacherHeader)}
         />
-
         <Route
           path="/teacher-portal/student-list"
           component={CheckLoggedIn(StudentRoster)}
@@ -42,8 +42,13 @@ class App extends Component {
           path="/teacher-portal/new-assignment"
           component={CheckLoggedIn(NewAssignment)}
         />
+
         <Route
-          path="/student-portal"
+          path="/student-portal/*"
+          component={CheckLoggedIn(StudentHeader)}
+        />
+        <Route
+          path="/student-portal/classes"
           component={CheckLoggedIn(StudentPortal)}
         />
       </div>
