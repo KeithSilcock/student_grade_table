@@ -15,6 +15,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
       output.errors.push("not logged in");
       output.redirect = "/login";
       res.json(output);
+      return;
     }
     const clean_assignment_id = slashes.add(req.body.assignment_id);
     const clean_student_assignment_id = slashes.add(

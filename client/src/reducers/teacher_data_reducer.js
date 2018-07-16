@@ -2,6 +2,7 @@ import types from "../actions/types";
 
 const DEFAULT_STATE = {
   assignments: [],
+  roster: {},
   teacherData: {},
   current_class: {},
   student_data: {},
@@ -22,7 +23,8 @@ export default function(state = DEFAULT_STATE, action) {
           student_data: action.payload.data.data,
           classes: data.classes,
           assignments: data.studentAssignments,
-          teacherData: data.teacherData
+          teacherData: data.teacherData,
+          roster: data.roster
         };
       } else {
         return {
@@ -127,6 +129,48 @@ export default function(state = DEFAULT_STATE, action) {
     const { assignment_list, class_list, student_list } = studentData;
     // get all classes, assignments, and grades data formated
 
+    //create student roster of all student names/ids per class
+    const temp_roster = {};
+    for (
+      let studentIndex = 0;
+      studentIndex < student_list.length;
+      studentIndex++
+    ) {
+      const student = student_list[studentIndex];
+      if (!temp_roster[student.class_id]) {
+        temp_roster[student.class_id] = [
+          {
+            name: `${student.first_name} ${student.last_name}`,
+            school_id: student.school_id
+          }
+        ];
+      } else {
+        temp_roster[student.class_id] = [
+          ...temp_roster[student.class_id],
+          {
+            name: `${student.first_name} ${student.last_name}`,
+            school_id: student.school_id
+          }
+        ];
+      }
+    }
+    //rename keys of roster
+    const roster = {};
+    for (
+      let keyIndex = 0;
+      keyIndex < Object.keys(temp_roster).length;
+      keyIndex++
+    ) {
+      for (let classIndex = 0; classIndex < class_list.length; classIndex++) {
+        if (
+          Object.keys(temp_roster)[keyIndex] == class_list[classIndex].class_id
+        ) {
+          roster[class_list[classIndex].class_name] =
+            temp_roster[Object.keys(temp_roster)[keyIndex]];
+        }
+      }
+    }
+
     const teacherData = {};
     // get all class data (and add the current teacher's data)
     const classes = class_list.reduce((initObject, classInfo) => {
@@ -163,6 +207,6 @@ export default function(state = DEFAULT_STATE, action) {
       };
     }
 
-    return { teacherData, studentAssignments, classes };
+    return { teacherData, studentAssignments, classes, roster };
   }
 }

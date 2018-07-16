@@ -1,33 +1,35 @@
 const slashes = require("slashes");
-const getTeacherData = require("./get_teacher_data.js");
 
 module.exports = function(mysql, webserver, dataBase, encrypt) {
   // ============================
   // ==== Already Logged In? ====
   // ============================
   // if so: get user info for either teacher or student
-  // webserver.get( '/api/' , ( req , res ) => {
-  //     console.log("checking if user already logged in...");
-  //     const output = {
-  //         redirect : '',
-  //         success: false,
-  //     };
-  //
-  //     if( req.session.user_id !== undefined ) {
-  //         output.redirect = '/loggin';
-  //         output.success=true;
-  //         res.json(output);
-  //     } else {
-  //         output.redirect = '/';
-  //         res.json(output);
-  //     }
-  // });
+  webserver.get("/api/", (req, res) => {
+    console.log("checking if user already logged in...");
+    const output = {
+      redirect: "",
+      success: false
+    };
+
+    if (req.session.user_id !== undefined) {
+      //figure determine permissions and direct them accordingly
+      output.redirect = "/loggin";
+      output.success = true;
+      res.json(output);
+      return;
+    } else {
+      output.redirect = "/";
+      res.json(output);
+      return;
+    }
+  });
 
   // ====================
   // ==== Logging In ====
   // ====================
-  webserver.post("/api/teacher_login", (req, res) => {
-    console.log("starting teacher log-in process");
+  webserver.post("/api/login", (req, res) => {
+    console.log("starting log-in process");
     const output = {
       success: false,
       data: {},
@@ -37,38 +39,15 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
     };
 
     // ======================
-    // Validating inputs=====
+    // Cleaning inputs=====
     // ======================
-    // req.check('school_id' , 'must be valid school_id').isEmail();
-    // const validationErrors = req.validationErrors();
-
-    // if( validationErrors ) {
-    //     console.log('login error');
-    //     output.redirect = '/login';
-    //     output.errors = 'invalid login credentials';
-    //     res.json(output);
-    //     res.end();
-    //     return;
-    // }
-
-    let school_id;
-    let password;
-
-    if (req.body.school_id === "" || req.body.password === "") {
-      output.redirect = "/loggin";
-      res.send("Password or ID is incorrect");
-      res.end();
-      return;
-    } else {
-      school_id = slashes.add(req.body.school_id);
-      password = slashes.add(req.body.password);
-    }
+    const clean_school_id = slashes.add(req.body.school_id);
 
     const query = `SELECT users.password, users.permissions
         FROM users
         WHERE school_id = ?`;
 
-    const inserts = [school_id];
+    const inserts = [clean_school_id];
 
     const mysqlQuery = mysql.format(query, inserts);
 
@@ -77,11 +56,10 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
       if (!err) {
         if (data.length > 0) {
           encrypt.compare(
-            password,
+            slashes.add(req.body.password),
             data[0].password,
             (err, compareResponse) => {
-              req.session.name = `${data[0].first_name} ${data[0].last_name}`;
-              req.session.user_id = school_id;
+              req.session.user_id = clean_school_id;
               getStartingInfo(data[0].permissions);
             }
           );
@@ -101,20 +79,11 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
         .split("")
         .reverse();
 
-      if (current_permissions[1] > 0) {
-        //they are a teacher
-        output.data.permissions = 1;
-        output.success = true;
-        res.json(output);
-      } else {
-        //they are a student
-        output.permissions = 0;
-        res.json(output);
-        // getStudentData();
-      }
-    }
+      req.session.permissions = current_permissions;
+      output.data.permissions = current_permissions;
 
-    //   function getStudentData() {}
-    // });
+      output.success = true;
+      res.json(output);
+    }
   });
 };

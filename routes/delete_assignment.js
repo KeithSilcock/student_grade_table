@@ -16,6 +16,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
       output.errors.push("not logged in");
       output.redirect = "/login";
       res.json(output);
+      return;
     }
 
     //get data to make sure this is the correct teacher to delete this assignment

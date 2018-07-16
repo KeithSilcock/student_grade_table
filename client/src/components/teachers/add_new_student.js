@@ -15,18 +15,47 @@ class AddNewStudent extends React.Component {
 
     this.state = {
       displayIsOpen: false,
-      student_id: ""
+      student_id: "",
+      studentIsInClass: false
     };
   }
 
   changeInput(e) {
+    const { studentIsInClass } = this.state;
     const { name, value } = e.target;
-    const { getStudentName, clearGotStudentName } = this.props;
+    const {
+      getStudentName,
+      clearGotStudentName,
+      roster,
+      currentClass
+    } = this.props;
     //if length is length of student ids,
     //look for that student's name in the database and offer them
+    let shouldGetStudentName = true;
     if (value.length === 6) {
-      getStudentName(value);
+      for (
+        let student = 0;
+        student < roster[currentClass.class_name].length;
+        student++
+      ) {
+        const student = roster[currentClass.class_name][student];
+        if (student.school_id === value) {
+          shouldGetStudentName = false;
+          this.setState({
+            ...this.state,
+            studentIsInClass: true
+          });
+        }
+      }
+
+      if (shouldGetStudentName) {
+        getStudentName(value);
+      }
     } else {
+      this.setState({
+        ...this.state,
+        studentIsInClass: false
+      });
       clearGotStudentName();
     }
 
@@ -39,7 +68,8 @@ class AddNewStudent extends React.Component {
     this.setState({
       ...this.state,
       displayIsOpen: !displayIsOpen,
-      student_id: ""
+      student_id: "",
+      studentIsInClass: false
     });
     clearGotStudentName();
   }
@@ -64,21 +94,28 @@ class AddNewStudent extends React.Component {
     this.toggleInput();
   }
   render() {
-    const { displayIsOpen, student_id } = this.state;
+    const { displayIsOpen, student_id, studentIsInClass } = this.state;
     const { newStudentName } = this.props;
 
-    if (student_id.length === 6 && newStudentName) {
+    //display students name if gotten
+    if (student_id.length === 6 && newStudentName && !studentIsInClass) {
       if (newStudentName.first_name !== "<not found>") {
         var studentNameItem = (
-          <li className="student-name">{`${newStudentName.first_name} ${
-            newStudentName.last_name
-          }`}</li>
+          <li onClick={e => this.submitNewStudent(e)} className="student-name">
+            <div className="inner-student-name">
+              {`${newStudentName.first_name} ${newStudentName.last_name}`}
+            </div>
+          </li>
         );
       } else {
         var studentNameItem = (
           <li className="student-name not-found">No Student Found</li>
         );
       }
+    } else if (studentIsInClass) {
+      var studentNameItem = (
+        <li className="student-name not-found">That student already exists</li>
+      );
     } else {
       var studentNameItem = null;
     }
@@ -94,7 +131,6 @@ class AddNewStudent extends React.Component {
             className="add-new-student input"
             name="student_id"
             autoFocus
-            onBlur={e => this.toggleInput(e)}
             onChange={e => {
               this.changeInput(e);
             }}
@@ -110,7 +146,10 @@ class AddNewStudent extends React.Component {
 
     return (
       <div className="add-new-student add-new-student-container">
-        <button className="standard-button" onClick={e => this.toggleInput(e)}>
+        <button
+          className="add-new-student-tab-button"
+          onClick={e => this.toggleInput(e)}
+        >
           Add new student
         </button>
         {displayInput}
@@ -122,7 +161,8 @@ class AddNewStudent extends React.Component {
 function mapStateToProps(state) {
   return {
     currentClass: state.teacherData.current_class,
-    newStudentName: state.teacherData.newStudentName
+    newStudentName: state.teacherData.newStudentName,
+    roster: state.teacherData.roster
   };
 }
 export default connect(

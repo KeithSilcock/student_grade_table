@@ -18,6 +18,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
       output.errors.push("not logged in");
       output.redirect = "/login";
       res.json(output);
+      return;
     }
 
     //create new assignment in assignments table
