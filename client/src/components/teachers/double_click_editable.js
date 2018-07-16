@@ -109,7 +109,7 @@ class DoubleClickToEdit extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return null;
+  return {};
 }
 
 export default connect(

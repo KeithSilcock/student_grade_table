@@ -82,3 +82,6 @@ body {
 .arrowDown {
   transform: rotate(225deg);
 }
+button {
+  outline: none;
+}

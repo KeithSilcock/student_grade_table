@@ -4,23 +4,22 @@ import types from "./types";
 export function getTeacherData() {
   const path = "/api/get_teacher_data";
   const response = axios.get(path);
-
   return {
     type: types.GET_STUDENT_LIST,
     payload: response
   };
 }
 
-export function teacherLogin(dataToSend = {}) {
-  const path = "/api/teacher_login";
+export function login(dataToSend = {}) {
+  const path = "/api/login";
   dataToSend = {
-    school_id: "ghi789",
-    password: "nothanks"
+    school_id: dataToSend.user_name,
+    password: dataToSend.password
   };
   const response = axios.post(path, dataToSend);
 
   return {
-    type: types.TEACHER_LOGGIN,
+    type: types.LOGIN,
     payload: response
   };
 }
@@ -104,6 +103,23 @@ export function changeScore(assignment_info) {
 
   return {
     type: types.UPDATE_SCORE,
+    payload: response
+  };
+}
+
+export function setRecentPage(page) {
+  return {
+    type: types.SET_RECENT_PAGE,
+    payload: page
+  };
+}
+
+export function logout() {
+  const path = "/api/logout";
+  const response = axios.get(path);
+
+  return {
+    type: types.LOGOUT,
     payload: response
   };
 }

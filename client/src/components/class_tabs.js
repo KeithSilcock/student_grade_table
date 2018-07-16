@@ -5,16 +5,16 @@ import { changeActiveClass, setActiveStudent } from "../actions";
 import "../assets/CSS/class_tabs.css";
 
 class ClassTabs extends React.Component {
-  constructor(props) {
-    super(props);
+  componentDidMount() {
+    const { classes, changeActiveClass, currentClass } = this.props;
+    if (Object.keys(classes).length && !currentClass.class_id) {
+      const firstClass = Object.keys(classes)[0];
 
-    this.state = {
-      isFirstTime: true
-    };
+      changeActiveClass(firstClass, classes[firstClass].class_id);
+    }
   }
 
   render() {
-    const { isFirstTime } = this.state;
     const {
       classes,
       changeActiveClass: changeClass,
@@ -22,13 +22,10 @@ class ClassTabs extends React.Component {
       setActiveStudent
     } = this.props;
 
-    //set first class to current class
-    if (isFirstTime && Object.keys(classes).length) {
+    //if no current class, set current class
+    if (Object.keys(classes).length && !currentClass.class_id) {
       const firstClass = Object.keys(classes)[0];
-      this.setState({
-        ...this.state,
-        isFirstTime: false
-      });
+
       changeClass(firstClass, classes[firstClass].class_id);
     }
 

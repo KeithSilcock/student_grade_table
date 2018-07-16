@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import {} from "../../actions";
+import { setRecentPage } from "../../actions";
 import AddNewStudent from "./add_new_student";
 import ClassTabs from "../class_tabs";
 
@@ -12,43 +12,70 @@ class Header extends React.Component {
     this.props.history.push("/teacher-portal/new-assignment");
   }
 
-  render() {
-    const { teacherData } = this.props;
+  componentDidMount() {
+    if (!this.props.recentPage) {
+      this.props.setRecentPage("/teacher-portal/student-list");
+    }
+  }
 
-    if (this.props.match.params.location === "student-list") {
+  navBack() {
+    this.props.history.push(this.props.recentPage);
+  }
+
+  render() {
+    const { teacherData, setRecentPage } = this.props;
+
+    if (this.props.match.params[0] === "student-list") {
       var rosterClass = "selected";
       var assignmentsClass = "";
-    } else if (this.props.match.params.location === "assignment-list") {
+    } else if (this.props.match.params[0] === "assignment-list") {
       var rosterClass = "";
       var assignmentsClass = "selected";
     }
+    const exitNewAssignmentButton =
+      this.props.match.params[0] === "new-assignment" ? (
+        <button onClick={e => this.navBack()} class="header cancel-button">
+          Cancel
+        </button>
+      ) : null;
 
     return (
       <div className="header header-container">
         <div className="header header-top">
           <h2 className="header title">{`Welcome, ${teacherData.first_name} 
         ${teacherData.last_name}`}</h2>
-          <AddNewStudent />
+          <a href="/logout">Log Out?</a>
         </div>
         <div className="header header-pages">
-          <Link className={`${rosterClass}`} to="/teacher-portal/student-list">
-            <i class="fas fa-users" />Roster
-          </Link>
-          <Link
-            className={`${assignmentsClass}`}
-            to="/teacher-portal/assignment-list"
-          >
-            <i class="far fa-edit" />Assignments
-          </Link>
+          <div className="header header-tabs">
+            <Link
+              className={`${rosterClass}`}
+              onClick={e => setRecentPage("/teacher-portal/student-list")}
+              to="/teacher-portal/student-list"
+            >
+              <i className="fas fa-users" />Roster
+            </Link>
+            <Link
+              onClick={e => setRecentPage("/teacher-portal/assignment-list")}
+              className={`${assignmentsClass}`}
+              to="/teacher-portal/assignment-list"
+            >
+              <i className="far fa-edit" />Assignments
+            </Link>
+          </div>
+          <AddNewStudent />
         </div>
         <div className="header header-bottom">
           <ClassTabs />
-          <button
-            className=" assignment-list tab-button"
-            onClick={e => this.navToNewAssignment(e)}
-          >
-            <span>Create New Assignment</span>
-          </button>
+          <div className="header buttons">
+            <button
+              className=" assignment-list tab-button"
+              onClick={e => this.navToNewAssignment(e)}
+            >
+              <span>Create New Assignment</span>
+            </button>
+            {exitNewAssignmentButton}
+          </div>
         </div>
       </div>
     );
@@ -57,10 +84,12 @@ class Header extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    teacherData: state.teacherData.teacherData
+    currentClass: state.teacherData.current_class,
+    teacherData: state.teacherData.teacherData,
+    recentPage: state.navData.recentPage
   };
 }
 export default connect(
   mapStateToProps,
-  {}
+  { setRecentPage }
 )(Header);
