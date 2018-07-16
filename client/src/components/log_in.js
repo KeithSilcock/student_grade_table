@@ -1,45 +1,53 @@
 import React from "react";
+import LogInForm from "./log_in_form";
+import { connect } from "react-redux";
 
 import "../assets/CSS/log_in.css";
 
 class LogIn extends React.Component {
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.logged_in) {
+      if (this.props.permissions.length > 1) {
+        //they are a teacher, redirect to teacher page
+        this.props.history.push("/teacher-portal/student-list");
+      } else {
+        //they are a student, redirect to student page
+        this.props.history.push("/student-portal");
+      }
+    }
+  }
+
   render() {
     return (
       <div className="login container">
         <div className="login header">
-          <h1>Student Grade Table</h1>
+          <div className="login logo">
+            <i className="fas fa-school" />
+          </div>
+          <h1>Education Web Portal</h1>
+          <div className="login spacer" />
         </div>
         <div className="login-boxes">
           <div className="teacher-login container">
             <div className="teacher-login header">
-              <h4>Teacher Login</h4>
+              <h3>
+                <i className="fas fa-chalkboard-teacher" /> Educator
+              </h3>
             </div>
-            <form>
-              <div className="teacher username-form">
-                <label for="teacher-user-name">User Name: </label>
-                <input id="teacher-user-name" type="text" />
-              </div>
-              <div className="teacher password-form">
-                <label for="teacher-password">Password: </label>
-                <input id="teacher-password" type="text" />
-              </div>
-            </form>
+            <div className="teacher-login body">
+              <LogInForm userType={"Administrator"} />
+            </div>
           </div>
 
           <div className="student-login container">
-            <div className="teacher-login header">
-              <h4>Student Login</h4>
+            <div className="student-login header">
+              <h3>
+                <i className="fas fa-user-graduate" /> Student
+              </h3>
             </div>
-            <form>
-              <div className="student username-form">
-                <label for="student-user-name">User Name: </label>
-                <input id="student-user-name" type="text" />
-              </div>
-              <div className="student password-form">
-                <label for="student-password">Password: </label>
-                <input id="student-password" type="text" />
-              </div>
-            </form>
+            <div className="student-login body">
+              <LogInForm userType={"Student"} />
+            </div>
           </div>
         </div>
       </div>
@@ -47,4 +55,14 @@ class LogIn extends React.Component {
   }
 }
 
-export default LogIn;
+function mapStateToProps(state) {
+  return {
+    logged_in: state.loginReducer.logged_in,
+    permissions: state.loginReducer.permissions
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  {}
+)(LogIn);

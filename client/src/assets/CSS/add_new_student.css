@@ -8,6 +8,8 @@
 .add-new-student.input-container {
 }
 .add-new-student.input-container form {
+  display: flex;
+  flex-flow: column;
   position: absolute;
   right: 2%;
 }
@@ -23,10 +25,22 @@
   padding: 4px;
   border: 1px solid black;
 }
+.add-new-student.student-name-list .student-name:hover .inner-student-name {
+  background-color: rgb(206, 206, 206);
+}
 .add-new-student.student-name-list .student-name.not-found {
   background-color: rgb(255, 89, 89);
   text-align: center;
   font-size: 1.2em;
   padding: 4px;
   border: 1px solid black;
+}
+
+.add-new-student-tab-button {
+  height: 100%;
+  border-radius: 10px 10px 0 0;
+  border-color: rgb(35, 179, 204);
+  background-color: rgb(20, 160, 216);
+  color: white;
+  cursor: pointer;
 }

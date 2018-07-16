@@ -1,6 +1,10 @@
 import React, { Fragment } from "react";
 import { connect } from "react-redux";
-import { teacherLogin, getTeacherData, deleteAssignment } from "../../actions";
+import {
+  // teacherLogin,
+  getTeacherData,
+  deleteAssignment
+} from "../../actions";
 import DropDownMenu from "../drop_down_menu";
 import DoubleClickToEdit from "./double_click_editable";
 import { formatGrade } from "../../helper";
@@ -22,7 +26,7 @@ class TeacherAssignment extends React.Component {
 
   async componentWillMount() {
     try {
-      await this.props.teacherLogin();
+      // await this.props.teacherLogin();
       await this.props.getTeacherData();
     } catch (err) {
       throw err;
@@ -215,7 +219,7 @@ class TeacherAssignment extends React.Component {
               (assignment_id, index, array) => {
                 //need to add onclick that will allow for edit
                 return (
-                  <td>
+                  <td key={index}>
                     {0}/{0}
                   </td>
                 );
@@ -306,7 +310,6 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {
-    teacherLogin,
     getTeacherData,
     deleteAssignment
   }

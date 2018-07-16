@@ -1,6 +1,5 @@
 export default {
-  TEACHER_LOGGIN: "teacher_login",
-  INCREMENT_COUNT: "increment_count",
+  LOGIN: "login",
   GET_STUDENT_LIST: "get_student_list",
   GET_STUDENT_ASSIGNMENT_LIST: "get_student_assignment_list",
   CHANGE_ACTIVE_CLASS: "change_active_class",
@@ -11,5 +10,7 @@ export default {
   GET_STUDENT_NAME: "get_student_name",
   CLEAR_GOT_STUDENT_NAME: "clear_got_student_name",
   ADD_STUDENT_TO_CLASS: "add_student_to_class",
-  UPDATE_SCORE: "update_score"
+  UPDATE_SCORE: "update_score",
+  SET_RECENT_PAGE: "set_recent_page",
+  LOGOUT: "logout"
 };

@@ -1,7 +1,7 @@
 .login {
 }
 .login.container {
-  width: 96%;
+  width: 100%;
   margin: auto;
   height: 100%;
   display: flex;
@@ -9,13 +9,24 @@
 }
 .login.header {
   width: 100%;
+  height: 15%;
   border-bottom: 1px solid rgb(168, 194, 199);
   display: flex;
-  justify-content: center;
-  align-content: center;
+  justify-content: space-between;
+  align-items: center;
 }
 .login.header h1 {
   margin: 0;
+}
+.login.header i {
+  font-size: 2.5em;
+  border: 1px solid rgb(36, 149, 255);
+  padding: 15%;
+  border-radius: 10px;
+  color: rgb(36, 149, 255);
+}
+.login.spacer {
+  width: 5%;
 }
 .login-boxes {
   width: 100%;
@@ -28,10 +39,10 @@
 .student-login.container {
   width: 50%;
   height: 100%;
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  align-items: center;
+  /* display: flex; */
+  /* flex-flow: column; */
+  /* justify-content: center; */
+  /* align-items: center; */
 }
 .teacher-login.container {
   border-right: 2px solid rgb(194, 194, 194);
@@ -42,18 +53,84 @@
   display: flex;
   justify-content: center;
   align-content: center;
+  align-items: center;
 
-  width: 60%;
-  height: 10%;
+  width: 100%;
+  height: 5%;
+  border-bottom: 1px solid rgb(168, 194, 199);
+  background-color: rgb(255, 233, 193);
+  color: rgb(0, 0, 0);
 }
-.teacher-login.header h4,
-.student-login.header h4 {
+.teacher-login.header h3,
+.student-login.header h3 {
   margin: 0;
 }
 
-.teacher-login form,
-.student-login form {
+.teacher-login.body,
+.student-login.body {
+  height: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.teacher-login.body form,
+.student-login.body form {
   width: 60%;
+  height: 60%;
+  border: 2px solid rgb(124, 156, 161);
+  border-radius: 10px;
+  box-shadow: 3px 3px rgb(92, 106, 109);
+
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.teacher-login form .header,
+.student-login form .header {
+  text-align: center;
+  height: 25%;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+.teacher-login form .header *,
+.student-login form .header * {
+  margin: 0;
+  margin-bottom: 2%;
+}
+
+.login-form-inputs {
   height: 50%;
-  border: 1px solid black;
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.login-form-inputs label {
+  font-weight: bold;
+}
+.login.username-form,
+.login.password-form {
+  width: 80%;
+
+  display: flex;
+  flex-flow: column;
+  text-align: center;
+}
+.login-actions {
+  width: 100%;
+  height: 25%;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.login-actions a {
+  font-size: 0.8em;
+}
+button.login-form {
+  width: 25%;
 }
