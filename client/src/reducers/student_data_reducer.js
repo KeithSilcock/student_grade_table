@@ -1,9 +1,8 @@
 import types from "../actions/types";
 
 const DEFAULT_STATE = {
-  assignments: [],
-  teacherData: {},
-  current_class: {},
+  assignments: {},
+  teacherData: [],
   student_data: {},
   classes: {},
   errors: []
@@ -12,7 +11,6 @@ const DEFAULT_STATE = {
 export default function(state = DEFAULT_STATE, action) {
   switch (action.type) {
     case types.GET_STUDENT_DATA:
-      debugger;
       if (action.payload.data.success) {
         return {
           ...state,
@@ -21,7 +19,8 @@ export default function(state = DEFAULT_STATE, action) {
           student_data: {
             name: action.payload.data.data.name,
             id: action.payload.data.data.id
-          }
+          },
+          teacherData: action.payload.data.data.teachers_list
         };
       } else {
         if (action.payload.data.redirect === "/login") {

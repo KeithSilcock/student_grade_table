@@ -61,6 +61,25 @@ module.exports = (mysql, webserver, database) => {
             return Object.assign(prev, newCourse);
           }, {});
           output.data.classes = courses;
+          getTeacherData(classes);
+        } else {
+          output.errors = err;
+        }
+      });
+    }
+
+    function getTeacherData(classes) {
+      const query = `SELECT teachers.first_name, teachers.last_name, teachers.class_id
+      FROM teachers
+      WHERE teachers.class_id IN (${formatInserts(classes)})`;
+
+      const inserts = [...classes];
+
+      const sqlQuery = mysql.format(query, inserts);
+
+      database.query(sqlQuery, (err, data, fields) => {
+        if (!err) {
+          output.data.teachers_list = data;
           getAssignmentsPoints();
         } else {
           output.errors = err;

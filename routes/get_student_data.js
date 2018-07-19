@@ -24,7 +24,7 @@ module.exports = (mysql, webserver, database) => {
         JOIN classes ON users.id = classes.student_id
         WHERE users.id = ?`;
 
-    const inserts = ["1"];
+    const inserts = [req.session.user_id];
 
     const sqlQuery = mysql.format(query, inserts);
 
