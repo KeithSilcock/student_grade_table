@@ -1,10 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import {} from "../../actions";
 import ClassTabs from "../class_tabs";
-
-import "../../assets/CSS/header.css";
 
 class Header extends React.Component {
   render() {
@@ -13,8 +10,7 @@ class Header extends React.Component {
     return (
       <div className="header header-container">
         <div className="header header-top">
-          <h2 className="header title">{`Welcome, ${studentData.first_name} 
-        ${studentData.last_name}`}</h2>
+          <h2 className="header title">{`Welcome, ${studentData.name}`}</h2>
           <a href="/logout">Log Out?</a>
         </div>
         <div className="header header-bottom">
@@ -27,8 +23,7 @@ class Header extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    currentClass: state.studentData.current_class,
-    studentData: state.studentData.teacherData
+    studentData: state.studentData.student_data
   };
 }
 export default connect(

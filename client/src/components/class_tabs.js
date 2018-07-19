@@ -25,7 +25,6 @@ class ClassTabs extends React.Component {
     //if no current class, set current class
     if (Object.keys(classes).length && !currentClass.class_id) {
       const firstClass = Object.keys(classes)[0];
-      debugger;
       changeClass(firstClass, classes[firstClass].class_id);
     }
 
@@ -60,7 +59,7 @@ function mapStateToProps(state) {
     currentClass_T: state.teacherData.current_class,
     classes_T: state.teacherData.classes,
     currentClass_S: state.teacherData.current_class,
-    classes_S: state.teacherData.classes
+    classes_S: state.studentData.classes
   };
 }
 
