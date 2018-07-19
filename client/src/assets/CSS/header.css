@@ -41,6 +41,9 @@
 .header-pages .selected {
   background-color: rgb(255, 255, 255) !important;
 }
+.header.content p {
+  margin: 0;
+}
 
 .header-bottom {
   display: flex;

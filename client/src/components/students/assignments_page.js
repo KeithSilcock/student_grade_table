@@ -1,66 +1,89 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import {getStudentAssignmentList} from '../../actions';
+import React from "react";
+import { connect } from "react-redux";
+import {} from "../../actions";
 
+import "../../assets/CSS/student_page.css";
 
-class AssignmentPage extends React.Component{
-    constructor(props){
-        super(props);
+class StudentAssignments extends React.Component {
+  render() {
+    const { assignments, currentClass } = this.props;
 
-        this.props.getStudentAssignmentList();
-    }
+    const assignmentData = Object.keys(assignments).map(
+      (assignmentKey, index) => {
+        const assignment = assignments[assignmentKey];
 
-    populateAssignmentList(){
-
-        return this.props.assignmentList.map( (item, index) => {
-            return(
-                <tr key={index}>
-                    <td>{item.assignment_name}</td>
-                    <td>{item.score} / {item.points_total}</td>
-                    <td>{item.comments}</td>
-                </tr>
-            )
-        })
-    }
-
-    render(){
-        console.log('assignments page render props: ', this.props)
-
-        const assignmentData = this.populateAssignmentList();
-
-        return(
-            <div className="col-md-offset-1 col-md-8 col-xs-12 pull-left">
-                <div id="dataTable" className="student-list-container form-group col-md-12 dataTable">
-                    <table className="student-list-container student-list table">
-                        <thead className="col-xs-12">
-                        <tr>
-                            <th className="sortableHeader" data-sort="name">Assignment Name
-                                <div className="arrowSegment arrowname arrowUnsorted" data-sort="name"></div>
-                            </th>
-                            <th className="sortableHeader" data-sort="course">Score
-                                <div className="arrowSegment arrowcourse arrowUnsorted" data-sort="course"></div>
-                            </th>
-                            <th className="sortableHeader" data-sort="grade">Comments
-                                <div className="arrowSegment arrowgrade arrowUnsorted" data-sort="grade"></div>
-                            </th>
-                            <th>Operations</th>
-                        </tr>
-                        </thead>
-                        <tbody className="studentTableBody col-xs-12">
-                        {assignmentData}
-                        </tbody>
-                    </table>
+        if (assignment.class_id === currentClass.class_id) {
+          return (
+            <tr key={index}>
+              <td className={`student-assignments assignment`}>
+                {assignmentKey}
+              </td>
+              <td className="student-assignments score">
+                {`${assignment.score} / ${assignment.points_total}`}
+              </td>
+              <td className="student-assignments comments">
+                <div className="student-assignments comment-box">
+                  {assignment.comments}
                 </div>
+              </td>
+              <td className="student-assignments average">
+                {`<GRADE GOES HERE>`}
+              </td>
+            </tr>
+          );
+        } else {
+          return null;
+        }
+      }
+    );
 
-            </div>
-        );
-    }
+    return (
+      <div className="student-assignments container">
+        <div className="student-assignments content">
+          <table className="student-assignments table">
+            <thead className="student-assignments table-header">
+              <tr>
+                <th
+                  className="student-assignments assignment-name sortableHeader"
+                  data-sort="name"
+                >
+                  Assignment
+                </th>
+                <th className="student-assignments grade" data-sort="name">
+                  Score
+                </th>
+                <th className="student-assignments comments" data-sort="name">
+                  Comments
+                </th>
+                <th
+                  className="student-assignments class-average sortableHeader"
+                  data-sort="name"
+                >
+                  Class Average
+                </th>
+              </tr>
+            </thead>
+            <tbody className="student-assignments table-body">
+              {assignmentData}
+            </tbody>
+          </table>
+        </div>
+        <div className="student-assignments footer" />
+      </div>
+    );
+  }
 }
 
-function mapStateToProps(state){
-    return {
-        assignmentList: state.assignmentList.assignment_list,
-    }
+function mapStateToProps(state) {
+  return {
+    assignments: state.studentData.assignments,
+    classes: state.studentData.classes,
+    studentData: state.studentData.student_data,
+    currentClass: state.teacherData.current_class
+  };
 }
 
-export default connect(mapStateToProps, {getStudentAssignmentList})(AssignmentPage);
+export default connect(
+  mapStateToProps,
+  {}
+)(StudentAssignments);
