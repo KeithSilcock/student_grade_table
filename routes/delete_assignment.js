@@ -9,7 +9,6 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
       data: {},
       errors: [],
       redirect: ""
-      // sessionID: null
     };
 
     if (
@@ -35,7 +34,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
         if (data[0].teacher_id === req.session.user_id) {
           deleteAssignment(slashes.add(req.body.assignment_id));
         } else {
-          output.errors = "Incorrect user."; // log this as is likely someone nefarious
+          output.errors = "Incorrect user"; //TODO: implement logging to see if anyone hits this place (no one should...)
           output.redirect = "/login";
           res.json(output);
         }

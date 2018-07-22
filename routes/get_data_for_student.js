@@ -19,6 +19,7 @@ module.exports = (mysql, webserver, database) => {
       return;
     }
 
+    //Get student info
     const query = `SELECT students.first_name, students.last_name, students.class_id
     FROM students
     WHERE students.school_id=?`;
@@ -40,6 +41,7 @@ module.exports = (mysql, webserver, database) => {
       }
     });
 
+    //get student's list of classes
     function getClasses(classes) {
       const query = `SELECT classes.class_name, classes.description, classes.id
       FROM classes
@@ -68,6 +70,7 @@ module.exports = (mysql, webserver, database) => {
       });
     }
 
+    //get each teacher's info per class
     function getTeacherData(classes) {
       const query = `SELECT teachers.first_name, teachers.last_name, teachers.class_id
       FROM teachers
@@ -80,14 +83,15 @@ module.exports = (mysql, webserver, database) => {
       database.query(sqlQuery, (err, data, fields) => {
         if (!err) {
           output.data.teachers_list = data;
-          getAssignmentsPoints();
+          getAssignmentsData();
         } else {
           output.errors = err;
         }
       });
     }
 
-    function getAssignmentsPoints() {
+    //get all the assignment info including score and total
+    function getAssignmentsData() {
       const query = `SELECT student_assignments.id as student_assignment_id, student_assignments.assignment_id, student_assignments.student_id, student_assignments.score, student_assignments.points_total, student_assignments.comments
       FROM student_assignments
       WHERE student_assignments.student_id = ?`;
@@ -107,6 +111,7 @@ module.exports = (mysql, webserver, database) => {
         }
       });
     }
+    //get assignment names
     function getAssignmentNames(prevAssignmentData, _ids) {
       const query = `SELECT assignments.id, assignments.assignment_name, assignments.teacher_id, assignments.class_id
       FROM assignments
@@ -137,6 +142,7 @@ module.exports = (mysql, webserver, database) => {
       });
     }
 
+    //helper function to format queries
     function formatInserts(array) {
       let insertString = "";
       for (let index = 0; index < array.length; index++) {
