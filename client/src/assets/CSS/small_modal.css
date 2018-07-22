@@ -1,0 +1,65 @@
+.cant-click-through {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 15;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.3);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.warning-modal {
+}
+.warning-modal.container {
+  width: 35%;
+  height: 25%;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  align-items: center;
+
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+.warning-modal.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1%;
+}
+.warning-modal.header .close {
+  width: 20px;
+  height: 50%;
+  cursor: pointer;
+  font-size: 1.5em;
+}
+.warning-modal.content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.warning-modal.footer {
+  padding: 5%;
+}
+
+.add-new-student.student-name-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.student-name.not-found {
+  color: red;
+}
+.inner-student-name {
+  background-color: rgb(19, 199, 3);
+  background-color: rgba(19, 199, 3, 0.493);
+}

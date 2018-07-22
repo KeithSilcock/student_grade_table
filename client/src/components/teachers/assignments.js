@@ -1,100 +1,315 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { connect } from "react-redux";
-import {} from "../../actions";
+import { getTeacherData, deleteAssignment } from "../../actions";
+import AddNewStudent from "./add_new_student";
 import DoubleClickToEdit from "./double_click_editable";
+import { formatGrade } from "../../helper";
 
-//Uses css from teacher_page.css
+import "../../assets/CSS/teacher/assignment-list.css";
+import "../../assets/CSS/animations/delete_anim.css";
 
-class AssignmentsTab extends React.Component {
+class TeacherAssignment extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      availableAssignments: {},
+      editingOpen: false,
+      openInput_id: "",
+      pressedDelete: { bool: false, id: "" }
+    };
+  }
+
+  async componentWillMount() {
+    try {
+      // await this.props.teacherLogin();
+      await this.props.getTeacherData();
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const {
+      studentData: { assignment_list },
+      currentClass
+    } = nextProps;
+
+    const availableAssignments = {};
+    if (assignment_list) {
+      for (
+        let assignmentIndex = 0;
+        assignmentIndex < assignment_list.length;
+        assignmentIndex++
+      ) {
+        const assignment = assignment_list[assignmentIndex];
+        if (assignment.class_id === currentClass.class_id) {
+          availableAssignments[assignment.assignment_id] = assignment;
+        }
+      }
+    }
+    this.setState({
+      ...this.state,
+      availableAssignments
+    });
+  }
+
+  deleteAnimation(assignmentData) {
+    this.setState(
+      {
+        ...this.state,
+        pressedDelete: { bool: true, id: assignmentData }
+      },
+      () => {
+        this.props.getTeacherData();
+      }
+    );
+    var thisTimeout = setTimeout(() => {
+      this.setState(
+        {
+          ...this.state,
+          pressedDelete: { bool: false, id: "" }
+        },
+        () => {
+          clearTimeout(thisTimeout);
+        }
+      );
+    }, 500);
+  }
+
+  toggleEditMode(student_id) {
+    const { editingOpen } = this.state;
+    this.setState({
+      ...this.state,
+      editingOpen: !editingOpen,
+      openInput_id: student_id
+    });
+  }
+
+  navToNewAssignment() {
+    this.props.history.push("/teacher-portal/new-assignment");
+  }
+
   render() {
     const {
-      activeStudent,
+      availableAssignments,
+      editingOpen,
+      openInput_id,
+      pressedDelete
+    } = this.state;
+    const {
       currentClass,
-      studentData: { assignment_list },
-      toggleModal
+      studentData: { student_list, assignment_list },
+      assignments,
+      deleteAssignment
     } = this.props;
 
-    if (assignment_list && activeStudent) {
-      var assignments = assignment_list.map((item, index) => {
-        if (
-          item.class_id === currentClass.class_id &&
-          item.student_id === activeStudent.school_id
-        ) {
-          const redZeroClass = item.points_total ? "" : "red-zero";
+    if (assignment_list && Object.keys(currentClass).length) {
+      var averageGradePerAssignment = assignment_list.reduce(
+        (prev, assignment) => {
+          if (assignment.class_id === currentClass.class_id) {
+            if (!prev[assignment.assignment_id]) {
+              const startingAvg = { ...prev };
+              startingAvg[assignment.assignment_id] = {
+                avg: assignment.score / assignment.points_total,
+                count: 1
+              };
+              return Object.assign(prev, startingAvg);
+            }
+
+            const continuingAvg = { ...prev };
+            continuingAvg[assignment.assignment_id] = {
+              avg:
+                continuingAvg[assignment.assignment_id].avg +
+                assignment.score / assignment.points_total,
+              count: ++continuingAvg[assignment.assignment_id].count
+            };
+            return Object.assign(prev, continuingAvg);
+          } else {
+            return prev;
+          }
+        },
+        {}
+      );
+    }
+
+    //get all headers
+    if (currentClass.class_name) {
+      var renderAssignmentHeaders = Object.keys(availableAssignments).map(
+        (assignment_id, index) => {
+          const assignment = availableAssignments[assignment_id];
+
+          const deleteAnimationClasses =
+            pressedDelete.bool && pressedDelete.id === assignment_id
+              ? "assignment-deleting-animation"
+              : "";
+
           return (
-            <tr className={`roster-assignment table-row`} key={index}>
-              <td className="roster-assignment assignment-name">
-                <DoubleClickToEdit
-                  classToGive="roster-assignment double-click-name"
-                  valueName="assignment_name"
-                  objectData={item}
-                  inputSize={12}
-                />
-              </td>
-              <td className="roster-assignment points">
-                <div className="roster-assignment score-box">
+            <Fragment key={index}>
+              <th
+                className={`assignment-list sortableHeader ${deleteAnimationClasses}`}
+                data-sort={assignment.assignment_name}
+              >
+                <div
+                  className="assignment-list delete"
+                  onClick={e => {
+                    deleteAssignment(assignment_id);
+                    this.deleteAnimation(assignment_id);
+                  }}
+                >
+                  <span>&times;</span>
+                </div>
+                <div className="assignment-list assignment-name">
                   <DoubleClickToEdit
-                    inputSize={4}
-                    classToGive="score"
-                    valueName="score"
-                    objectData={item}
-                  />
-                  <span className="roster-assignment spacer">/</span>
-                  <DoubleClickToEdit
-                    inputSize={4}
-                    classToGive={`points_total ${redZeroClass}`}
-                    valueName={`points_total`}
-                    objectData={item}
+                    valueName="assignment_name"
+                    objectData={assignment}
+                    toggleEditMode={e => this.toggleEditMode(e)}
                   />
                 </div>
+              </th>
+            </Fragment>
+          );
+        }
+      );
+    }
+
+    //get all student grades
+    if (currentClass.class_name) {
+      var students_assignment_data = student_list.map((student, index1) => {
+        if (student.class_id === currentClass.class_id) {
+          //if they are editing a grade, mark student name
+          //in color to indicate editing
+          var studentEditOpenClass =
+            editingOpen && openInput_id === student.school_id
+              ? "editing-student"
+              : "";
+
+          if (assignments[student.school_id]) {
+            var assignment_row_data = assignments[
+              student.school_id
+            ].assignments.map((assignment, index2) => {
+              if (currentClass.class_id === assignment.class_id) {
+                const redZeroClass = assignment.points_total ? "" : "red-zero";
+
+                const deleteAnimationClasses =
+                  pressedDelete.bool &&
+                  pressedDelete.id == assignment.assignment_id
+                    ? "assignment-deleting-animation"
+                    : "";
+
+                return (
+                  <td
+                    key={index2}
+                    className={`assignment-list ${deleteAnimationClasses} ${studentEditOpenClass}`}
+                  >
+                    <div className="assignment-list assignment">
+                      <DoubleClickToEdit
+                        inputSize={4}
+                        valueName="score"
+                        objectData={assignment}
+                        toggleEditMode={e => this.toggleEditMode(e)}
+                      />
+                      <span className="assignment-list spacer">/</span>
+                      <DoubleClickToEdit
+                        inputSize={4}
+                        valueName="points_total"
+                        objectData={assignment}
+                        className={redZeroClass}
+                        toggleEditMode={e => this.toggleEditMode(e)}
+                      />
+                    </div>
+                  </td>
+                );
+              }
+            });
+          } else {
+            var assignment_row_data = Object.keys(availableAssignments).map(
+              (assignment_id, index, array) => {
+                //need to add onclick that will allow for edit
+                return (
+                  <td key={index}>
+                    {0}/{0}
+                  </td>
+                );
+              }
+            );
+          }
+          return (
+            <tr key={index1} className={`${studentEditOpenClass}`}>
+              <td className={studentEditOpenClass}>
+                {student.first_name} {student.last_name}
               </td>
+              {assignment_row_data}
             </tr>
           );
         }
       });
     }
 
-    const headerName = activeStudent.firstName
-      ? `${activeStudent.firstName} ${activeStudent.lastName}: `
-      : "Assignments";
+    //get averages for all assignments
+    if (averageGradePerAssignment) {
+      var renderAvgPerAssignment = Object.keys(averageGradePerAssignment).map(
+        (assignment_id, index) => {
+          const deleteAnimationClasses =
+            pressedDelete.bool && pressedDelete.id == assignment_id
+              ? "assignment-deleting-animation"
+              : "";
+
+          return (
+            <td
+              className={`assignment-list average ${deleteAnimationClasses}`}
+              key={index}
+            >
+              {formatGrade(
+                averageGradePerAssignment[assignment_id].avg /
+                  averageGradePerAssignment[assignment_id].count,
+                2
+              )}
+            </td>
+          );
+        }
+      );
+    }
 
     return (
-      <div className="roster-assignment container">
-        <div className="roster-assignment top">
-          <div className="roster-assignment header">
-            <h2>{headerName}</h2>
-          </div>
-          <div className="roster-assignment content">
-            <table className="roster-assignment table">
-              <thead className="roster-assignment table-head">
-                <tr>
-                  <th className="sortableHeader" data-sort="name">
-                    Assignment Name
-                    <div
-                      className="arrowSegment arrowname arrowUnsorted"
-                      data-sort="name"
-                    />
-                  </th>
-                  <th className="sortableHeader" data-sort="grade">
-                    Score
-                    <div
-                      className="arrowSegment arrowgrade arrowUnsorted"
-                      data-sort="grade"
-                    />
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="roster-assignment table-body">
-                {assignments}
-              </tbody>
-            </table>
+      <div className="assignment-list container">
+        <div className="assignment-list content">
+          <table className="assignment-list table">
+            <thead className="assignment-list table-header">
+              <tr>
+                <th
+                  className="assignment-list student-name sortableHeader"
+                  data-sort="name"
+                >
+                  Student Name
+                  <div
+                    className="arrowSegment arrowname arrowUnsorted"
+                    data-sort="name"
+                  />
+                </th>
+                {renderAssignmentHeaders}
+              </tr>
+            </thead>
+            <tbody className="assignment-list table-body">
+              <tr className="assignment-list average-row">
+                <td>Class Average</td>
+                {renderAvgPerAssignment}
+              </tr>
+
+              {students_assignment_data}
+            </tbody>
+          </table>
+          <div className="assignment-list new-assigment">
+            <button
+              className="assignment-list standard-button"
+              onClick={e => this.navToNewAssignment(e)}
+            >
+              <span>Create New Assignment</span>
+            </button>
+            <AddNewStudent />
           </div>
         </div>
-        <div className="roster-assignment footer">
-          {/* <button className="standard-button" onClick={toggleModal}>
-            <span>Create New Assignment</span>
-          </button> */}
-        </div>
+        <div className="assignment-list footer" />
       </div>
     );
   }
@@ -102,13 +317,17 @@ class AssignmentsTab extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    teacherData: state.teacherData.teacherData,
+    assignments: state.teacherData.assignments,
     studentData: state.teacherData.student_data,
     currentClass: state.teacherData.current_class,
-    activeStudent: state.teacherData.activeStudent
+    classes: state.teacherData.classes
   };
 }
-
 export default connect(
   mapStateToProps,
-  {}
-)(AssignmentsTab);
+  {
+    getTeacherData,
+    deleteAssignment
+  }
+)(TeacherAssignment);

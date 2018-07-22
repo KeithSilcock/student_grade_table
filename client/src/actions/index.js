@@ -132,3 +132,9 @@ export function logout() {
     payload: response
   };
 }
+
+export function toggleSmallModal(currentState) {
+  return {
+    type: types.TOGGLE_SMALL_MODAL
+  };
+}

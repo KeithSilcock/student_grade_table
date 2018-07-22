@@ -14,6 +14,7 @@ export default {
   SET_RECENT_PAGE: "set_recent_page",
   LOGOUT: "logout",
   NAVIGATE_BACK: "navigate_back",
+  TOGGLE_SMALL_MODAL: "toggle_small_modal",
   //Student data
   GET_STUDENT_DATA: "get_student_data"
 };

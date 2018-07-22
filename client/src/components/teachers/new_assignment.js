@@ -1,5 +1,4 @@
 import React from "react";
-import DropDownMenu from "../drop_down_menu";
 import { connect } from "react-redux";
 import { addNewAssignment, getTeacherData } from "../../actions";
 import {
@@ -8,7 +7,7 @@ import {
 } from "../../dummy_data/assignment_data";
 import { findRandNumberBetween } from "../../helper/";
 
-import "../../assets/CSS/new_assignments.css";
+import "../../assets/CSS/teacher/new_assignments.css";
 
 class NewAssignment extends React.Component {
   constructor(props) {
