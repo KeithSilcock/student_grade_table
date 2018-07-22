@@ -1,10 +1,3 @@
-.add-new-student.button-container {
-  display: flex;
-}
 .add-new-student.container {
   display: flex;
-  flex-flow: column;
-}
-.add-new-student.tool-tip {
-  font-size: 0.9em;
 }

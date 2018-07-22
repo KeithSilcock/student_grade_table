@@ -2,13 +2,14 @@ const slashes = require("slashes");
 
 module.exports = function(mysql, webserver, dataBase, encrypt) {
   webserver.post("/api/get_student_name", (req, res, next) => {
-    console.log("Getting data for student name");
+    console.log("Getting data on student name");
 
     const output = {
       success: false,
       data: {},
       errors: [],
       redirect: ""
+      // sessionID: null
     };
     if (
       !req.session.user_id ||
@@ -21,7 +22,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
       return;
     }
 
-    //getting student's first and last name for teacher confirmation
+    //create new assignment in assignments table
     const query = `SELECT \`users\`.\`first_name\`, \`users\`.\`last_name\`
     FROM \`users\`
     WHERE \`users\`.\`school_id\`=?`;
@@ -33,6 +34,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
         if (data.length) {
           output.data.first_name = data[0].first_name;
           output.data.last_name = data[0].last_name;
+          console.log("Student name: ", data[0].first_name, data[0].last_name);
 
           output.success = true;
           res.json(output);
