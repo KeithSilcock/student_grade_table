@@ -1,24 +1,7 @@
 import axios from "axios";
 import types from "./types";
 
-export function getTeacherData() {
-  const path = "/api/get_teacher_data";
-  const response = axios.get(path);
-  return {
-    type: types.GET_STUDENT_LIST,
-    payload: response
-  };
-}
-
-export function getStudentData() {
-  const path = "/api/get_data_for_student";
-  const response = axios.get(path);
-  return {
-    type: types.GET_STUDENT_DATA,
-    payload: response
-  };
-}
-
+//auth
 export function login(dataToSend = {}) {
   const path = "/api/login";
   dataToSend = {
@@ -32,7 +15,17 @@ export function login(dataToSend = {}) {
     payload: response
   };
 }
+export function logout() {
+  const path = "/api/logout";
+  const response = axios.get(path);
 
+  return {
+    type: types.LOGOUT,
+    payload: response
+  };
+}
+
+//multi-use
 export function changeActiveClass(class_name, class_id) {
   return {
     type: types.CHANGE_ACTIVE_CLASS,
@@ -42,20 +35,39 @@ export function changeActiveClass(class_name, class_id) {
     }
   };
 }
-export function setActiveStudent(studentData) {
-  return {
-    type: types.SET_ACTIVE_STUDENT,
-    payload: studentData
-  };
-}
-
 export function setAvailableClasses(availableClasses) {
   return {
     type: types.SET_AVAILABLE_CLASSES,
     payload: availableClasses
   };
 }
+export function setRecentPage(page) {
+  return {
+    type: types.SET_RECENT_PAGE,
+    payload: page
+  };
+}
+export function toggleSmallModal(currentState) {
+  return {
+    type: types.TOGGLE_SMALL_MODAL
+  };
+}
 
+//teacher functions
+export function getTeacherData() {
+  const path = "/api/get_teacher_data";
+  const response = axios.get(path);
+  return {
+    type: types.GET_STUDENT_LIST,
+    payload: response
+  };
+}
+export function setActiveStudent(studentData) {
+  return {
+    type: types.SET_ACTIVE_STUDENT,
+    payload: studentData
+  };
+}
 export function addNewAssignment(assignmentData, class_id) {
   const dataToSend = Object.assign(assignmentData, { class_id });
 
@@ -67,7 +79,6 @@ export function addNewAssignment(assignmentData, class_id) {
     payload: response
   };
 }
-
 export function deleteAssignment(assignment_id) {
   const dataToSend = { assignment_id };
   const path = "/api/delete_assignment";
@@ -78,7 +89,6 @@ export function deleteAssignment(assignment_id) {
     payload: response
   };
 }
-
 export function getStudentName(student_id) {
   const dataToSend = { student_id };
   const path = "/api/get_student_name";
@@ -94,7 +104,6 @@ export function clearGotStudentName() {
     type: types.CLEAR_GOT_STUDENT_NAME
   };
 }
-
 export function addStudentToClass(student) {
   const dataToSend = { ...student };
   const path = "/api/add_student_to_class";
@@ -105,7 +114,6 @@ export function addStudentToClass(student) {
     payload: response
   };
 }
-
 export function changeScore(assignment_info) {
   const path = "/api/update_score";
   const response = axios.post(path, assignment_info);
@@ -116,25 +124,12 @@ export function changeScore(assignment_info) {
   };
 }
 
-export function setRecentPage(page) {
-  return {
-    type: types.SET_RECENT_PAGE,
-    payload: page
-  };
-}
-
-export function logout() {
-  const path = "/api/logout";
+//student functions
+export function getStudentData() {
+  const path = "/api/get_data_for_student";
   const response = axios.get(path);
-
   return {
-    type: types.LOGOUT,
+    type: types.GET_STUDENT_DATA,
     payload: response
-  };
-}
-
-export function toggleSmallModal(currentState) {
-  return {
-    type: types.TOGGLE_SMALL_MODAL
   };
 }
