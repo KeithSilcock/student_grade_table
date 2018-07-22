@@ -1,6 +1,6 @@
 module.exports = (mysql, webserver, database) => {
   webserver.get("/api/get_student_data", (req, res) => {
-    console.log("someone has reached our endpoint");
+    console.log("attempting to get student data");
 
     const output = {
       success: false,

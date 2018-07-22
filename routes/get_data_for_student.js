@@ -44,6 +44,7 @@ module.exports = (mysql, webserver, database, encrypt, logger) => {
       }
     });
 
+    //get student's list of classes
     function getClasses(classes) {
       const query = [
         "SELECT `classes`.`class_name`, `classes`.`description`, `classes`.`id`",
@@ -76,6 +77,7 @@ module.exports = (mysql, webserver, database, encrypt, logger) => {
       });
     }
 
+    //get each teacher's info per class
     function getTeacherData(classes) {
       const query = [
         "SELECT `teachers`.`first_name`, `teachers`.`last_name`, `teachers`.`class_id`",
@@ -90,7 +92,7 @@ module.exports = (mysql, webserver, database, encrypt, logger) => {
       database.query(sqlQuery, (err, data, fields) => {
         if (!err) {
           output.data.teachers_list = data;
-          getAssignmentsPoints();
+          getAssignmentsData();
         } else {
           logger.simpleLog(__filename, req, error);
           output.redirect = "/login";
@@ -98,7 +100,6 @@ module.exports = (mysql, webserver, database, encrypt, logger) => {
         }
       });
     }
-
 
     //get all the assignment info including score and total
     function getAssignmentsData() {
@@ -110,7 +111,6 @@ module.exports = (mysql, webserver, database, encrypt, logger) => {
         "FROM `student_assignments`",
         "WHERE `student_assignments`.`student_id` = ?"
       ].join(" ");
-
 
       const inserts = [req.session.user_id];
 
@@ -129,6 +129,7 @@ module.exports = (mysql, webserver, database, encrypt, logger) => {
         }
       });
     }
+    //get assignment names
     function getAssignmentNames(prevAssignmentData, _ids) {
       const query = [
         "SELECT `assignments`.`id`, `assignments`.`assignment_name`, `assignments`.`teacher_id`, `assignments`.`class_id`",
@@ -163,6 +164,7 @@ module.exports = (mysql, webserver, database, encrypt, logger) => {
       });
     }
 
+    //helper function to format queries
     function formatInserts(array) {
       let insertString = "";
       for (let index = 0; index < array.length; index++) {

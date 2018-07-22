@@ -9,7 +9,6 @@ module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
       data: {},
       errors: [],
       redirect: ""
-      // sessionID: null
     };
 
     if (
