@@ -116,28 +116,23 @@ class AddNewStudent extends React.Component {
 
     const smallModalHead = "Add New Student";
     const smallModalContent = (
-      <div className="add-new-student container">
-        <p className="add-new-student tool-tip">Hint try: htr564 or abc123</p>
-        <form
-          onSubmit={e => {
-            this.submitNewStudent(e);
+      <form
+        onSubmit={e => {
+          this.submitNewStudent(e);
+        }}
+      >
+        <input
+          className="add-new-student input"
+          name="student_id"
+          autoFocus
+          onChange={e => {
+            this.changeInput(e);
           }}
-        >
-          <input
-            className="add-new-student input"
-            name="student_id"
-            autoFocus
-            onChange={e => {
-              this.changeInput(e);
-            }}
-            value={student_id}
-            type="text"
-          />
-          <ul className="add-new-student student-name-list">
-            {studentNameItem}
-          </ul>
-        </form>
-      </div>
+          value={student_id}
+          type="text"
+        />
+        <ul className="add-new-student student-name-list">{studentNameItem}</ul>
+      </form>
     );
     const smallModalConfirm = this.submitNewStudent.bind(this);
 
@@ -150,13 +145,13 @@ class AddNewStudent extends React.Component {
     ) : null;
 
     return (
-      <div className="add-new-student button-container">
+      <div className="add-new-student container">
         {displayInput}
         <button
           className="add-new-student standard-button"
-          onClick={e => {
-            this.props.toggleSmallModal(this.props.smallModalIsOpen);
-          }}
+          onClick={e =>
+            this.props.toggleSmallModal(this.props.smallModalIsOpen)
+          }
         >
           Add new student
         </button>
