@@ -109,22 +109,29 @@ class TeacherAssignment extends React.Component {
         (prev, assignment) => {
           if (assignment.class_id === currentClass.class_id) {
             if (!prev[assignment.assignment_id]) {
-              const startingAvg = { ...prev };
-              startingAvg[assignment.assignment_id] = {
-                avg: assignment.score / assignment.points_total,
-                count: 1
-              };
-              return Object.assign(prev, startingAvg);
+              if (assignment.points_total > 0) {
+                const startingAvg = { ...prev };
+                startingAvg[assignment.assignment_id] = {
+                  avg: assignment.score / assignment.points_total,
+                  count: 1
+                };
+                return Object.assign(prev, startingAvg);
+              } else {
+                return prev;
+              }
             }
-
-            const continuingAvg = { ...prev };
-            continuingAvg[assignment.assignment_id] = {
-              avg:
-                continuingAvg[assignment.assignment_id].avg +
-                assignment.score / assignment.points_total,
-              count: ++continuingAvg[assignment.assignment_id].count
-            };
-            return Object.assign(prev, continuingAvg);
+            if (assignment.points_total > 0) {
+              const continuingAvg = { ...prev };
+              continuingAvg[assignment.assignment_id] = {
+                avg:
+                  continuingAvg[assignment.assignment_id].avg +
+                  assignment.score / assignment.points_total,
+                count: ++continuingAvg[assignment.assignment_id].count
+              };
+              return Object.assign(prev, continuingAvg);
+            } else {
+              return prev;
+            }
           } else {
             return prev;
           }
