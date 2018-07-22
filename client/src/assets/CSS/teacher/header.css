@@ -1,14 +1,15 @@
 .header-container {
   width: 100%;
   height: 15%;
-  margin: 0;
+  margin: auto;
   padding: 0;
   display: flex;
   flex-flow: column;
   justify-content: space-between;
 }
 .header-top {
-  margin: 0;
+  width: 96%;
+  margin: auto;
   padding: 0;
   display: flex;
   flex-flow: row;
@@ -22,12 +23,14 @@
   text-align: center;
 }
 .header-pages {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   margin-bottom: 1%;
-  border-bottom: 1px solid rgb(168, 194, 199);
+  /* border-bottom: 1px solid rgb(168, 194, 199); */
 }
 .header.header-tabs {
+  /* min-width: 20%; */
   display: flex;
 }
 .header-pages a {
@@ -35,17 +38,31 @@
   color: black;
   padding: 5px;
   border: 1px solid rgb(187, 187, 187);
-  background-color: rgb(231, 231, 231);
+  background-color: rgb(255, 255, 255);
   border-radius: 7px 7px 0 0;
+
+  display: flex;
 }
 .header-pages .selected {
-  background-color: rgb(255, 255, 255) !important;
+  background-color: rgb(238, 238, 238);
+  border-bottom: none;
 }
 .header.content p {
   margin: 0;
 }
+.header.header-spacer-1 {
+  width: 3%;
 
+  border-bottom: 1px solid rgb(200, 200, 200);
+}
+.header.header-spacer-2 {
+  width: 100%;
+
+  border-bottom: 1px solid rgb(200, 200, 200);
+}
 .header-bottom {
+  width: 96%;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
 }

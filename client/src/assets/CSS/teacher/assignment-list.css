@@ -1,10 +1,14 @@
 .assignment-list.container {
-  width: 100%;
+  width: 96%;
+  margin: auto;
   height: 85%;
 }
 .assignment-list.content {
   width: 100%;
   height: 90%;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
 
   box-sizing: border-box;
   border-radius: 0 0 10px 10px;
@@ -16,7 +20,7 @@
 }
 .assignment-list.table {
   width: 100%;
-  height: 100%;
+  height: 95%;
   display: flex;
   flex-flow: column wrap;
   overflow: auto;
@@ -120,4 +124,12 @@
 
 .assignment-list.average {
   background-color: rgb(221, 248, 255) !important;
+}
+
+.assignment-list.new-assigment {
+  width: 25%;
+  height: 5%;
+  margin: auto;
+  display: flex;
+  justify-content: space-evenly;
 }

@@ -2,10 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { setRecentPage } from "../../actions";
-import AddNewStudent from "./add_new_student";
 import ClassTabs from "../class_tabs";
 
-import "../../assets/CSS/header.css";
+import "../../assets/CSS/teacher/header.css";
 
 class Header extends React.Component {
   navToNewAssignment() {
@@ -47,14 +46,8 @@ class Header extends React.Component {
           <a href="/logout">Log Out?</a>
         </div>
         <div className="header header-pages">
+          <div className="header header-spacer-1" />
           <div className="header header-tabs">
-            <Link
-              className={`${rosterClass}`}
-              onClick={e => setRecentPage("/teacher-portal/student-list")}
-              to="/teacher-portal/student-list"
-            >
-              <i className="fas fa-users" />Roster
-            </Link>
             <Link
               onClick={e => setRecentPage("/teacher-portal/assignment-list")}
               className={`${assignmentsClass}`}
@@ -62,20 +55,19 @@ class Header extends React.Component {
             >
               <i className="far fa-edit" />Assignments
             </Link>
+            <Link
+              className={`${rosterClass}`}
+              onClick={e => setRecentPage("/teacher-portal/student-list")}
+              to="/teacher-portal/student-list"
+            >
+              <i className="fas fa-users" />Roster
+            </Link>
           </div>
-          <AddNewStudent />
+          <div className="header header-spacer-2" />
         </div>
         <div className="header header-bottom">
           <ClassTabs userType={`teacher`} />
-          <div className="header buttons">
-            <button
-              className=" assignment-list tab-button"
-              onClick={e => this.navToNewAssignment(e)}
-            >
-              <span>Create New Assignment</span>
-            </button>
-            {exitNewAssignmentButton}
-          </div>
+          <div className="header buttons">{exitNewAssignmentButton}</div>
         </div>
       </div>
     );

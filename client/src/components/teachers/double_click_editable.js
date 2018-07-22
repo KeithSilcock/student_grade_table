@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { changeScore, getTeacherData } from "../../actions";
 
-import "../../assets/CSS/doubleClick.css";
+import "../../assets/CSS/teacher/doubleClick.css";
 
 class DoubleClickToEdit extends React.Component {
   constructor(props) {

@@ -2,7 +2,7 @@ const slashes = require("slashes");
 
 module.exports = function(mysql, webserver, dataBase, encrypt) {
   webserver.post("/api/add_student_to_class", (req, res) => {
-    console.log("starting to add new assignment");
+    console.log("starting to add student to class");
 
     const output = {
       success: false,
@@ -33,7 +33,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
     const sqlQuery = mysql.format(query, inserts);
     dataBase.query(sqlQuery, (error, data, fields) => {
       if (!error) {
-        if (data.length > 1) {
+        if (!data.length) {
           addStudentToTable();
         } else {
           output.logMessage = "User already in class";
