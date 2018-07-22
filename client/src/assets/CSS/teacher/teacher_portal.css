@@ -1,5 +1,6 @@
 .teacher-portal.container {
-  width: 100%;
+  width: 96%;
+  margin: auto;
   height: 80%;
   display: flex;
   flex-flow: row;

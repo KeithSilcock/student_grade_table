@@ -2,7 +2,7 @@ import React from "react";
 import LogInForm from "./log_in_form";
 import { connect } from "react-redux";
 
-import "../assets/CSS/log_in.css";
+import "../../assets/CSS/log_in.css";
 
 class LogIn extends React.Component {
   componentDidUpdate(prevProps, prevState) {

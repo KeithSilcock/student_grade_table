@@ -8,7 +8,7 @@ import {
 } from "../../actions";
 import { formatGrade, getLetterGrade } from "../../helper";
 
-import "../../assets/CSS/teacher_page.css";
+import "../../assets/CSS/teacher/roster.css";
 
 class StudentList extends React.Component {
   constructor(props) {

@@ -1,6 +1,7 @@
 .new-assignment.container {
   height: 85%;
-  width: 100%;
+  width: 96%;
+  margin: auto;
   display: flex;
   flex-flow: column;
 

@@ -4,17 +4,18 @@ import {
   getStudentName,
   clearGotStudentName,
   addStudentToClass,
-  getTeacherData
+  getTeacherData,
+  toggleSmallModal
 } from "../../actions";
+import SmallModal from "../small_modal";
 
-import "../../assets/CSS/add_new_student.css";
+import "../../assets/CSS/teacher/add_new_student.css";
 
 class AddNewStudent extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      displayIsOpen: false,
       student_id: "",
       studentIsInClass: false
     };
@@ -63,39 +64,30 @@ class AddNewStudent extends React.Component {
       [name]: value
     });
   }
-  toggleInput(e) {
-    const { displayIsOpen } = this.state;
-    this.setState({
-      ...this.state,
-      displayIsOpen: !displayIsOpen,
-      student_id: "",
-      studentIsInClass: false
-    });
-    clearGotStudentName();
-  }
 
   async submitNewStudent(e) {
-    //To Do: Add effect for confirmation
     e.preventDefault();
     const { student_id } = this.state;
     const {
       addStudentToClass,
       newStudentName,
       currentClass,
-      getTeacherData
+      getTeacherData,
+      toggleSmallModal
     } = this.props;
-
-    await addStudentToClass({
-      ...newStudentName,
-      school_id: student_id,
-      class_id: currentClass.class_id
-    });
-    getTeacherData();
-    this.toggleInput();
+    if (newStudentName) {
+      await addStudentToClass({
+        ...newStudentName,
+        school_id: student_id,
+        class_id: currentClass.class_id
+      });
+      getTeacherData();
+      toggleSmallModal();
+    }
   }
   render() {
     const { displayIsOpen, student_id, studentIsInClass } = this.state;
-    const { newStudentName } = this.props;
+    const { newStudentName, smallModalIsOpen } = this.props;
 
     //display students name if gotten
     if (student_id.length === 6 && newStudentName && !studentIsInClass) {
@@ -114,45 +106,55 @@ class AddNewStudent extends React.Component {
       }
     } else if (studentIsInClass) {
       var studentNameItem = (
-        <li className="student-name not-found">That student already exists</li>
+        <li className="student-name not-found">
+          That student is already in this class
+        </li>
       );
     } else {
       var studentNameItem = null;
     }
 
-    const displayInput = displayIsOpen ? (
-      <div className="add-new-student input-container">
-        <form
-          onSubmit={e => {
-            this.submitNewStudent(e);
+    const smallModalHead = "Add New Student";
+    const smallModalContent = (
+      <form
+        onSubmit={e => {
+          this.submitNewStudent(e);
+        }}
+      >
+        <input
+          className="add-new-student input"
+          name="student_id"
+          autoFocus
+          onChange={e => {
+            this.changeInput(e);
           }}
-        >
-          <input
-            className="add-new-student input"
-            name="student_id"
-            autoFocus
-            onChange={e => {
-              this.changeInput(e);
-            }}
-            value={student_id}
-            type="text"
-          />
-          <ul className="add-new-student student-name-list">
-            {studentNameItem}
-          </ul>
-        </form>
-      </div>
+          value={student_id}
+          type="text"
+        />
+        <ul className="add-new-student student-name-list">{studentNameItem}</ul>
+      </form>
+    );
+    const smallModalConfirm = this.submitNewStudent.bind(this);
+
+    const displayInput = smallModalIsOpen ? (
+      <SmallModal
+        header={smallModalHead}
+        content={smallModalContent}
+        confirm={smallModalConfirm}
+      />
     ) : null;
 
     return (
-      <div className="add-new-student add-new-student-container">
+      <div className="add-new-student container">
+        {displayInput}
         <button
-          className="add-new-student-tab-button"
-          onClick={e => this.toggleInput(e)}
+          className="add-new-student standard-button"
+          onClick={e =>
+            this.props.toggleSmallModal(this.props.smallModalIsOpen)
+          }
         >
           Add new student
         </button>
-        {displayInput}
       </div>
     );
   }
@@ -162,10 +164,17 @@ function mapStateToProps(state) {
   return {
     currentClass: state.teacherData.current_class,
     newStudentName: state.teacherData.newStudentName,
-    roster: state.teacherData.roster
+    roster: state.teacherData.roster,
+    smallModalIsOpen: state.navData.smallModalIsOpen
   };
 }
 export default connect(
   mapStateToProps,
-  { getStudentName, clearGotStudentName, addStudentToClass, getTeacherData }
+  {
+    getStudentName,
+    clearGotStudentName,
+    addStudentToClass,
+    getTeacherData,
+    toggleSmallModal
+  }
 )(AddNewStudent);

@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { Route, Link } from "react-router-dom";
 
-import TeacherHeader from "./teachers/teacher_header";
+import TeacherHeader from "./teachers/header";
 import StudentHeader from "./students/student_header";
-import StudentRoster from "./teachers/teacher_student_display";
+import StudentRoster from "./teachers/roster";
 import StudentPortal from "./students/student_portal";
-import TeacherAssignments from "./teachers/teacher_assignment_display";
-import LogIn from "./log_in";
-import LogOut from "./log_out";
+import TeacherAssignments from "./teachers/assignments";
+import LogIn from "./auth/log_in";
+import LogOut from "./auth/log_out";
 import NewAssignment from "./teachers/new_assignment";
 import CheckLoggedIn from "./HOC/logged_in";
 
