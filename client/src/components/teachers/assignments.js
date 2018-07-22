@@ -140,7 +140,7 @@ class TeacherAssignment extends React.Component {
       );
     }
 
-    //get all headers
+    //get all table headers
     if (currentClass.class_name) {
       var renderAssignmentHeaders = Object.keys(availableAssignments).map(
         (assignment_id, index) => {
