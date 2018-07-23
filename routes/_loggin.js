@@ -1,6 +1,6 @@
 const slashes = require("slashes");
 
-module.exports = function(mysql, webserver, dataBase, encrypt) {
+module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
   // ====================
   // ==== Logging In ====
   // ====================
@@ -41,8 +41,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
             }
           );
         } else {
-          output.errors = err;
-          output.redirect = "/login";
+          logger.simpleLog(__filename, req, error);
           res.json(output);
         }
       }

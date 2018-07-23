@@ -1,6 +1,6 @@
 const slashes = require("slashes");
 
-module.exports = function(mysql, webserver, dataBase) {
+module.exports = function(mysql, webserver, dataBase, logger) {
   webserver.post("/api/add_new_assignment", (req, res) => {
     console.log("starting to add new assignment");
 
@@ -16,8 +16,7 @@ module.exports = function(mysql, webserver, dataBase) {
       typeof req.session.permissions[2] === "undefined" ||
       req.session.permissions[2] < 1
     ) {
-      output.errors.push("not logged in");
-      output.redirect = "/login";
+      logger.simpleLog(__filename, req, error, "User Not Logged In");
       res.json(output);
       return;
     }
@@ -41,7 +40,7 @@ module.exports = function(mysql, webserver, dataBase) {
 
         addStudentDataToAssignment(data.insertId);
       } else {
-        output.errors = error;
+        logger.simpleLog(__filename, req, error);
         output.redirect = "/login";
         res.json(output);
       }
@@ -91,7 +90,7 @@ module.exports = function(mysql, webserver, dataBase) {
 
           res.json(output);
         } else {
-          output.errors = error;
+          logger.simpleLog(__filename, req, error);
           output.redirect = "/login";
           res.json(output);
         }

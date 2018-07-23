@@ -1,6 +1,6 @@
 const slashes = require("slashes");
 
-module.exports = function(mysql, webserver, dataBase, encrypt) {
+module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
   webserver.post("/api/delete_assignment", (req, res) => {
     console.log("starting to delete assignment");
 
@@ -16,14 +16,14 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
       typeof req.session.permissions[3] === "undefined" ||
       req.session.permissions[3] < 1
     ) {
-      output.errors.push("not logged in");
-      output.redirect = "/login";
+      logger.simpleLog(__filename, req, error, "User Not Logged In");
       res.json(output);
       return;
     }
 
     //get data to make sure this is the correct teacher to delete this assignment
-    const query = `SELECT assignments.teacher_id FROM assignments WHERE assignments.id=?`;
+    const query =
+      "SELECT `assignments`.`teacher_id` FROM `assignments` WHERE `assignments`.`id`=?";
     const inserts = [slashes.add(req.body.assignment_id)];
 
     const sqlQuery = mysql.format(query, inserts);
@@ -34,22 +34,29 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
         if (data[0].teacher_id === req.session.user_id) {
           deleteAssignment(slashes.add(req.body.assignment_id));
         } else {
-          output.errors = "Incorrect user"; //TODO: implement logging to see if anyone hits this place (no one should...)
+          logger.simpleLog(
+            __filename,
+            req,
+            error,
+            "Someone was trying to delete something they shouldn't"
+          );
           output.redirect = "/login";
           res.json(output);
         }
       } else {
-        output.errors = error;
+        logger.simpleLog(__filename, req, error);
         output.redirect = "/login";
         res.json(output);
       }
     });
 
     function deleteAssignment(assignment_id) {
-      const query = `DELETE assignments, student_assignments
-      FROM assignments
-      JOIN student_assignments ON assignments.id = student_assignments.assignment_id
-      WHERE assignments.id = ?`;
+      const query = [
+        "DELETE `assignments`, `student_assignments`",
+        "FROM `assignments`",
+        "JOIN `student_assignments` ON `assignments`.`id` = `student_assignments`.`assignment_id`",
+        "WHERE `assignments`.`id` = ?"
+      ].join(" ");
 
       const inserts = [assignment_id];
 
@@ -59,7 +66,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
           output.success = true;
           res.json(output);
         } else {
-          output.errors = error;
+          logger.simpleLog(__filename, req, error);
           output.redirect = "/login";
           res.json(output);
         }

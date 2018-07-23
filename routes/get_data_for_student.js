@@ -1,4 +1,4 @@
-module.exports = (mysql, webserver, database) => {
+module.exports = (mysql, webserver, database, encrypt, logger) => {
   webserver.get("/api/get_data_for_student", (req, res) => {
     console.log("Getting individual student data");
 
@@ -13,16 +13,17 @@ module.exports = (mysql, webserver, database) => {
       typeof req.session.permissions[0] === "undefined" ||
       req.session.permissions[0] < 1
     ) {
-      output.errors.push("not logged in");
-      output.redirect = "/login";
+      logger.simpleLog(__filename, req, error, "User Not Logged In");
       res.json(output);
       return;
     }
 
     //Get student info
-    const query = `SELECT students.first_name, students.last_name, students.class_id
-    FROM students
-    WHERE students.school_id=?`;
+    const query = [
+      "SELECT `students`.`first_name`, `students`.`last_name`, `students`.`class_id`",
+      "FROM `students`",
+      "WHERE `students`.`school_id`=?"
+    ].join(" ");
 
     const inserts = [req.session.user_id];
 
@@ -37,15 +38,19 @@ module.exports = (mysql, webserver, database) => {
         });
         getClasses(classes);
       } else {
-        output.errors = err;
+        logger.simpleLog(__filename, req, error);
+        output.redirect = "/login";
+        res.json(output);
       }
     });
 
     //get student's list of classes
     function getClasses(classes) {
-      const query = `SELECT classes.class_name, classes.description, classes.id
-      FROM classes
-      WHERE classes.id IN (${formatInserts(classes)})`;
+      const query = [
+        "SELECT `classes`.`class_name`, `classes`.`description`, `classes`.`id`",
+        "FROM `classes`",
+        `WHERE \`classes\`.\`id\` IN (${formatInserts(classes)})`
+      ].join(" ");
 
       const inserts = [...classes];
 
@@ -65,16 +70,20 @@ module.exports = (mysql, webserver, database) => {
           output.data.classes = courses;
           getTeacherData(classes);
         } else {
-          output.errors = err;
+          logger.simpleLog(__filename, req, error);
+          output.redirect = "/login";
+          res.json(output);
         }
       });
     }
 
     //get each teacher's info per class
     function getTeacherData(classes) {
-      const query = `SELECT teachers.first_name, teachers.last_name, teachers.class_id
-      FROM teachers
-      WHERE teachers.class_id IN (${formatInserts(classes)})`;
+      const query = [
+        "SELECT `teachers`.`first_name`, `teachers`.`last_name`, `teachers`.`class_id`",
+        "FROM `teachers`",
+        `WHERE \`teachers\`.\`class_id\` IN (${formatInserts(classes)})`
+      ].join(" ");
 
       const inserts = [...classes];
 
@@ -85,16 +94,23 @@ module.exports = (mysql, webserver, database) => {
           output.data.teachers_list = data;
           getAssignmentsData();
         } else {
-          output.errors = err;
+          logger.simpleLog(__filename, req, error);
+          output.redirect = "/login";
+          res.json(output);
         }
       });
     }
 
     //get all the assignment info including score and total
     function getAssignmentsData() {
-      const query = `SELECT student_assignments.id as student_assignment_id, student_assignments.assignment_id, student_assignments.student_id, student_assignments.score, student_assignments.points_total, student_assignments.comments
-      FROM student_assignments
-      WHERE student_assignments.student_id = ?`;
+      const query = [
+        "SELECT `student_assignments`.`id` as `student_assignment_id`,",
+        "`student_assignments`.`assignment_id`, `student_assignments`.`student_id`,",
+        "`student_assignments`.`score`, `student_assignments`.`points_total`,",
+        "`student_assignments`.`comments`",
+        "FROM `student_assignments`",
+        "WHERE `student_assignments`.`student_id` = ?"
+      ].join(" ");
 
       const inserts = [req.session.user_id];
 
@@ -107,15 +123,19 @@ module.exports = (mysql, webserver, database) => {
           });
           getAssignmentNames(data, assignment_ids);
         } else {
-          output.errors = err;
+          logger.simpleLog(__filename, req, error);
+          output.redirect = "/login";
+          res.json(output);
         }
       });
     }
     //get assignment names
     function getAssignmentNames(prevAssignmentData, _ids) {
-      const query = `SELECT assignments.id, assignments.assignment_name, assignments.teacher_id, assignments.class_id
-      FROM assignments
-      WHERE assignments.id IN (${formatInserts(_ids)})`;
+      const query = [
+        "SELECT `assignments`.`id`, `assignments`.`assignment_name`, `assignments`.`teacher_id`, `assignments`.`class_id`",
+        "FROM `assignments`",
+        `WHERE \`assignments\`.\`id\` IN (${formatInserts(_ids)})`
+      ].join(" ");
 
       const inserts = [..._ids];
 
@@ -137,7 +157,9 @@ module.exports = (mysql, webserver, database) => {
           output.success = true;
           res.json(output);
         } else {
-          output.errors = err;
+          logger.simpleLog(__filename, req, error);
+          output.redirect = "/login";
+          res.json(output);
         }
       });
     }
