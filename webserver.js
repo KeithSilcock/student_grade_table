@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const mysql = require("mysql");
+const logger = require("./logger.js");
 const webserver = express();
 const { credentials, encrypt, secret } = require("./config/mysqlCredentials");
 const database = mysql.createConnection(credentials);
@@ -17,7 +18,7 @@ webserver.use(express.static(__dirname + "/client" + "/public"));
 webserver.use(session(secret));
 
 // endpoints start here
-require("./routes")(mysql, webserver, database, encrypt);
+require("./routes")(mysql, webserver, database, encrypt, logger);
 
 webserver.get("/test", (req, res) => {
   console.log("Someone reached the test");

@@ -1,6 +1,7 @@
 const slashes = require("slashes");
 
-module.exports = function(mysql, webserver, dataBase, encrypt) {
+module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
+
   // ====================
   // ==== Logging In ====
   // ====================
@@ -11,18 +12,17 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
       data: {},
       errors: [],
       redirect: ""
+      // sessionID: null
     };
 
-    // =======================
-    // ====Cleaning inputs====
-    // =======================
+    // ======================
+    // Cleaning inputs=====
+    // ======================
     const clean_school_id = slashes.add(req.body.school_id);
 
-    const query = [
-      "SELECT `users`.`password`, `users`.`permissions`",
-      "FROM `users`",
-      "WHERE `school_id` = ?"
-    ].join(" ");
+    const query = `SELECT users.password, users.permissions
+        FROM users
+        WHERE school_id = ?`;
 
     const inserts = [clean_school_id];
 
@@ -41,8 +41,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
             }
           );
         } else {
-          output.errors = err;
-          output.redirect = "/login";
+          logger.simpleLog(__filename, req, error);
           res.json(output);
         }
       }
@@ -50,7 +49,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
 
     function getStartingInfo(permissions) {
       // turns permissions integer into an array of bits for permissions
-      // not fully implemented yet
+      // not yet implemented
       const current_permissions = permissions
         .toString(2)
         .split("")

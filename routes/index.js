@@ -11,14 +11,38 @@
 //     })
 // };
 
-module.exports = (mysql, webserver, database, encrypt) => {
-  require(`./_loggin.js`)(mysql, webserver, database, encrypt);
-  require(`./get_teacher_data.js`)(mysql, webserver, database, encrypt);
-  require(`./get_data_for_student.js`)(mysql, webserver, database, encrypt);
-  require(`./add_new_assignment.js`)(mysql, webserver, database, encrypt);
-  require(`./delete_assignment.js`)(mysql, webserver, database, encrypt);
-  require(`./get_student_name.js`)(mysql, webserver, database, encrypt);
-  require(`./add_new_student_to_class.js`)(mysql, webserver, database, encrypt);
-  require(`./update_score.js`)(mysql, webserver, database, encrypt);
-  require(`./log_out.js`)(mysql, webserver, database, encrypt);
+module.exports = (mysql, webserver, database, encrypt, logger) => {
+  require(`./_loggin.js`)(mysql, webserver, database, encrypt, logger);
+  require(`./get_teacher_data.js`)(mysql, webserver, database, encrypt, logger);
+  require(`./get_data_for_student.js`)(
+    mysql,
+    webserver,
+    database,
+    encrypt,
+    logger
+  );
+  require(`./add_new_assignment.js`)(
+    mysql,
+    webserver,
+    database,
+    encrypt,
+    logger
+  );
+  require(`./delete_assignment.js`)(
+    mysql,
+    webserver,
+    database,
+    encrypt,
+    logger
+  );
+  require(`./get_student_name.js`)(mysql, webserver, database, encrypt, logger);
+  require(`./add_new_student_to_class.js`)(
+    mysql,
+    webserver,
+    database,
+    encrypt,
+    logger
+  );
+  require(`./update_score.js`)(mysql, webserver, database, encrypt, logger);
+  require(`./log_out.js`)(mysql, webserver, database, encrypt, logger);
 };

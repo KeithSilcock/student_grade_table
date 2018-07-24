@@ -1,6 +1,6 @@
 const slashes = require("slashes");
 
-module.exports = function(mysql, webserver, dataBase, encrypt) {
+module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
   webserver.post("/api/update_score", (req, res) => {
     console.log("starting update score procedure");
 
@@ -16,11 +16,11 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
       typeof req.session.permissions[2] === "undefined" ||
       req.session.permissions[2] < 1
     ) {
-      output.errors.push("not logged in");
-      output.redirect = "/login";
+      logger.simpleLog(__filename, req, error, "User Not Logged In");
       res.json(output);
       return;
     }
+
     const clean_assignment_id = slashes.add(req.body.assignment_id);
     const clean_student_assignment_id = slashes.add(
       req.body.student_assignment_id
@@ -36,9 +36,11 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
     }
 
     function updateAssignmentName() {
-      const query = `UPDATE \`assignments\` 
-      SET \`assignments\`.?? = ? 
-      WHERE \`assignments\`.\`id\` = ? AND \`assignments\`.\`teacher_id\`=?`;
+      const query = [
+        "UPDATE `assignments`",
+        "SET `assignments`.?? = ?",
+        "WHERE `assignments`.`id` = ? AND `assignments`.`teacher_id`=?"
+      ].join(" ");
 
       const inserts = [
         clean_column_name,
@@ -53,7 +55,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
           output.success = true;
           res.json(output);
         } else {
-          output.errors = error;
+          logger.simpleLog(__filename, req, error);
           output.redirect = "/login";
           res.json(output);
         }
@@ -62,7 +64,8 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
 
     function updateScore() {
       //get data to make sure this is the correct teacher to delete this assignment
-      const query = `SELECT assignments.teacher_id FROM assignments WHERE assignments.id=?`;
+      const query =
+        "SELECT `assignments`.`teacher_id` FROM `assignments` WHERE `assignments`.`id`=?";
       const inserts = [clean_assignment_id];
 
       const sqlQuery = mysql.format(query, inserts);
@@ -73,12 +76,17 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
           if (data[0].teacher_id === req.session.user_id) {
             changeScore();
           } else {
-            output.errors = "Incorrect user."; // log this as is likely someone nefarious
+            logger.simpleLog(
+              __filename,
+              req,
+              error,
+              "Someone unverified was trying to alter a grade"
+            );
             output.redirect = "/login";
             res.json(output);
           }
         } else {
-          output.errors = error;
+          logger.simpleLog(__filename, req, error);
           output.redirect = "/login";
           res.json(output);
         }
@@ -86,9 +94,11 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
     }
 
     function changeScore() {
-      const query = `UPDATE student_assignments 
-      SET ??=?
-      WHERE student_assignments.id=?`;
+      const query = [
+        "UPDATE `student_assignments`",
+        "SET ??=?",
+        "WHERE `student_assignments`.`id`=?"
+      ].join(" ");
 
       const inserts = [
         clean_column_name,
@@ -102,7 +112,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
           output.success = true;
           res.json(output);
         } else {
-          output.errors = error;
+          logger.simpleLog(__filename, req, error);
           output.redirect = "/login";
           res.json(output);
         }
