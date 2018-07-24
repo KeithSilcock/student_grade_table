@@ -15,7 +15,13 @@ database.connect(error => {
   console.log("successfully connected to database!");
 });
 webserver.use(express.static(__dirname + "/client" + "/public"));
-webserver.use(session(secret));
+webserver.use(
+  session({
+    secret,
+    resave: true,
+    saveUninitialized: true
+  })
+);
 
 // endpoints start here
 require("./routes")(mysql, webserver, database, encrypt, logger);
