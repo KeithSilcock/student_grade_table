@@ -14,13 +14,13 @@
 module.exports = (mysql, webserver, database, encrypt, logger) => {
   require(`./_loggin.js`)(mysql, webserver, database, encrypt, logger);
   require(`./get_teacher_data.js`)(mysql, webserver, database, encrypt, logger);
-  // require(`./get_data_for_student.js`)(
-  //   mysql,
-  //   webserver,
-  //   database,
-  //   encrypt,
-  //   logger
-  // );
+  require(`./get_data_for_student.js`)(
+    mysql,
+    webserver,
+    database,
+    encrypt,
+    logger
+  );
   require(`./add_new_assignment.js`)(
     mysql,
     webserver,
