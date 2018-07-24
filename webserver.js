@@ -20,11 +20,8 @@ webserver.use(session(secret));
 // endpoints start here
 require("./routes")(mysql, webserver, database, encrypt, logger);
 
-webserver.get("/test", (req, res) => {
-  console.log("Someone reached the test");
-  res.send({
-    success: true
-  });
+webserver.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
 webserver.listen(PORT, () => {
