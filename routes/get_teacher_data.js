@@ -4,9 +4,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
     const output = {
       success: false,
       data: {},
-      errors: [],
       redirect: ""
-      // sessionID: null
     };
 
     if (
@@ -14,7 +12,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
       typeof req.session.permissions[1] === "undefined" ||
       req.session.permissions[1] < 1
     ) {
-      logger.simpleLog(__filename, req, error, "User Not Logged In");
+      logger.simpleLog(__filename, req, null, "User Not Logged In");
       res.json(output);
       return;
     }

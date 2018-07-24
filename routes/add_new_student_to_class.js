@@ -7,7 +7,6 @@ module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
     const output = {
       success: false,
       data: {},
-      errors: [],
       redirect: ""
     };
 
@@ -16,30 +15,29 @@ module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
       typeof req.session.permissions[2] === "undefined" ||
       req.session.permissions[2] < 1
     ) {
-      logger.simpleLog(__filename, req, error, "User Not Logged In");
+      logger.simpleLog(__filename, req, null, "User Not Logged In");
       res.json(output);
       return;
     }
-
-    //check that student isn't already in that class
-    const query =
-      "SELECT `students`.`id` FROM `students` WHERE `students`.`school_id`=? AND `students`.`class_id`=?";
-    const inserts = [
-      slashes.add(req.body.school_id),
-      slashes.add(req.body.class_id)
-    ];
+    //check that student exists and isn't teacher
+    const query = [
+      "SELECT users.id, users.permissions",
+      "FROM users",
+      "WHERE users.school_id = ?"
+    ].join(" ");
+    const inserts = [slashes.add(req.body.school_id)];
 
     const sqlQuery = mysql.format(query, inserts);
     dataBase.query(sqlQuery, (error, data, fields) => {
       if (!error) {
-        if (!data.length) {
-          addStudentToTable();
+        if (data[0].permissions <= 1) {
+          studentNotInClass();
         } else {
           logger.simpleLog(
             __filename,
             req,
             error,
-            "User Already exists in class"
+            "User doesn't exist or is not a student"
           );
           res.json(output);
           return;
@@ -51,6 +49,39 @@ module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
         return;
       }
     });
+
+    function studentNotInClass() {
+      //check that student isn't already in that class
+      const query =
+        "SELECT `students`.`id` FROM `students` WHERE `students`.`school_id`=? AND `students`.`class_id`=?";
+      const inserts = [
+        slashes.add(req.body.school_id),
+        slashes.add(req.body.class_id)
+      ];
+
+      const sqlQuery = mysql.format(query, inserts);
+      dataBase.query(sqlQuery, (error, data, fields) => {
+        if (!error) {
+          if (!data.length) {
+            addStudentToTable();
+          } else {
+            logger.simpleLog(
+              __filename,
+              req,
+              error,
+              "User Already exists in class"
+            );
+            res.json(output);
+            return;
+          }
+        } else {
+          logger.simpleLog(__filename, req, error);
+          output.redirect = "/login";
+          res.json(output);
+          return;
+        }
+      });
+    }
 
     function addStudentToTable() {
       const query = [

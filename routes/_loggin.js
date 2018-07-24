@@ -1,11 +1,6 @@
 const slashes = require("slashes");
 
-<<<<<<< HEAD
 module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
-
-=======
-module.exports = function(mysql, webserver, dataBase, encrypt) {
->>>>>>> 5b42d39... added funcionality to create empty assignments on new-student
   // ====================
   // ==== Logging In ====
   // ====================
@@ -14,7 +9,6 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
     const output = {
       success: false,
       data: {},
-      errors: [],
       redirect: ""
     };
 

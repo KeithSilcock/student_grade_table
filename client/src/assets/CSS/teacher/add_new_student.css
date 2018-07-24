@@ -1,3 +1,5 @@
+.add-new-student {
+}
 .add-new-student.button-container {
   display: flex;
 }
@@ -5,6 +7,31 @@
   display: flex;
   flex-flow: column;
 }
+.add-new-student.button-container {
+  display: flex;
+}
 .add-new-student.tool-tip {
   font-size: 0.9em;
+  margin: 0;
+}
+.add-new-student.tool-tip:first-of-type {
+  margin-top: 1em;
+}
+.add-new-student.input {
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.add-new-student .student-name {
+  /* box-shadow: 2px 2px #5f5f5f; */
+}
+
+.student-name.not-found {
+  color: red;
+  background-color: rgb(201, 201, 201);
+}
+.inner-student-name {
+  background-color: rgb(19, 199, 3);
+  background-color: rgba(19, 199, 3, 0.493);
 }

@@ -15,14 +15,14 @@ module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
       typeof req.session.permissions[1] === "undefined" ||
       req.session.permissions[1] < 1
     ) {
-      logger.simpleLog(__filename, req, error, "User Not Logged In");
+      logger.simpleLog(__filename, req, null, "User Not Logged In");
       res.json(output);
       return;
     }
 
     //getting student's first and last name for teacher confirmation
     const query = [
-      "SELECT `users`.`first_name`, `users`.`last_name`",
+      "SELECT `users`.`first_name`, `users`.`last_name`, `users`.`permissions`",
       "FROM `users`",
       "WHERE `users`.`school_id`=?"
     ].join(" ");
@@ -32,11 +32,18 @@ module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
     dataBase.query(sqlQuery, (error, data, fields) => {
       if (!error) {
         if (data.length) {
-          output.data.first_name = data[0].first_name;
-          output.data.last_name = data[0].last_name;
+          if (data[0].permissions <= 1) {
+            output.data.first_name = data[0].first_name;
+            output.data.last_name = data[0].last_name;
 
-          output.success = true;
-          res.json(output);
+            output.success = true;
+            res.json(output);
+          } else {
+            //trying to look up teacher. Not allowed
+            output.data.first_name = "<not found>";
+            res.json(output);
+            return;
+          }
         } else {
           output.data.first_name = "<not found>";
           res.json(output);
