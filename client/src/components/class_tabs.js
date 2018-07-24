@@ -28,6 +28,9 @@ class ClassTabs extends React.Component {
       changeClass(firstClass, classes[firstClass].class_id);
     }
 
+    const tabStyleWidth = {
+      "min-width": `${(100 / Object.keys(classes).length).toFixed(3)}%`
+    };
     const classTabs = Object.keys(classes).map((item, index, array) => {
       const selectedTabClass =
         currentClass.class_id === classes[item].class_id ? "selected-tab" : "";
@@ -39,6 +42,7 @@ class ClassTabs extends React.Component {
             changeClass(item, classes[item].class_id);
           }}
           className={`class-tabs item ${selectedTabClass}`}
+          style={tabStyleWidth}
         >
           {`${item}`}
         </li>

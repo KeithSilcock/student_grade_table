@@ -67,6 +67,7 @@ class Header extends React.Component {
         </div>
         <div className="header header-bottom">
           <ClassTabs userType={`teacher`} />
+          <div className="header header-spacer-3"> </div>
           <div className="header buttons">{exitNewAssignmentButton}</div>
         </div>
       </div>

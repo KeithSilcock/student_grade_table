@@ -281,6 +281,9 @@ class TeacherAssignment extends React.Component {
     return (
       <div className="assignment-list container">
         <div className="assignment-list content">
+          <div className="assignment-list header">
+            <h3>Assignments</h3>
+          </div>
           <table className="assignment-list table">
             <thead className="assignment-list table-header">
               <tr>
@@ -289,10 +292,6 @@ class TeacherAssignment extends React.Component {
                   data-sort="name"
                 >
                   Student Name
-                  <div
-                    className="arrowSegment arrowname arrowUnsorted"
-                    data-sort="name"
-                  />
                 </th>
                 {renderAssignmentHeaders}
               </tr>
@@ -306,6 +305,8 @@ class TeacherAssignment extends React.Component {
               {students_assignment_data}
             </tbody>
           </table>
+        </div>
+        <div className="assignment-list footer">
           <div className="assignment-list new-assigment">
             <button
               className="assignment-list standard-button"
@@ -316,7 +317,6 @@ class TeacherAssignment extends React.Component {
             <AddNewStudent />
           </div>
         </div>
-        <div className="assignment-list footer" />
       </div>
     );
   }

@@ -36,11 +36,11 @@ class AddNewStudent extends React.Component {
     if (value.length === 6) {
       if (Object.keys(roster).length) {
         for (
-          let student = 0;
-          student < roster[currentClass.class_name].length;
-          student++
+          let studentIndex = 0;
+          studentIndex < roster[currentClass.class_name].length;
+          studentIndex++
         ) {
-          const student = roster[currentClass.class_name][student];
+          const student = roster[currentClass.class_name][studentIndex];
           if (student.school_id === value) {
             shouldGetStudentName = false;
             this.setState({
@@ -67,6 +67,14 @@ class AddNewStudent extends React.Component {
     });
   }
 
+  toggleModal() {
+    this.setState({
+      student_id: "",
+      studentIsInClass: false
+    }),
+      this.props.toggleSmallModal();
+  }
+
   async submitNewStudent(e) {
     e.preventDefault();
     const { student_id } = this.state;
@@ -77,7 +85,7 @@ class AddNewStudent extends React.Component {
       getTeacherData,
       toggleSmallModal
     } = this.props;
-    if (newStudentName) {
+    if (newStudentName && newStudentName.first_name !== "<not found>") {
       await addStudentToClass({
         ...newStudentName,
         school_id: student_id,
@@ -85,6 +93,11 @@ class AddNewStudent extends React.Component {
       });
       getTeacherData();
       toggleSmallModal();
+    }
+  }
+  escapeClose(e) {
+    if (e.key === "Escape") {
+      this.toggleModal();
     }
   }
   render() {
@@ -119,8 +132,8 @@ class AddNewStudent extends React.Component {
     const smallModalHead = "Add New Student";
     const smallModalContent = (
       <div className="add-new-student container">
-        <p className="add-new-student tool-tip">Hint try: htr564 or abc123</p>
         <form
+          onKeyDown={e => this.escapeClose(e)}
           onSubmit={e => {
             this.submitNewStudent(e);
           }}
@@ -139,6 +152,13 @@ class AddNewStudent extends React.Component {
             {studentNameItem}
           </ul>
         </form>
+        <p className="add-new-student tool-tip">Hint:</p>
+        <p className="add-new-student tool-tip">
+          <span className="bold">NSD908</span> to add a new student
+        </p>
+        <p className="add-new-student tool-tip">
+          <span className="bold">ABC123</span> for an existing student
+        </p>
       </div>
     );
     const smallModalConfirm = this.submitNewStudent.bind(this);
@@ -156,9 +176,7 @@ class AddNewStudent extends React.Component {
         {displayInput}
         <button
           className="add-new-student standard-button"
-          onClick={e => {
-            this.props.toggleSmallModal(this.props.smallModalIsOpen);
-          }}
+          onClick={e => this.toggleModal()}
         >
           Add new student
         </button>
