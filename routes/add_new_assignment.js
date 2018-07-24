@@ -1,8 +1,6 @@
 const slashes = require("slashes");
 
-
 module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
-
   webserver.post("/api/add_new_assignment", (req, res) => {
     console.log("starting to add new assignment");
 
@@ -11,7 +9,6 @@ module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
       data: {},
       errors: [],
       redirect: ""
-      // sessionID: null
     };
 
     if (
@@ -25,8 +22,10 @@ module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
     }
 
     //create new assignment in assignments table
-    const query = `INSERT INTO assignments (assignment_name, teacher_id, class_id) 
-    VALUES(?, ?, ?)`;
+    const query = [
+      "INSERT INTO `assignments` (`assignment_name`, `teacher_id`, `class_id`)",
+      "VALUES(?, ?, ?)"
+    ].join(" ");
     const inserts = [
       slashes.add(req.body.assignmentName),
       req.session.user_id,
@@ -37,7 +36,6 @@ module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
     dataBase.query(sqlQuery, (error, data, fields) => {
       if (!error) {
         console.log("Adding new assignment: ", req.body.assignmentName);
-        // output.data.class_list = data;
         output.data.assignment_id = data.insertId;
 
         addStudentDataToAssignment(data.insertId);
@@ -51,7 +49,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
     function addStudentDataToAssignment(assignment_id) {
       const { assignmentData } = req.body;
 
-      //format recieved data
+      //formatting data for query insertion
       let queryStrings = "";
       const assignmentValues = Object.keys(assignmentData).map(
         (student_id, index) => {
@@ -70,9 +68,11 @@ module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
         }
       );
 
-      const query = `INSERT INTO student_assignments 
-      (assignment_id, score, points_total, comments, student_id) 
-      VALUES ${queryStrings}`;
+      const query = [
+        "INSERT INTO `student_assignments`",
+        "(`assignment_id`, `score`, `points_total`, `comments`, `student_id`)",
+        `VALUES ${queryStrings}`
+      ].join(" ");
 
       //combining arrays
       const inserts = assignmentValues.reduce((prev, current) => {

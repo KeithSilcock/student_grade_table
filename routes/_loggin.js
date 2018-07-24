@@ -1,7 +1,11 @@
 const slashes = require("slashes");
 
+<<<<<<< HEAD
 module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
 
+=======
+module.exports = function(mysql, webserver, dataBase, encrypt) {
+>>>>>>> 5b42d39... added funcionality to create empty assignments on new-student
   // ====================
   // ==== Logging In ====
   // ====================
@@ -12,17 +16,18 @@ module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
       data: {},
       errors: [],
       redirect: ""
-      // sessionID: null
     };
 
-    // ======================
-    // Cleaning inputs=====
-    // ======================
+    // =======================
+    // ====Cleaning inputs====
+    // =======================
     const clean_school_id = slashes.add(req.body.school_id);
 
-    const query = `SELECT users.password, users.permissions
-        FROM users
-        WHERE school_id = ?`;
+    const query = [
+      "SELECT `users`.`password`, `users`.`permissions`",
+      "FROM `users`",
+      "WHERE `school_id` = ?"
+    ].join(" ");
 
     const inserts = [clean_school_id];
 
@@ -49,7 +54,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
 
     function getStartingInfo(permissions) {
       // turns permissions integer into an array of bits for permissions
-      // not yet implemented
+      // not fully implemented yet
       const current_permissions = permissions
         .toString(2)
         .split("")
