@@ -147,11 +147,15 @@ module.exports = (mysql, webserver, database, encrypt, logger) => {
           const finalAssignmentData = {};
           for (let index = 0; index < data.length; index++) {
             const dataRow = data[index];
-            finalAssignmentData[dataRow.assignment_name] = {
-              ...prevAssignmentData[index],
+
+            const temp = {
               class_id: dataRow.class_id,
               teacher_id: dataRow.teacher_id
             };
+            finalAssignmentData[dataRow.assignment_name] = Object.assign(
+              prevAssignmentData[index],
+              temp
+            );
           }
           output.data.assignments = finalAssignmentData;
           output.success = true;
