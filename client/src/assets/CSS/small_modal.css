@@ -25,6 +25,7 @@
   background-color: white;
   border: 1px solid black;
   border-radius: 10px;
+  box-shadow: 2px 2px #5f5f5f;
 }
 .warning-modal.header {
   width: 100%;
@@ -49,17 +50,12 @@
 .warning-modal.footer {
   padding: 5%;
 }
+.warning-modal.footer button {
+  margin: 0 0.25em;
+}
 
 .add-new-student.student-name-list {
   margin: 0;
   padding: 0;
   list-style: none;
-}
-
-.student-name.not-found {
-  color: red;
-}
-.inner-student-name {
-  background-color: rgb(19, 199, 3);
-  background-color: rgba(19, 199, 3, 0.493);
 }

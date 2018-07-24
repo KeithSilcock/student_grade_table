@@ -109,22 +109,29 @@ class TeacherAssignment extends React.Component {
         (prev, assignment) => {
           if (assignment.class_id === currentClass.class_id) {
             if (!prev[assignment.assignment_id]) {
-              const startingAvg = { ...prev };
-              startingAvg[assignment.assignment_id] = {
-                avg: assignment.score / assignment.points_total,
-                count: 1
-              };
-              return Object.assign(prev, startingAvg);
+              if (assignment.points_total > 0) {
+                const startingAvg = { ...prev };
+                startingAvg[assignment.assignment_id] = {
+                  avg: assignment.score / assignment.points_total,
+                  count: 1
+                };
+                return Object.assign(prev, startingAvg);
+              } else {
+                return prev;
+              }
             }
-
-            const continuingAvg = { ...prev };
-            continuingAvg[assignment.assignment_id] = {
-              avg:
-                continuingAvg[assignment.assignment_id].avg +
-                assignment.score / assignment.points_total,
-              count: ++continuingAvg[assignment.assignment_id].count
-            };
-            return Object.assign(prev, continuingAvg);
+            if (assignment.points_total > 0) {
+              const continuingAvg = { ...prev };
+              continuingAvg[assignment.assignment_id] = {
+                avg:
+                  continuingAvg[assignment.assignment_id].avg +
+                  assignment.score / assignment.points_total,
+                count: ++continuingAvg[assignment.assignment_id].count
+              };
+              return Object.assign(prev, continuingAvg);
+            } else {
+              return prev;
+            }
           } else {
             return prev;
           }
@@ -274,6 +281,9 @@ class TeacherAssignment extends React.Component {
     return (
       <div className="assignment-list container">
         <div className="assignment-list content">
+          <div className="assignment-list header">
+            <h3>Assignments</h3>
+          </div>
           <table className="assignment-list table">
             <thead className="assignment-list table-header">
               <tr>
@@ -282,23 +292,21 @@ class TeacherAssignment extends React.Component {
                   data-sort="name"
                 >
                   Student Name
-                  <div
-                    className="arrowSegment arrowname arrowUnsorted"
-                    data-sort="name"
-                  />
                 </th>
                 {renderAssignmentHeaders}
               </tr>
             </thead>
             <tbody className="assignment-list table-body">
               <tr className="assignment-list average-row">
-                <td>Class Average</td>
+                <td className="assignment-list average">Class Average</td>
                 {renderAvgPerAssignment}
               </tr>
 
               {students_assignment_data}
             </tbody>
           </table>
+        </div>
+        <div className="assignment-list footer">
           <div className="assignment-list new-assigment">
             <button
               className="assignment-list standard-button"
@@ -309,7 +317,6 @@ class TeacherAssignment extends React.Component {
             <AddNewStudent />
           </div>
         </div>
-        <div className="assignment-list footer" />
       </div>
     );
   }

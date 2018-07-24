@@ -34,18 +34,20 @@ class AddNewStudent extends React.Component {
     //look for that student's name in the database and offer them
     let shouldGetStudentName = true;
     if (value.length === 6) {
-      for (
-        let student = 0;
-        student < roster[currentClass.class_name].length;
-        student++
-      ) {
-        const student = roster[currentClass.class_name][student];
-        if (student.school_id === value) {
-          shouldGetStudentName = false;
-          this.setState({
-            ...this.state,
-            studentIsInClass: true
-          });
+      if (Object.keys(roster).length) {
+        for (
+          let studentIndex = 0;
+          studentIndex < roster[currentClass.class_name].length;
+          studentIndex++
+        ) {
+          const student = roster[currentClass.class_name][studentIndex];
+          if (student.school_id === value) {
+            shouldGetStudentName = false;
+            this.setState({
+              ...this.state,
+              studentIsInClass: true
+            });
+          }
         }
       }
 
@@ -65,6 +67,14 @@ class AddNewStudent extends React.Component {
     });
   }
 
+  toggleModal() {
+    this.setState({
+      student_id: "",
+      studentIsInClass: false
+    }),
+      this.props.toggleSmallModal();
+  }
+
   async submitNewStudent(e) {
     e.preventDefault();
     const { student_id } = this.state;
@@ -75,7 +85,7 @@ class AddNewStudent extends React.Component {
       getTeacherData,
       toggleSmallModal
     } = this.props;
-    if (newStudentName) {
+    if (newStudentName && newStudentName.first_name !== "<not found>") {
       await addStudentToClass({
         ...newStudentName,
         school_id: student_id,
@@ -83,6 +93,11 @@ class AddNewStudent extends React.Component {
       });
       getTeacherData();
       toggleSmallModal();
+    }
+  }
+  escapeClose(e) {
+    if (e.key === "Escape") {
+      this.toggleModal();
     }
   }
   render() {
@@ -116,23 +131,35 @@ class AddNewStudent extends React.Component {
 
     const smallModalHead = "Add New Student";
     const smallModalContent = (
-      <form
-        onSubmit={e => {
-          this.submitNewStudent(e);
-        }}
-      >
-        <input
-          className="add-new-student input"
-          name="student_id"
-          autoFocus
-          onChange={e => {
-            this.changeInput(e);
+      <div className="add-new-student container">
+        <form
+          onKeyDown={e => this.escapeClose(e)}
+          onSubmit={e => {
+            this.submitNewStudent(e);
           }}
-          value={student_id}
-          type="text"
-        />
-        <ul className="add-new-student student-name-list">{studentNameItem}</ul>
-      </form>
+        >
+          <input
+            className="add-new-student input"
+            name="student_id"
+            autoFocus
+            onChange={e => {
+              this.changeInput(e);
+            }}
+            value={student_id}
+            type="text"
+          />
+          <ul className="add-new-student student-name-list">
+            {studentNameItem}
+          </ul>
+        </form>
+        <p className="add-new-student tool-tip">Hint:</p>
+        <p className="add-new-student tool-tip">
+          <span className="bold">NSD908</span> to add a new student
+        </p>
+        <p className="add-new-student tool-tip">
+          <span className="bold">ABC123</span> for an existing student
+        </p>
+      </div>
     );
     const smallModalConfirm = this.submitNewStudent.bind(this);
 
@@ -145,13 +172,11 @@ class AddNewStudent extends React.Component {
     ) : null;
 
     return (
-      <div className="add-new-student container">
+      <div className="add-new-student button-container">
         {displayInput}
         <button
           className="add-new-student standard-button"
-          onClick={e =>
-            this.props.toggleSmallModal(this.props.smallModalIsOpen)
-          }
+          onClick={e => this.toggleModal()}
         >
           Add new student
         </button>

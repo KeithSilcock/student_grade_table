@@ -140,9 +140,6 @@
 .student-assignments.spacer {
   width: 5%;
 }
-.editing-student {
-  background-color: rgb(207, 207, 207) !important;
-}
 
 .student-assignments.average {
   background-color: rgb(221, 248, 255) !important;

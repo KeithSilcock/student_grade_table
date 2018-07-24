@@ -52,13 +52,15 @@
 }
 .header.header-spacer-1 {
   width: 3%;
-
   border-bottom: 1px solid rgb(200, 200, 200);
 }
 .header.header-spacer-2 {
   width: 100%;
-
   border-bottom: 1px solid rgb(200, 200, 200);
+}
+.header.header-spacer-3 {
+  width: 100%;
+  border-bottom: 2px solid #c2c2c2;
 }
 .header-bottom {
   width: 96%;
@@ -76,12 +78,15 @@
   background-color: rgb(20, 160, 216);
   color: white;
   cursor: pointer;
+  outline: 0;
 }
 .header.cancel-button {
   height: 100%;
   border-radius: 10px 10px 0 0;
   border-color: rgb(196, 58, 58);
+  border-bottom: 2px solid rgb(194, 194, 194);
   background-color: rgb(255, 71, 71);
   color: white;
   cursor: pointer;
+  outline: 0;
 }

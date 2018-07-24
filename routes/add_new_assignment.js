@@ -1,15 +1,13 @@
 const slashes = require("slashes");
 
-module.exports = function(mysql, webserver, dataBase, encrypt) {
+module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
   webserver.post("/api/add_new_assignment", (req, res) => {
     console.log("starting to add new assignment");
 
     const output = {
       success: false,
       data: {},
-      errors: [],
       redirect: ""
-      // sessionID: null
     };
 
     if (
@@ -17,15 +15,16 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
       typeof req.session.permissions[2] === "undefined" ||
       req.session.permissions[2] < 1
     ) {
-      output.errors.push("not logged in");
-      output.redirect = "/login";
+      logger.simpleLog(__filename, req, null, "User Not Logged In");
       res.json(output);
       return;
     }
 
     //create new assignment in assignments table
-    const query = `INSERT INTO assignments (assignment_name, teacher_id, class_id) 
-    VALUES(?, ?, ?)`;
+    const query = [
+      "INSERT INTO `assignments` (`assignment_name`, `teacher_id`, `class_id`)",
+      "VALUES(?, ?, ?)"
+    ].join(" ");
     const inserts = [
       slashes.add(req.body.assignmentName),
       req.session.user_id,
@@ -36,12 +35,11 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
     dataBase.query(sqlQuery, (error, data, fields) => {
       if (!error) {
         console.log("Adding new assignment: ", req.body.assignmentName);
-        // output.data.class_list = data;
         output.data.assignment_id = data.insertId;
 
         addStudentDataToAssignment(data.insertId);
       } else {
-        output.errors = error;
+        logger.simpleLog(__filename, req, error);
         output.redirect = "/login";
         res.json(output);
       }
@@ -50,7 +48,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
     function addStudentDataToAssignment(assignment_id) {
       const { assignmentData } = req.body;
 
-      //format recieved data
+      //formatting data for query insertion
       let queryStrings = "";
       const assignmentValues = Object.keys(assignmentData).map(
         (student_id, index) => {
@@ -69,9 +67,11 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
         }
       );
 
-      const query = `INSERT INTO student_assignments 
-      (assignment_id, score, points_total, comments, student_id) 
-      VALUES ${queryStrings}`;
+      const query = [
+        "INSERT INTO `student_assignments`",
+        "(`assignment_id`, `score`, `points_total`, `comments`, `student_id`)",
+        `VALUES ${queryStrings}`
+      ].join(" ");
 
       //combining arrays
       const inserts = assignmentValues.reduce((prev, current) => {
@@ -89,7 +89,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
 
           res.json(output);
         } else {
-          output.errors = error;
+          logger.simpleLog(__filename, req, error);
           output.redirect = "/login";
           res.json(output);
         }

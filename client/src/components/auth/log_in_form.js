@@ -17,7 +17,7 @@ class LogInForm extends React.Component {
       case "Administrator":
         this.setState({
           ...this.state,
-          user_name: "ghi789",
+          user_name: "hio985",
           password: "abc123456"
         });
         break;

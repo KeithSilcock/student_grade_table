@@ -1,30 +1,6 @@
 const slashes = require("slashes");
 
-module.exports = function(mysql, webserver, dataBase, encrypt) {
-  // ============================
-  // ==== Already Logged In? ====
-  // ============================
-  // if so: get user info for either teacher or student
-  webserver.get("/api/", (req, res) => {
-    console.log("checking if user already logged in...");
-    const output = {
-      redirect: "",
-      success: false
-    };
-
-    if (req.session.user_id !== undefined) {
-      //figure determine permissions and direct them accordingly
-      output.redirect = "/loggin";
-      output.success = true;
-      res.json(output);
-      return;
-    } else {
-      output.redirect = "/";
-      res.json(output);
-      return;
-    }
-  });
-
+module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
   // ====================
   // ==== Logging In ====
   // ====================
@@ -33,19 +9,19 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
     const output = {
       success: false,
       data: {},
-      errors: [],
       redirect: ""
-      // sessionID: null
     };
 
-    // ======================
-    // Cleaning inputs=====
-    // ======================
+    // =======================
+    // ====Cleaning inputs====
+    // =======================
     const clean_school_id = slashes.add(req.body.school_id);
 
-    const query = `SELECT users.password, users.permissions
-        FROM users
-        WHERE school_id = ?`;
+    const query = [
+      "SELECT `users`.`password`, `users`.`permissions`",
+      "FROM `users`",
+      "WHERE `school_id` = ?"
+    ].join(" ");
 
     const inserts = [clean_school_id];
 
@@ -64,8 +40,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
             }
           );
         } else {
-          output.errors = err;
-          output.redirect = "/login";
+          logger.simpleLog(__filename, req, error);
           res.json(output);
         }
       }
@@ -73,7 +48,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
 
     function getStartingInfo(permissions) {
       // turns permissions integer into an array of bits for permissions
-      // not yet implemented
+      // not fully implemented yet
       const current_permissions = permissions
         .toString(2)
         .split("")
