@@ -33,6 +33,7 @@ export function login(dataToSend = {}) {
   };
 }
 
+//multi-use functions
 export function changeActiveClass(class_name, class_id) {
   return {
     type: types.CHANGE_ACTIVE_CLASS,
