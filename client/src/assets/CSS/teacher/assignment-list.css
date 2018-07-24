@@ -13,6 +13,7 @@
   box-sizing: border-box;
   border-radius: 0 0 10px 10px;
   border: 2px solid rgb(194, 194, 194);
+  background-color: #f5fafa;
 }
 .assignment-list.footer {
   height: 10%;
@@ -47,17 +48,13 @@
 }
 
 .assignment-list.table-header tr th {
-  /* padding-top: 5px; */
-}
-.assignment-list.table-header tr th {
   border-bottom: 2px solid rgb(173, 173, 173);
-}
-.assignment-list.table-header tr th {
   border-left: 1px solid rgb(173, 173, 173);
   display: flex;
   justify-content: flex-start;
   align-items: center;
   flex-flow: column;
+  background-color: #cfe9e5;
 }
 .assignment-list.table-header tr th:first-child {
   border-left: none;
@@ -68,7 +65,7 @@
 
 .assignment-list.table-body tr td {
   border-bottom: 1px solid rgb(200, 200, 200);
-  background-color: rgb(250, 250, 250);
+  background-color: #ddf2f3;
   padding: 1% 1px;
 }
 .assignment-list.table-body tr td {
@@ -118,7 +115,7 @@
 .assignment-list.spacer {
   width: 5%;
 }
-.editing-student {
+.editing-student > td {
   background-color: rgb(207, 207, 207) !important;
 }
 

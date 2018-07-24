@@ -1,6 +1,6 @@
 const slashes = require("slashes");
 
-module.exports = function(mysql, webserver, dataBase, encrypt) {
+module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
   webserver.post("/api/get_student_name", (req, res, next) => {
     console.log("Getting data on student name");
 
@@ -16,16 +16,18 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
       typeof req.session.permissions[1] === "undefined" ||
       req.session.permissions[1] < 1
     ) {
-      output.errors.push("not logged in");
-      output.redirect = "/login";
+      logger.simpleLog(__filename, req, error, "User Not Logged In");
       res.json(output);
       return;
     }
 
-    //create new assignment in assignments table
-    const query = `SELECT \`users\`.\`first_name\`, \`users\`.\`last_name\`
-    FROM \`users\`
-    WHERE \`users\`.\`school_id\`=?`;
+
+    //getting student's first and last name for teacher confirmation
+    const query = [
+      "SELECT `users`.`first_name`, `users`.`last_name`",
+      "FROM `users`",
+      "WHERE `users`.`school_id`=?"
+    ].join(" ");
     const inserts = [slashes.add(req.body.student_id)];
 
     const sqlQuery = mysql.format(query, inserts);
@@ -44,7 +46,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
           return;
         }
       } else {
-        output.errors = error;
+        logger.simpleLog(__filename, req, error);
         output.redirect = "/login";
         res.json(output);
       }

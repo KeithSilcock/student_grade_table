@@ -292,7 +292,7 @@ class TeacherAssignment extends React.Component {
             </thead>
             <tbody className="assignment-list table-body">
               <tr className="assignment-list average-row">
-                <td>Class Average</td>
+                <td className="assignment-list average">Class Average</td>
                 {renderAvgPerAssignment}
               </tr>
 

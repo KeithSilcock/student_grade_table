@@ -1,4 +1,4 @@
-module.exports = (mysql, webserver, dataBase, encrypt) => {
+module.exports = (mysql, webserver, dataBase, encrypt, logger) => {
   webserver.get("/api/logout", (req, res) => {
     const output = {
       success: false,
@@ -11,7 +11,7 @@ module.exports = (mysql, webserver, dataBase, encrypt) => {
         output.success = true;
         res.json(output);
       } else {
-        output.error = err;
+        logger.simpleLog(__filename, req, error, "User Not Logged In");
         res.json(output);
       }
     });

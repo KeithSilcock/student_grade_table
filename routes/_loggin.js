@@ -1,29 +1,6 @@
 const slashes = require("slashes");
 
-module.exports = function(mysql, webserver, dataBase, encrypt) {
-  // ============================
-  // ==== Already Logged In? ====
-  // ============================
-  // if so: get user info for either teacher or student
-  webserver.get("/api/", (req, res) => {
-    console.log("checking if user already logged in...");
-    const output = {
-      redirect: "",
-      success: false
-    };
-
-    if (req.session.user_id !== undefined) {
-      //figure determine permissions and direct them accordingly
-      output.redirect = "/loggin";
-      output.success = true;
-      res.json(output);
-      return;
-    } else {
-      output.redirect = "/";
-      res.json(output);
-      return;
-    }
-  });
+module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
 
   // ====================
   // ==== Logging In ====
@@ -64,8 +41,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt) {
             }
           );
         } else {
-          output.errors = err;
-          output.redirect = "/login";
+          logger.simpleLog(__filename, req, error);
           res.json(output);
         }
       }

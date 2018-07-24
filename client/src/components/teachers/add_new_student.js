@@ -34,18 +34,20 @@ class AddNewStudent extends React.Component {
     //look for that student's name in the database and offer them
     let shouldGetStudentName = true;
     if (value.length === 6) {
-      for (
-        let student = 0;
-        student < roster[currentClass.class_name].length;
-        student++
-      ) {
-        const student = roster[currentClass.class_name][student];
-        if (student.school_id === value) {
-          shouldGetStudentName = false;
-          this.setState({
-            ...this.state,
-            studentIsInClass: true
-          });
+      if (Object.keys(roster).length) {
+        for (
+          let student = 0;
+          student < roster[currentClass.class_name].length;
+          student++
+        ) {
+          const student = roster[currentClass.class_name][student];
+          if (student.school_id === value) {
+            shouldGetStudentName = false;
+            this.setState({
+              ...this.state,
+              studentIsInClass: true
+            });
+          }
         }
       }
 
