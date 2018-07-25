@@ -4,7 +4,7 @@
   "private": true,
   "proxy": {
     "/api/*": {
-      "target": "https://sgt.keithsilcock.com:9000"
+      "target": "https://localhost:9000"
     }
   },
   "dependencies": {
