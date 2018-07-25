@@ -1,12 +1,7 @@
 {
-  "name": "client",
-  "version": "0.1.0",
+  "name": "Student_Grade_Table",
+  "version": "1.0",
   "private": true,
-  "proxy": {
-    "/api/*": {
-      "target": "http://localhost:9000"
-    }
-  },
   "dependencies": {
     "axios": "^0.18.0",
     "bootstrap": "^4.1.1",
