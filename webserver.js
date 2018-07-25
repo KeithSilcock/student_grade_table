@@ -24,9 +24,11 @@ webserver.use(
 );
 
 // endpoints start here
+require("./routes/_loggin.js")(mysql, webserver, database, encrypt, logger);
 require("./routes")(mysql, webserver, database, encrypt, logger);
 
 webserver.get("*", (req, res) => {
+  console.log("Got here 1");
   res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
