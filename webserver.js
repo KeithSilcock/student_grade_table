@@ -13,6 +13,7 @@ webserver.use(bodyParser.json());
 database.connect(error => {
   if (error) throw error;
   console.log("successfully connected to database!");
+  console.log("Wow it worked!");
 });
 webserver.use(express.static(__dirname + "/client" + "/public"));
 webserver.use(
