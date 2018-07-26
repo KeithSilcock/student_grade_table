@@ -1,0 +1,50 @@
+.login.fail {
+  animation-name: fadeInFastOutSlow;
+  animation-duration: 10s;
+  will-change: opacity;
+  animation-fill-mode: forwards;
+}
+@keyframes fadeInFastOutSlow {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+
+.invalid-shake {
+  animation-name: shake;
+  animation-duration: 0.5s;
+  will-change: transform;
+  animation-fill-mode: forwards;
+}
+@keyframes shake {
+  0% {
+    background-color: red;
+    transform: translateX(-5%);
+  }
+  20% {
+    transform: translateX(5%);
+  }
+  40% {
+    transform: translateX(-5%);
+  }
+  60% {
+    transform: translateX(5%);
+  }
+  80% {
+    transform: translateX(-5%);
+  }
+  100% {
+    background-color: white;
+    transform: translateX(0);
+  }
+}

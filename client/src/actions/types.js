@@ -1,6 +1,7 @@
 export default {
   LOGIN: "login",
   LOGOUT: "logout",
+  RESET_ERROR: "reset_error",
 
   CHANGE_ACTIVE_CLASS: "change_active_class",
   SET_ACTIVE_STUDENT: "set_active_student",

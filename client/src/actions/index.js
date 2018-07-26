@@ -24,6 +24,11 @@ export function logout() {
     payload: response
   };
 }
+export function removeLoginError() {
+  return {
+    type: types.RESET_ERROR
+  };
+}
 
 //multi-use functions
 export function changeActiveClass(class_name, class_id) {
