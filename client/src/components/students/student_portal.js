@@ -10,6 +10,7 @@ class StudentPortal extends React.Component {
   componentDidMount() {
     //get starting data
     this.props.getStudentData();
+    document.title = "Student Data";
   }
 
   render() {

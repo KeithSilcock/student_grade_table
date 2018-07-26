@@ -29,8 +29,8 @@ module.exports = (mysql, webserver, database, encrypt, logger) => {
 
     const sqlQuery = mysql.format(query, inserts);
 
-    database.query(sqlQuery, (err, data, fields) => {
-      if (!err) {
+    database.query(sqlQuery, (error, data, fields) => {
+      if (!error) {
         output.data.name = `${data[0].first_name} ${data[0].last_name}`;
         output.data.id = `${req.session.user_id}`;
         const classes = data.map((student, index) => {
@@ -56,8 +56,8 @@ module.exports = (mysql, webserver, database, encrypt, logger) => {
 
       const sqlQuery = mysql.format(query, inserts);
 
-      database.query(sqlQuery, (err, data, fields) => {
-        if (!err) {
+      database.query(sqlQuery, (error, data, fields) => {
+        if (!error) {
           const courses = data.reduce((prev, current) => {
             const newCourse = {
               [current.class_name]: {
@@ -89,8 +89,8 @@ module.exports = (mysql, webserver, database, encrypt, logger) => {
 
       const sqlQuery = mysql.format(query, inserts);
 
-      database.query(sqlQuery, (err, data, fields) => {
-        if (!err) {
+      database.query(sqlQuery, (error, data, fields) => {
+        if (!error) {
           output.data.teachers_list = data;
           getAssignmentsData();
         } else {
@@ -116,8 +116,8 @@ module.exports = (mysql, webserver, database, encrypt, logger) => {
 
       const sqlQuery = mysql.format(query, inserts);
 
-      database.query(sqlQuery, (err, data, fields) => {
-        if (!err) {
+      database.query(sqlQuery, (error, data, fields) => {
+        if (!error) {
           const assignment_ids = data.map((item, index) => {
             return item.assignment_id;
           });
@@ -141,8 +141,8 @@ module.exports = (mysql, webserver, database, encrypt, logger) => {
 
       const sqlQuery = mysql.format(query, inserts);
 
-      database.query(sqlQuery, (err, data, fields) => {
-        if (!err) {
+      database.query(sqlQuery, (error, data, fields) => {
+        if (!error) {
           //combine assignment data
           const finalAssignmentData = {};
           for (let index = 0; index < data.length; index++) {

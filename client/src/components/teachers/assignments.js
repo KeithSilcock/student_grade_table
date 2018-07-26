@@ -28,6 +28,9 @@ class TeacherAssignment extends React.Component {
       throw err;
     }
   }
+  componentDidMount() {
+    document.title = "Assignments";
+  }
 
   componentWillReceiveProps(nextProps) {
     const {

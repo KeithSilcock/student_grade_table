@@ -26,23 +26,27 @@ module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
     const inserts = [clean_school_id];
 
     const mysqlQuery = mysql.format(query, inserts);
-    console.log(mysqlQuery);
-    dataBase.query(mysqlQuery, (err, data, fields) => {
+    dataBase.query(mysqlQuery, (error, data, fields) => {
       console.log("Reached user loggin query");
-      if (!err) {
+      if (!error) {
         if (data.length > 0) {
           encrypt.compare(
             slashes.add(req.body.password),
             data[0].password,
-            (err, compareResponse) => {
+            (error, compareResponse) => {
               req.session.user_id = clean_school_id;
               getStartingInfo(data[0].permissions);
             }
           );
         } else {
-          logger.simpleLog(__filename, req, err);
+          //no user with those params
+          output.data.message = "No User";
           res.json(output);
         }
+      } else {
+        logger.simpleLog(__filename, req, error);
+        res.json(output);
+        return;
       }
     });
 

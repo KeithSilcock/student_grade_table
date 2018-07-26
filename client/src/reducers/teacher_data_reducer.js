@@ -21,9 +21,16 @@ export default function(state = DEFAULT_STATE, action) {
         return {
           ...state,
           logged_in: true,
+          errors: [],
           permissions: action.payload.data.data.permissions
         };
       } else {
+        if (action.payload.data.data.message === "No User") {
+          return {
+            ...state,
+            errors: [...state.errors, "No User"]
+          };
+        }
         if (action.payload.data.redirect === "/login") {
           return {
             ...state,
@@ -49,6 +56,11 @@ export default function(state = DEFAULT_STATE, action) {
           errors: [...state.errors, action.payload.data.errors]
         };
       }
+    case types.RESET_ERROR:
+      return {
+        ...state,
+        errors: []
+      };
     //student list
     case types.GET_STUDENT_LIST:
       if (action.payload.data.success) {

@@ -26,6 +26,9 @@ class StudentList extends React.Component {
       throw err;
     }
   }
+  componentDidMount() {
+    document.title = "Roster";
+  }
 
   clickedStudent() {
     this.setState({

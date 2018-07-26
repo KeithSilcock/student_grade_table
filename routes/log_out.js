@@ -5,8 +5,8 @@ module.exports = (mysql, webserver, dataBase, encrypt, logger) => {
       redirect: "",
       error: null
     };
-    req.session.destroy(err => {
-      if (!err) {
+    req.session.destroy(error => {
+      if (!error) {
         output.redirect = "/";
         output.success = true;
         res.json(output);

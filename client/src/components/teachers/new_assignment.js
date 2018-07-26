@@ -30,6 +30,8 @@ class NewAssignment extends React.Component {
     } = this.props;
     const outOf = findRandNumberBetween(25, 100);
 
+    document.title = "New Assignment";
+
     if (student_list) {
       const assignmentData = {};
       for (
