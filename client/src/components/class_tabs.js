@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import { changeActiveClass, setActiveStudent } from "../actions";
+import { changeActiveClass, setActiveStudent, setTabColor } from "../actions";
+import { getTabColor } from "../helper";
 
 import "../assets/CSS/class_tabs.css";
 
@@ -11,14 +12,16 @@ class ClassTabs extends React.Component {
         classes_S: classes,
         changeActiveClass: changeClass,
         currentClass_S: currentClass,
-        setActiveStudent
+        setActiveStudent,
+        setTabColor
       } = this.props;
     } else {
       var {
         classes_T: classes,
         changeActiveClass: changeClass,
         currentClass_T: currentClass,
-        setActiveStudent
+        setActiveStudent,
+        setTabColor
       } = this.props;
     }
 
@@ -26,11 +29,9 @@ class ClassTabs extends React.Component {
     if (Object.keys(classes).length && !currentClass.class_id) {
       const firstClass = Object.keys(classes)[0];
       changeClass(firstClass, classes[firstClass].class_id);
+      setTabColor(0);
     }
 
-    const tabStyleWidth = {
-      "min-width": `${(100 / Object.keys(classes).length).toFixed(3)}%`
-    };
     const classTabs = Object.keys(classes).map((item, index, array) => {
       const selectedTabClass =
         currentClass.class_id === classes[item].class_id ? "selected-tab" : "";
@@ -39,10 +40,14 @@ class ClassTabs extends React.Component {
           key={index}
           onClick={e => {
             setActiveStudent({});
+            setTabColor(index);
             changeClass(item, classes[item].class_id);
           }}
           className={`class-tabs item ${selectedTabClass}`}
-          style={tabStyleWidth}
+          style={{
+            minWidth: `${(100 / Object.keys(classes).length).toFixed(3)}%`,
+            backgroundColor: getTabColor(index)
+          }}
         >
           {`${item}`}
         </li>
@@ -69,5 +74,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { changeActiveClass, setActiveStudent }
+  { changeActiveClass, setActiveStudent, setTabColor }
 )(ClassTabs);

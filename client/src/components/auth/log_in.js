@@ -17,6 +17,9 @@ class LogIn extends React.Component {
 
   componentDidMount() {
     document.title = "Login";
+    if (this.props.match.path !== "/login") {
+      this.props.history.push("/login");
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {

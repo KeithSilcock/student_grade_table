@@ -1,5 +1,6 @@
 import axios from "axios";
 import types from "./types";
+import { getTabColor } from "../helper";
 
 //auth functions
 export function login(dataToSend = {}) {
@@ -38,6 +39,12 @@ export function changeActiveClass(class_name, class_id) {
       class_name,
       class_id
     }
+  };
+}
+export function setTabColor(index) {
+  return {
+    type: types.SET_TAB_COLOR,
+    payload: getTabColor(index)
   };
 }
 export function setActiveStudent(studentData) {
@@ -81,7 +88,6 @@ export function getTeacherData() {
 }
 export function addNewAssignment(assignmentData, class_id) {
   const dataToSend = Object.assign(assignmentData, { class_id });
-
   const path = "/api/add_new_assignment";
   const response = axios.post(path, dataToSend);
 
