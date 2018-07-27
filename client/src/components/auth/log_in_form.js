@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { login } from "../../actions";
+import { login, removeLoginError } from "../../actions";
 
 class LogInForm extends React.Component {
   constructor(props) {
@@ -34,6 +34,7 @@ class LogInForm extends React.Component {
 
   handleOnChange(e) {
     const { name, value } = e.target;
+    this.props.clearError();
 
     this.setState({
       ...this.state,
@@ -43,11 +44,22 @@ class LogInForm extends React.Component {
 
   handleOnSubmit(e) {
     e.preventDefault();
+    this.props.clearError();
     this.props.login(this.state);
   }
 
   render() {
     const { user_name, password } = this.state;
+    const { hasError } = this.props;
+
+    const errorMessage = hasError ? (
+      <div className="login fail">
+        <p>Sorry your password or user ID is incorrect</p>
+      </div>
+    ) : null;
+
+    const incorrectFieldClass = hasError ? "invalid-shake" : null;
+
     return (
       <form onSubmit={e => this.handleOnSubmit(e)}>
         <div className="header">
@@ -69,6 +81,7 @@ class LogInForm extends React.Component {
           <div className="login password-form">
             <label>Password: </label>
             <input
+              className={`${incorrectFieldClass}`}
               onChange={e => this.handleOnChange(e)}
               name="password"
               type="password"
@@ -80,6 +93,7 @@ class LogInForm extends React.Component {
           <button className="login-form standard-button">
             <i className="fas fa-key" /> Log In
           </button>
+          {errorMessage}
         </div>
       </form>
     );
@@ -87,7 +101,7 @@ class LogInForm extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return {};
+  return { removeLoginError };
 }
 
 export default connect(

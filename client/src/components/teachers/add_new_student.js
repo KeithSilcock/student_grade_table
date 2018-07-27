@@ -34,7 +34,7 @@ class AddNewStudent extends React.Component {
     //look for that student's name in the database and offer them
     let shouldGetStudentName = true;
     if (value.length === 6) {
-      if (Object.keys(roster).length) {
+      if (Object.keys(roster).length && roster[currentClass.class_name]) {
         for (
           let studentIndex = 0;
           studentIndex < roster[currentClass.class_name].length;

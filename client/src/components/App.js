@@ -24,8 +24,9 @@ class App extends Component {
           integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
           crossOrigin="anonymous"
         />
-        <Route exact path="/login" component={LogIn} />
-        <Route exact path="/logout" component={CheckLoggedIn(LogOut)} />
+        <Route exact path="/" component={LogIn} />
+        <Route path="/login" component={LogIn} />
+        <Route path="/logout" component={CheckLoggedIn(LogOut)} />
         <Route
           path="/teacher-portal/*"
           component={CheckLoggedIn(TeacherHeader)}

@@ -20,15 +20,25 @@ module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
       return;
     }
 
+    //get assignment average
+    const { assignmentData } = req.body;
+
+    const average =
+      Object.keys(assignmentData).reduce((acc, student_id) => {
+        const info = assignmentData[student_id];
+        return acc + info.score / info.points_total;
+      }, 0) / Object.keys(assignmentData).length;
+
     //create new assignment in assignments table
     const query = [
-      "INSERT INTO `assignments` (`assignment_name`, `teacher_id`, `class_id`)",
-      "VALUES(?, ?, ?)"
+      "INSERT INTO `assignments` (`assignment_name`, `teacher_id`, `class_id`, `average`)",
+      "VALUES(?, ?, ?, ?)"
     ].join(" ");
     const inserts = [
       slashes.add(req.body.assignmentName),
       req.session.user_id,
-      slashes.add(req.body.class_id)
+      slashes.add(req.body.class_id),
+      average.toFixed(6)
     ];
 
     const sqlQuery = mysql.format(query, inserts);

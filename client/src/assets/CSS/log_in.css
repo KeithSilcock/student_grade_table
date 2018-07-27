@@ -125,12 +125,21 @@
   height: 25%;
   display: flex;
   flex-flow: column;
-  justify-content: space-between;
   align-items: center;
+  text-align: center;
 }
 .login-actions a {
   font-size: 0.8em;
 }
 button.login-form {
   width: 25%;
+  height: 50%;
+}
+.login.fail {
+  height: 50%;
+  color: red;
+  font-size: 0.9em;
+}
+.login.fail p {
+  margin: 0;
 }

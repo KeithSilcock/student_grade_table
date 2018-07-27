@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const session = require("express-session");
 const mysql = require("mysql");
 const logger = require("./logger.js");
+const path = require("path");
 const webserver = express();
 const { credentials, encrypt, secret } = require("./config/mysqlCredentials");
 const database = mysql.createConnection(credentials);
@@ -14,17 +15,21 @@ database.connect(error => {
   if (error) throw error;
   console.log("successfully connected to database!");
 });
-webserver.use(express.static(__dirname + "/client" + "/public"));
-webserver.use(session(secret));
+webserver.use(express.static(__dirname + "/client" + "/build"));
+webserver.use(
+  session({
+    secret: secret,
+    resave: true,
+    saveUninitialized: true
+  })
+);
 
 // endpoints start here
+require("./routes/_loggin.js")(mysql, webserver, database, encrypt, logger);
 require("./routes")(mysql, webserver, database, encrypt, logger);
 
-webserver.get("/test", (req, res) => {
-  console.log("Someone reached the test");
-  res.send({
-    success: true
-  });
+webserver.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
 webserver.listen(PORT, () => {

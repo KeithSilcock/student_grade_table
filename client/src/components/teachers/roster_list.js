@@ -26,6 +26,9 @@ class StudentList extends React.Component {
       throw err;
     }
   }
+  componentDidMount() {
+    document.title = "Roster";
+  }
 
   clickedStudent() {
     this.setState({
@@ -59,7 +62,8 @@ class StudentList extends React.Component {
       classes,
       teacherData,
       activeStudent,
-      assignments
+      assignments,
+      tabColor
     } = this.props;
 
     if (student_list) {
@@ -111,9 +115,11 @@ class StudentList extends React.Component {
       });
     }
 
+    const headerStyle = { backgroundColor: tabColor };
+
     return (
       <div className="roster container ">
-        <div className="roster header">
+        <div style={headerStyle} className="roster header">
           <h2>Student List</h2>
         </div>
         <table className="roster table">
@@ -150,7 +156,8 @@ function mapStateToProps(state) {
     studentData: state.teacherData.student_data,
     currentClass: state.teacherData.current_class,
     classes: state.teacherData.classes,
-    activeStudent: state.teacherData.activeStudent
+    activeStudent: state.teacherData.activeStudent,
+    tabColor: state.navData.tabColor
   };
 }
 

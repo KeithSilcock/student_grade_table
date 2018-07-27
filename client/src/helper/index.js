@@ -1,3 +1,7 @@
+export function removeSlashes(text) {
+  return text.replace("\\", "");
+}
+
 export function formatGrade(grade, to = 1) {
   return `${(grade * 100).toFixed(to)}%`;
 }
@@ -49,4 +53,52 @@ export function capitalizeFirstLetters(text, everyWord = false) {
   } else {
     return `${text[0].toUpperCase()}${text.slice(1)}`;
   }
+}
+
+export function getTabColor(index) {
+  switch (index % 4) {
+    case 1:
+      return "#A5D4EC";
+    case 2:
+      return "#A5B5EC";
+    case 3:
+      return "#F5ECB5";
+    default:
+      return "#B8F4D6";
+  }
+}
+
+export function getAverageFromAssignments(assignment_list, currentClass) {
+  return assignment_list.reduce((prev, assignment) => {
+    if (assignment.class_id === currentClass.class_id) {
+      if (!prev[assignment.assignment_id]) {
+        if (assignment.points_total > 0) {
+          const startingAvg = { ...prev };
+          startingAvg[assignment.assignment_id] = {
+            avg: assignment.score / assignment.points_total,
+            count: 1
+          };
+          return Object.assign(prev, startingAvg);
+        } else {
+          return prev;
+        }
+      }
+      if (assignment.points_total > 0) {
+        const continuingAvg = { ...prev };
+        continuingAvg[assignment.assignment_id] = {
+          avg:
+            continuingAvg[assignment.assignment_id].avg +
+            assignment.score / assignment.points_total,
+          count: ++continuingAvg[assignment.assignment_id].count,
+          assignment_name: assignment.assignment_name,
+          assignment_id: assignment.assignment_id
+        };
+        return Object.assign(prev, continuingAvg);
+      } else {
+        return prev;
+      }
+    } else {
+      return prev;
+    }
+  }, {});
 }

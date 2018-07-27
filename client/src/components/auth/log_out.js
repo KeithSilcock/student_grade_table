@@ -5,6 +5,7 @@ import { logout } from "../../actions";
 class LogOut extends React.Component {
   componentDidMount() {
     this.props.logout();
+    document.title = "Logging out";
   }
   render() {
     return (
