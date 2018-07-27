@@ -1,8 +1,10 @@
 export default {
   LOGIN: "login",
   LOGOUT: "logout",
+  RESET_ERROR: "reset_error",
 
   CHANGE_ACTIVE_CLASS: "change_active_class",
+  SET_TAB_COLOR: "set_tab_color",
   SET_ACTIVE_STUDENT: "set_active_student",
   SET_AVAILABLE_CLASSES: "set_available_classes",
   TOGGLE_SMALL_MODAL: "toggle_small_modal",

@@ -1,11 +1,29 @@
 import React from "react";
 import LogInForm from "./log_in_form";
 import { connect } from "react-redux";
+import { removeLoginError } from "../../actions";
 
 import "../../assets/CSS/log_in.css";
+import "../../assets/CSS/animations/login_fail.css";
 
 class LogIn extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      hasError: false
+    };
+  }
+
+  componentDidMount() {
+    document.title = "Login";
+    if (this.props.match.path !== "/login") {
+      this.props.history.push("/login");
+    }
+  }
+
   componentDidUpdate(prevProps, prevState) {
+    //check if correct login
     if (this.props.logged_in) {
       if (this.props.permissions.length > 1) {
         //they are a teacher, redirect to teacher page
@@ -15,9 +33,36 @@ class LogIn extends React.Component {
         this.props.history.push("/student-portal/classes");
       }
     }
+
+    // if not correct login:
+    if (this.props.errors.indexOf("No User") >= 0) {
+      this.props.removeLoginError();
+      this.setState({
+        ...this.state,
+        hasError: true
+      });
+    }
+    if (this.state.hasError) {
+      setTimeout(() => {
+        this.setState({
+          ...this.state,
+          hasError: false
+        });
+      }, 10000);
+    }
+  }
+
+  clearError() {
+    this.props.removeLoginError();
+    this.setState({
+      ...this.state,
+      hasError: false
+    });
   }
 
   render() {
+    const { hasError } = this.state;
+
     return (
       <div className="login container">
         <div className="login header">
@@ -35,7 +80,11 @@ class LogIn extends React.Component {
               </h3>
             </div>
             <div className="teacher-login body">
-              <LogInForm userType={"Administrator"} />
+              <LogInForm
+                clearError={this.clearError.bind(this)}
+                hasError={hasError}
+                userType={"Administrator"}
+              />
             </div>
           </div>
 
@@ -46,7 +95,11 @@ class LogIn extends React.Component {
               </h3>
             </div>
             <div className="student-login body">
-              <LogInForm userType={"Student"} />
+              <LogInForm
+                clearError={this.clearError.bind(this)}
+                hasError={hasError}
+                userType={"Student"}
+              />
             </div>
           </div>
         </div>
@@ -58,11 +111,12 @@ class LogIn extends React.Component {
 function mapStateToProps(state) {
   return {
     logged_in: state.teacherData.logged_in,
-    permissions: state.teacherData.permissions
+    permissions: state.teacherData.permissions,
+    errors: state.teacherData.errors
   };
 }
 
 export default connect(
   mapStateToProps,
-  {}
+  { removeLoginError }
 )(LogIn);

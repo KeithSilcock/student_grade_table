@@ -108,6 +108,53 @@ module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
       const sqlQuery = mysql.format(query, inserts);
       dataBase.query(sqlQuery, (error, data, fields) => {
         if (!error) {
+          getScoresToUpdate();
+        } else {
+          logger.simpleLog(__filename, req, error);
+          output.redirect = "/login";
+          res.json(output);
+        }
+      });
+    }
+
+    function getScoresToUpdate() {
+      const query = [
+        "SELECT `student_assignments`.`score`, `student_assignments`.`points_total`",
+        "FROM `student_assignments`",
+        "WHERE `student_assignments`.`assignment_id`=?"
+      ].join(" ");
+
+      const inserts = [clean_assignment_id];
+
+      const sqlQuery = mysql.format(query, inserts);
+      dataBase.query(sqlQuery, (error, data, fields) => {
+        if (!error) {
+          //get average
+          data;
+          const average = data.reduce((acc, curr) => {
+            return acc + curr.score / curr.points_total;
+          }, 0);
+
+          updateAverage(average / data.length);
+        } else {
+          logger.simpleLog(__filename, req, error);
+          output.redirect = "/login";
+          res.json(output);
+        }
+      });
+    }
+    function updateAverage(avg) {
+      const query = [
+        "UPDATE `assignments`",
+        "SET `average` = ? ",
+        "WHERE `assignments`.`id` = ?"
+      ].join(" ");
+
+      const inserts = [avg.toFixed(6), clean_assignment_id];
+
+      const sqlQuery = mysql.format(query, inserts);
+      dataBase.query(sqlQuery, (error, data, fields) => {
+        if (!error) {
           output.success = true;
           res.json(output);
         } else {

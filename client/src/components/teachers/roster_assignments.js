@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import {} from "../../actions";
+import { getAverageFromAssignments, formatGrade } from "../../helper";
 import DoubleClickToEdit from "./double_click_editable";
 import AddNewStudent from "./add_new_student";
 
@@ -16,10 +17,42 @@ class AssignmentsTab extends React.Component {
       activeStudent,
       currentClass,
       studentData: { assignment_list },
-      toggleModal
+      tabColor
     } = this.props;
 
-    if (assignment_list && activeStudent) {
+    if (assignment_list && Object.keys(currentClass).length) {
+      var averageGradePerAssignment = getAverageFromAssignments(
+        assignment_list,
+        currentClass
+      );
+    }
+    if (averageGradePerAssignment) {
+      var renderAvgPerAssignment = Object.keys(averageGradePerAssignment).map(
+        (assignment_id, index) => {
+          const assignmentAverage = averageGradePerAssignment[assignment_id];
+          return (
+            <tr className={`roster-assignment table-row`} key={index}>
+              <td className={`roster-assignment average assignment-name`}>
+                <DoubleClickToEdit
+                  classToGive="roster-assignment double-click-name"
+                  valueName="assignment_name"
+                  objectData={assignmentAverage}
+                  inputSize={12}
+                />
+              </td>
+              <td className={`roster-assignment average score`}>
+                {formatGrade(
+                  assignmentAverage.avg / assignmentAverage.count,
+                  2
+                )}
+              </td>
+            </tr>
+          );
+        }
+      );
+    }
+
+    if (assignment_list && Object.keys(activeStudent).length) {
       var assignments = assignment_list.map((item, index) => {
         if (
           item.class_id === currentClass.class_id &&
@@ -57,16 +90,19 @@ class AssignmentsTab extends React.Component {
           );
         }
       });
+    } else if (assignment_list) {
+      var assignments = renderAvgPerAssignment;
     }
 
     const headerName = activeStudent.firstName
       ? `${activeStudent.firstName} ${activeStudent.lastName}: `
-      : "Assignments";
+      : "Assignment Avg:";
+    const headerStyle = { backgroundColor: tabColor };
 
     return (
       <div className="roster-assignment container">
         <div className="roster-assignment top">
-          <div className="roster-assignment header">
+          <div style={headerStyle} className="roster-assignment header">
             <h2>{headerName}</h2>
           </div>
           <div className="roster-assignment content">
@@ -113,7 +149,8 @@ function mapStateToProps(state) {
   return {
     studentData: state.teacherData.student_data,
     currentClass: state.teacherData.current_class,
-    activeStudent: state.teacherData.activeStudent
+    activeStudent: state.teacherData.activeStudent,
+    tabColor: state.navData.tabColor
   };
 }
 

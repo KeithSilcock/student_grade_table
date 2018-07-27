@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import { getTeacherData, deleteAssignment } from "../../actions";
 import AddNewStudent from "./add_new_student";
 import DoubleClickToEdit from "./double_click_editable";
-import { formatGrade } from "../../helper";
+import WarningModal from "./warning_modal";
+import { formatGrade, getAverageFromAssignments } from "../../helper";
 
 import "../../assets/CSS/teacher/assignment-list.css";
 import "../../assets/CSS/animations/delete_anim.css";
@@ -16,7 +17,9 @@ class TeacherAssignment extends React.Component {
       availableAssignments: {},
       editingOpen: false,
       openInput_id: "",
-      pressedDelete: { bool: false, id: "" }
+      pressedDelete: { bool: false, id: "" },
+      deleteModalOpen: false,
+      deleteAssignmentObj: { name: "", id: "" }
     };
   }
 
@@ -26,6 +29,27 @@ class TeacherAssignment extends React.Component {
       await this.props.getTeacherData();
     } catch (err) {
       throw err;
+    }
+  }
+  componentDidMount() {
+    document.title = "Assignments";
+  }
+
+  toggleDeleteModal(delete_id, assigmentName) {
+    const { deleteModalOpen } = this.state;
+
+    if (assigmentName) {
+      this.setState({
+        ...this.state,
+        deleteModalOpen: !deleteModalOpen,
+        deleteAssignmentObj: { name: assigmentName, id: delete_id }
+      });
+    } else {
+      this.setState({
+        ...this.state,
+        deleteModalOpen: !deleteModalOpen,
+        deleteAssignmentObj: { name: "", id: "" }
+      });
     }
   }
 
@@ -58,7 +82,9 @@ class TeacherAssignment extends React.Component {
     this.setState(
       {
         ...this.state,
-        pressedDelete: { bool: true, id: assignmentData }
+        pressedDelete: { bool: true, id: assignmentData },
+        deleteModalOpen: false,
+        deleteAssignmentObj: { name: "", id: "" }
       },
       () => {
         this.props.getTeacherData();
@@ -95,48 +121,23 @@ class TeacherAssignment extends React.Component {
       availableAssignments,
       editingOpen,
       openInput_id,
-      pressedDelete
+      pressedDelete,
+      deleteModalOpen,
+      deleteAssignmentObj
     } = this.state;
     const {
       currentClass,
       studentData: { student_list, assignment_list },
       assignments,
-      deleteAssignment
+      deleteAssignment,
+      tabColor
     } = this.props;
 
+    //format assignments to get averages
     if (assignment_list && Object.keys(currentClass).length) {
-      var averageGradePerAssignment = assignment_list.reduce(
-        (prev, assignment) => {
-          if (assignment.class_id === currentClass.class_id) {
-            if (!prev[assignment.assignment_id]) {
-              if (assignment.points_total > 0) {
-                const startingAvg = { ...prev };
-                startingAvg[assignment.assignment_id] = {
-                  avg: assignment.score / assignment.points_total,
-                  count: 1
-                };
-                return Object.assign(prev, startingAvg);
-              } else {
-                return prev;
-              }
-            }
-            if (assignment.points_total > 0) {
-              const continuingAvg = { ...prev };
-              continuingAvg[assignment.assignment_id] = {
-                avg:
-                  continuingAvg[assignment.assignment_id].avg +
-                  assignment.score / assignment.points_total,
-                count: ++continuingAvg[assignment.assignment_id].count
-              };
-              return Object.assign(prev, continuingAvg);
-            } else {
-              return prev;
-            }
-          } else {
-            return prev;
-          }
-        },
-        {}
+      var averageGradePerAssignment = getAverageFromAssignments(
+        assignment_list,
+        currentClass
       );
     }
 
@@ -160,8 +161,10 @@ class TeacherAssignment extends React.Component {
                 <div
                   className="assignment-list delete"
                   onClick={e => {
-                    deleteAssignment(assignment_id);
-                    this.deleteAnimation(assignment_id);
+                    this.toggleDeleteModal(
+                      assignment_id,
+                      assignment.assignment_name
+                    );
                   }}
                 >
                   <span>&times;</span>
@@ -277,34 +280,54 @@ class TeacherAssignment extends React.Component {
         }
       );
     }
+    const warningHeader = `${deleteAssignmentObj.name}`;
+    const warningConfirm = () => {
+      this.deleteAnimation(deleteAssignmentObj.id);
+      deleteAssignment(deleteAssignmentObj.id);
+    };
+    const warningCancel = () => {
+      this.toggleDeleteModal();
+    };
+    const renderDeleteModal = deleteModalOpen ? (
+      <WarningModal
+        header={warningHeader}
+        confirm={warningConfirm}
+        cancel={warningCancel}
+      />
+    ) : null;
+
+    const headerStyle = { backgroundColor: tabColor };
 
     return (
       <div className="assignment-list container">
+        {renderDeleteModal}
         <div className="assignment-list content">
-          <div className="assignment-list header">
+          <div style={headerStyle} className="assignment-list header">
             <h3>Assignments</h3>
           </div>
-          <table className="assignment-list table">
-            <thead className="assignment-list table-header">
-              <tr>
-                <th
-                  className="assignment-list student-name sortableHeader"
-                  data-sort="name"
-                >
-                  Student Name
-                </th>
-                {renderAssignmentHeaders}
-              </tr>
-            </thead>
-            <tbody className="assignment-list table-body">
-              <tr className="assignment-list average-row">
-                <td className="assignment-list average">Class Average</td>
-                {renderAvgPerAssignment}
-              </tr>
+          <div className="assignment-list scroll-area">
+            <table className="assignment-list table">
+              <thead className="assignment-list table-header">
+                <tr>
+                  <th
+                    className="assignment-list student-name sortableHeader"
+                    data-sort="name"
+                  >
+                    Student Name
+                  </th>
+                  {renderAssignmentHeaders}
+                </tr>
+              </thead>
+              <tbody className="assignment-list table-body">
+                <tr className="assignment-list average-row">
+                  <td className="assignment-list average">Class Average</td>
+                  {renderAvgPerAssignment}
+                </tr>
 
-              {students_assignment_data}
-            </tbody>
-          </table>
+                {students_assignment_data}
+              </tbody>
+            </table>
+          </div>
         </div>
         <div className="assignment-list footer">
           <div className="assignment-list new-assigment">
@@ -328,7 +351,8 @@ function mapStateToProps(state) {
     assignments: state.teacherData.assignments,
     studentData: state.teacherData.student_data,
     currentClass: state.teacherData.current_class,
-    classes: state.teacherData.classes
+    classes: state.teacherData.classes,
+    tabColor: state.navData.tabColor
   };
 }
 export default connect(

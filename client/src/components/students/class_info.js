@@ -1,10 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
 import {} from "../../actions";
+import { getLetterGrade } from "../../helper";
 
 class ClassInfo extends React.Component {
   render() {
-    const { classes, studentData, currentClass, teacherData } = this.props;
+    const {
+      classes,
+      assignments,
+      studentData,
+      currentClass,
+      teacherData
+    } = this.props;
+
     let teachername = "";
     for (
       let teacherIndex = 0;
@@ -23,23 +31,39 @@ class ClassInfo extends React.Component {
         courseDesc = `${courseInfo.class_description}`;
       }
     }
+    let count = 0;
+    const average =
+      Object.keys(assignments).reduce((acc, student_id) => {
+        const info = assignments[student_id];
+        if (info.class_id === currentClass.class_id) {
+          count++;
+          return acc + info.score / info.points_total;
+        }
+        return acc;
+      }, 0) / count;
 
     return (
       <div className="class-info container">
-        <div className="class-info header">
+        <div
+          style={{ backgroundColor: this.props.tabColor }}
+          className="class-info header"
+        >
           <h1>{currentClass.class_name}</h1>
         </div>
         <div className="class-info content">
           <div className="class-info teacher">
-            <p>Teacher: </p>
+            <p className="bold">Teacher: </p>
             <p>{`${teachername}`}</p>
           </div>
           <div className="class-info course-description">
-            <p>Class Desc:</p> <p>{`${courseDesc}`}</p>
+            <p className="bold">Class Description:</p>
+            <p>{`${courseDesc}`}</p>
           </div>
           <div className="class-info course-average">
-            <p>Grade: </p>
-            <p>{`<AVERAGE>`}</p>
+            <p className="bold">Grade: </p>
+            <p>{`Grade: ${(average * 100).toFixed(2)}% ${getLetterGrade(
+              average
+            )}`}</p>
           </div>
         </div>
       </div>
@@ -53,7 +77,8 @@ function mapStateToProps(state) {
     classes: state.studentData.classes,
     studentData: state.studentData.student_data,
     teacherData: state.studentData.teacherData,
-    currentClass: state.teacherData.current_class
+    currentClass: state.teacherData.current_class,
+    tabColor: state.navData.tabColor
   };
 }
 export default connect(

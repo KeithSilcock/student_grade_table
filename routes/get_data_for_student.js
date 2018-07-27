@@ -29,8 +29,8 @@ module.exports = (mysql, webserver, database, encrypt, logger) => {
 
     const sqlQuery = mysql.format(query, inserts);
 
-    database.query(sqlQuery, (err, data, fields) => {
-      if (!err) {
+    database.query(sqlQuery, (error, data, fields) => {
+      if (!error) {
         output.data.name = `${data[0].first_name} ${data[0].last_name}`;
         output.data.id = `${req.session.user_id}`;
         const classes = data.map((student, index) => {
@@ -56,8 +56,8 @@ module.exports = (mysql, webserver, database, encrypt, logger) => {
 
       const sqlQuery = mysql.format(query, inserts);
 
-      database.query(sqlQuery, (err, data, fields) => {
-        if (!err) {
+      database.query(sqlQuery, (error, data, fields) => {
+        if (!error) {
           const courses = data.reduce((prev, current) => {
             const newCourse = {
               [current.class_name]: {
@@ -89,8 +89,8 @@ module.exports = (mysql, webserver, database, encrypt, logger) => {
 
       const sqlQuery = mysql.format(query, inserts);
 
-      database.query(sqlQuery, (err, data, fields) => {
-        if (!err) {
+      database.query(sqlQuery, (error, data, fields) => {
+        if (!error) {
           output.data.teachers_list = data;
           getAssignmentsData();
         } else {
@@ -116,8 +116,8 @@ module.exports = (mysql, webserver, database, encrypt, logger) => {
 
       const sqlQuery = mysql.format(query, inserts);
 
-      database.query(sqlQuery, (err, data, fields) => {
-        if (!err) {
+      database.query(sqlQuery, (error, data, fields) => {
+        if (!error) {
           const assignment_ids = data.map((item, index) => {
             return item.assignment_id;
           });
@@ -132,7 +132,7 @@ module.exports = (mysql, webserver, database, encrypt, logger) => {
     //get assignment names
     function getAssignmentNames(prevAssignmentData, _ids) {
       const query = [
-        "SELECT `assignments`.`id`, `assignments`.`assignment_name`, `assignments`.`teacher_id`, `assignments`.`class_id`",
+        "SELECT `assignments`.`id`, `assignments`.`average`, `assignments`.`assignment_name`, `assignments`.`teacher_id`, `assignments`.`class_id`",
         "FROM `assignments`",
         `WHERE \`assignments\`.\`id\` IN (${formatInserts(_ids)})`
       ].join(" ");
@@ -141,17 +141,22 @@ module.exports = (mysql, webserver, database, encrypt, logger) => {
 
       const sqlQuery = mysql.format(query, inserts);
 
-      database.query(sqlQuery, (err, data, fields) => {
-        if (!err) {
+      database.query(sqlQuery, (error, data, fields) => {
+        if (!error) {
           //combine assignment data
           const finalAssignmentData = {};
           for (let index = 0; index < data.length; index++) {
             const dataRow = data[index];
-            finalAssignmentData[dataRow.assignment_name] = {
-              ...prevAssignmentData[index],
+
+            const temp = {
               class_id: dataRow.class_id,
-              teacher_id: dataRow.teacher_id
+              teacher_id: dataRow.teacher_id,
+              average: dataRow.average
             };
+            finalAssignmentData[dataRow.assignment_name] = Object.assign(
+              prevAssignmentData[index],
+              temp
+            );
           }
           output.data.assignments = finalAssignmentData;
           output.success = true;

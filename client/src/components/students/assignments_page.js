@@ -1,8 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import {} from "../../actions";
-
-import "../../assets/CSS/student_page.css";
+import { removeSlashes } from "../../helper";
 
 class StudentAssignments extends React.Component {
   render() {
@@ -23,11 +22,11 @@ class StudentAssignments extends React.Component {
               </td>
               <td className="student-assignments comments">
                 <div className="student-assignments comment-box">
-                  {assignment.comments}
+                  {removeSlashes(assignment.comments)}
                 </div>
               </td>
               <td className="student-assignments average">
-                {`<GRADE GOES HERE>`}
+                {`${(assignment.average * 100).toFixed(1)}%`}
               </td>
             </tr>
           );
