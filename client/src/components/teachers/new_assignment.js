@@ -40,13 +40,16 @@ class NewAssignment extends React.Component {
         studentIndex++
       ) {
         const student = student_list[studentIndex];
-        assignmentData[student.school_id] = {
-          comments: commentRandomizer(
-            `${student.first_name} ${student.last_name}`
-          ),
-          points_total: outOf,
-          score: findRandNumberBetween(0, outOf)
-        };
+        this.props.currentClass;
+        if (student.class_id === this.props.currentClass.class_id) {
+          assignmentData[student.school_id] = {
+            comments: commentRandomizer(
+              `${student.first_name} ${student.last_name}`
+            ),
+            points_total: outOf,
+            score: findRandNumberBetween(0, outOf)
+          };
+        }
       }
 
       this.setState({
@@ -248,8 +251,6 @@ class NewAssignment extends React.Component {
               </tbody>
             </table>
           </div>
-        </div>
-        <div className="new-assignment bottom">
           <button
             onClick={e => {
               const {
@@ -266,6 +267,7 @@ class NewAssignment extends React.Component {
             Add Assignment
           </button>
         </div>
+        <div className="new-assignment bottom" />
       </div>
     );
   }

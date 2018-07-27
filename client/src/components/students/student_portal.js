@@ -4,7 +4,7 @@ import { getStudentData } from "../../actions";
 import AssignmentsPage from "./assignments_page";
 import ClassInfo from "./class_info";
 
-import "../../assets/CSS/student_page.css";
+import "../../assets/CSS/student/student_page.css";
 
 class StudentPortal extends React.Component {
   componentDidMount() {

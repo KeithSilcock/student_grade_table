@@ -3,17 +3,21 @@ import { connect } from "react-redux";
 import {} from "../../actions";
 import ClassTabs from "../class_tabs";
 
+import "../../assets/CSS/student/header.css";
+
 class Header extends React.Component {
   render() {
     const { studentData } = this.props;
 
     return (
-      <div className="header header-container">
-        <div className="header header-top">
-          <h2 className="header title">{`Welcome, ${studentData.name}`}</h2>
+      <div className="header student header-container">
+        <div className="header student header-top">
+          <h2 className="header student title">{`Welcome, ${
+            studentData.name
+          }`}</h2>
           <a href="/logout">Log Out?</a>
         </div>
-        <div className="header header-bottom">
+        <div className="header student header-bottom">
           <ClassTabs userType={`student`} />
         </div>
       </div>

@@ -43,7 +43,9 @@ class Header extends React.Component {
         <div className="header header-top">
           <h2 className="header title">{`Welcome, ${teacherData.first_name} 
         ${teacherData.last_name}`}</h2>
-          <a href="/logout">Log Out?</a>
+          <a href="/logout">
+            <i class="fas fa-sign-out-alt" /> Log Out
+          </a>
         </div>
         <div className="header header-pages">
           <div className="header header-spacer-1" />

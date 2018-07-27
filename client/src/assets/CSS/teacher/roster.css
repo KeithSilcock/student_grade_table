@@ -10,7 +10,9 @@
 .roster.header {
   display: flex;
   justify-content: center;
-  border-bottom: 1px solid rgb(194, 194, 194);
+  border-bottom: 1px solid #c2c2c2;
+  border-left: 1px solid #c2c2c2;
+
   background-color: #d2f8f8;
 }
 .roster.header h2 {
@@ -22,6 +24,9 @@
   width: 100%;
   display: flex;
   flex-flow: column;
+  box-sizing: border-box;
+  border: 1px solid #c2c2c2;
+  border-top: none;
 }
 .roster.table-head tr {
   border-bottom: 2px solid rgb(173, 173, 173);
@@ -71,12 +76,22 @@
 .roster-assignment.header {
   display: flex;
   justify-content: center;
-  border-bottom: 1px solid rgb(194, 194, 194);
+  border-bottom: 1px solid #c2c2c2;
+  border-right: 1px solid #c2c2c2;
   background-color: #d2f8f8;
 }
 .roster-assignment.header h2 {
   margin: 0;
   text-align: center;
+}
+
+.roster-assignment.content {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #c2c2c2;
+  border-top: none;
+  border-bottom: none;
 }
 .roster-assignment.table {
   display: flex;
@@ -114,6 +129,8 @@
   height: 5%;
   display: flex;
   justify-content: center;
+  border: 1px solid #c2c2c2;
+  border-top: none;
 }
 
 /* Roster Misc */

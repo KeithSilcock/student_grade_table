@@ -132,7 +132,7 @@ module.exports = (mysql, webserver, database, encrypt, logger) => {
     //get assignment names
     function getAssignmentNames(prevAssignmentData, _ids) {
       const query = [
-        "SELECT `assignments`.`id`, `assignments`.`assignment_name`, `assignments`.`teacher_id`, `assignments`.`class_id`",
+        "SELECT `assignments`.`id`, `assignments`.`average`, `assignments`.`assignment_name`, `assignments`.`teacher_id`, `assignments`.`class_id`",
         "FROM `assignments`",
         `WHERE \`assignments\`.\`id\` IN (${formatInserts(_ids)})`
       ].join(" ");
@@ -150,7 +150,8 @@ module.exports = (mysql, webserver, database, encrypt, logger) => {
 
             const temp = {
               class_id: dataRow.class_id,
-              teacher_id: dataRow.teacher_id
+              teacher_id: dataRow.teacher_id,
+              average: dataRow.average
             };
             finalAssignmentData[dataRow.assignment_name] = Object.assign(
               prevAssignmentData[index],
