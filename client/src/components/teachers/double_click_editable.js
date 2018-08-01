@@ -92,7 +92,8 @@ class DoubleClickToEdit extends React.Component {
         <input
           onKeyDown={e => this.closeInputOnEscape(e)}
           className="editable-input"
-          autoFocus
+          autoFocus={true}
+          onFocus={e => e.target.select()}
           size={inputSize}
           onChange={e => this.onChangeValue(e)}
           onBlur={e => this.closeEditMode(e)}

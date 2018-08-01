@@ -6,9 +6,10 @@
   height: 100%;
   display: flex;
   flex-flow: column;
+  align-items: center;
 }
 .login.header {
-  width: 100%;
+  width: 75%;
   height: 15%;
   border-bottom: 1px solid rgb(168, 194, 199);
   display: flex;
@@ -39,10 +40,9 @@
 .student-login.container {
   width: 50%;
   height: 100%;
-  /* display: flex; */
-  /* flex-flow: column; */
-  /* justify-content: center; */
-  /* align-items: center; */
+  display: flex;
+  flex-flow: column;
+  /* justify-content: flex-end; */
 }
 .teacher-login.container {
   border-right: 2px solid rgb(194, 194, 194);
@@ -55,11 +55,14 @@
   align-content: center;
   align-items: center;
 
-  width: 100%;
+  width: 75%;
   height: 5%;
   border-bottom: 1px solid rgb(168, 194, 199);
   background-color: rgb(255, 233, 193);
   color: rgb(0, 0, 0);
+}
+.teacher-login.header {
+  align-self: flex-end;
 }
 .teacher-login.header h3,
 .student-login.header h3 {
@@ -68,10 +71,14 @@
 
 .teacher-login.body,
 .student-login.body {
+  width: 75%;
   height: 60%;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.teacher-login.body {
+  align-self: flex-end;
 }
 .teacher-login.body form,
 .student-login.body form {
@@ -111,6 +118,9 @@
 }
 .login-form-inputs label {
   font-weight: bold;
+}
+.login-form-inputs input {
+  text-align: center;
 }
 .login.username-form,
 .login.password-form {

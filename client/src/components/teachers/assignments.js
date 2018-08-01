@@ -100,7 +100,7 @@ class TeacherAssignment extends React.Component {
           clearTimeout(thisTimeout);
         }
       );
-    }, 500);
+    }, 700);
   }
 
   toggleEditMode(student_id) {
@@ -332,7 +332,7 @@ class TeacherAssignment extends React.Component {
         <div className="assignment-list footer">
           <div className="assignment-list new-assigment">
             <button
-              className="assignment-list standard-button"
+              className="assignment-list standard-green-button"
               onClick={e => this.navToNewAssignment(e)}
             >
               <span>Create New Assignment</span>

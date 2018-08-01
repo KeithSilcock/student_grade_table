@@ -98,6 +98,11 @@ class StudentList extends React.Component {
                 <button
                   className="standard-button"
                   onClick={e => {
+                    if (activeStudent.school_id === student.school_id) {
+                      setActiveStudent({});
+                      return;
+                    }
+
                     const studentData = {
                       firstName: student.first_name,
                       lastName: student.last_name,
