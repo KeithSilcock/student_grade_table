@@ -13,9 +13,14 @@
 .new-assignment.top {
   display: flex;
   flex-flow: column;
-  height: 90%;
+  height: 95%;
   align-items: center;
   width: 100%;
+}
+.new-assignment.bottom {
+  display: flex;
+  justify-content: center;
+  height: 5%;
 }
 .new-assignment.header {
   width: 100%;
@@ -56,6 +61,7 @@
 }
 .new-assignment.input-box.total-score input {
   width: 2em;
+  text-align: center;
 }
 
 .new-assignment.student-info {
@@ -79,6 +85,7 @@
 .new-assignment td,
 .new-assignment th {
   width: 20%;
+  text-align: center;
 }
 .new-assignment thead tr,
 .new-assignment tbody tr {
@@ -87,9 +94,10 @@
   justify-content: space-evenly;
 }
 
-.new-assignment.score {
-  width: 50px;
-}
+.new-assignment.score,
 .new-assignment.points_total {
   width: 50px;
+  /* height: 2em; */
+  text-align: center;
+  font-size: 1.4em;
 }

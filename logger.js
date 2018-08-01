@@ -57,7 +57,7 @@ module.exports.simpleLog = function(file, req, errors, message) {
   }
 
   fs.appendFile(
-    `${__dirname}/logs.txt`,
+    `${__dirname}/logs/logs.txt`,
     `${dateToLog}\n ${loc}\n ${mess}\n ${errs}\n ${reqToText}\n\n`,
     err => {
       if (err) throw err;
