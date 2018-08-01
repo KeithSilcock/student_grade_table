@@ -133,7 +133,7 @@ class AssignmentsTab extends React.Component {
         </div>
         <div className="roster-assignment footer">
           <button
-            className="assignment-list standard-button"
+            className="assignment-list standard-green-button"
             onClick={e => this.navToNewAssignment(e)}
           >
             <span>Create New Assignment</span>

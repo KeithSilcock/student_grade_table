@@ -169,6 +169,7 @@ class NewAssignment extends React.Component {
                     onChange={e =>
                       this.changeStudentInput(e, student.school_id)
                     }
+                    onFocus={e => e.target.select()}
                     type="text"
                     name={`score`}
                     value={score}
@@ -182,6 +183,7 @@ class NewAssignment extends React.Component {
                     onChange={e =>
                       this.changeStudentInput(e, student.school_id)
                     }
+                    onFocus={e => e.target.select()}
                     type="text"
                     name={`points_total`}
                     value={points}
@@ -214,6 +216,7 @@ class NewAssignment extends React.Component {
               <span className="new-assignment text">Assignment: </span>
               <input
                 onChange={e => this.changeInputSimple(e)}
+                onFocus={e => e.target.select()}
                 type="text"
                 name="assignmentName"
                 placeholder="Assignment Name"
@@ -224,6 +227,7 @@ class NewAssignment extends React.Component {
               <span className="new-assignment total-score text">Out Of:</span>
               <input
                 onChange={e => this.changePointsTotalInput(e)}
+                onFocus={e => e.target.select()}
                 type="text"
                 name="points_total"
                 placeholder="100"
@@ -251,6 +255,8 @@ class NewAssignment extends React.Component {
               </tbody>
             </table>
           </div>
+        </div>
+        <div className="new-assignment bottom">
           <button
             onClick={e => {
               const {
@@ -262,12 +268,11 @@ class NewAssignment extends React.Component {
               addNewAssignment(this.state, currentClass.class_id);
               this.props.history.push(this.props.recentPage);
             }}
-            className="standard-button"
+            className="standard-green-button"
           >
             Add Assignment
           </button>
         </div>
-        <div className="new-assignment bottom" />
       </div>
     );
   }

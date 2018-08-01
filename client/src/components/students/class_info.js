@@ -36,18 +36,20 @@ class ClassInfo extends React.Component {
       Object.keys(assignments).reduce((acc, student_id) => {
         const info = assignments[student_id];
         if (info.class_id === currentClass.class_id) {
-          count++;
-          return acc + info.score / info.points_total;
+          if (info.points_total > 0) {
+            count++;
+            return acc + info.score / info.points_total;
+          } else {
+            return acc;
+          }
+        } else {
+          return acc;
         }
-        return acc;
       }, 0) / count;
 
     return (
       <div className="class-info container">
-        <div
-          style={{ backgroundColor: this.props.tabColor }}
-          className="class-info header"
-        >
+        <div className="class-info header">
           <h1>{currentClass.class_name}</h1>
         </div>
         <div className="class-info content">
@@ -61,9 +63,7 @@ class ClassInfo extends React.Component {
           </div>
           <div className="class-info course-average">
             <p className="bold">Grade: </p>
-            <p>{`Grade: ${(average * 100).toFixed(2)}% ${getLetterGrade(
-              average
-            )}`}</p>
+            <p>{`${(average * 100).toFixed(2)}% ${getLetterGrade(average)}`}</p>
           </div>
         </div>
       </div>

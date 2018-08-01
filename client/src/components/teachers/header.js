@@ -1,8 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { setRecentPage } from "../../actions";
+import { setRecentPage, setActiveStudent } from "../../actions";
 import ClassTabs from "../class_tabs";
+import { getDailyGreeting } from "../../helper";
 
 import "../../assets/CSS/teacher/header.css";
 
@@ -22,7 +23,7 @@ class Header extends React.Component {
   }
 
   render() {
-    const { teacherData, setRecentPage } = this.props;
+    const { teacherData, setRecentPage, setActiveStudent } = this.props;
 
     if (this.props.match.params[0] === "student-list") {
       var rosterClass = "selected";
@@ -41,17 +42,22 @@ class Header extends React.Component {
     return (
       <div className="header header-container">
         <div className="header header-top">
-          <h2 className="header title">{`Welcome, ${teacherData.first_name} 
+          <h2 className="header title">{`${getDailyGreeting()}${
+            teacherData.first_name
+          } 
         ${teacherData.last_name}`}</h2>
           <a href="/logout">
-            <i class="fas fa-sign-out-alt" /> Log Out
+            <i class="fas fa-sign-out-alt" /> Close Session
           </a>
         </div>
         <div className="header header-pages">
           <div className="header header-spacer-1" />
           <div className="header header-tabs">
             <Link
-              onClick={e => setRecentPage("/teacher-portal/assignment-list")}
+              onClick={e => {
+                setActiveStudent({});
+                setRecentPage("/teacher-portal/assignment-list");
+              }}
               className={`${assignmentsClass}`}
               to="/teacher-portal/assignment-list"
             >
@@ -59,7 +65,10 @@ class Header extends React.Component {
             </Link>
             <Link
               className={`${rosterClass}`}
-              onClick={e => setRecentPage("/teacher-portal/student-list")}
+              onClick={e => {
+                setActiveStudent({});
+                setRecentPage("/teacher-portal/student-list");
+              }}
               to="/teacher-portal/student-list"
             >
               <i className="fas fa-users" />Roster
@@ -86,5 +95,5 @@ function mapStateToProps(state) {
 }
 export default connect(
   mapStateToProps,
-  { setRecentPage }
+  { setRecentPage, setActiveStudent }
 )(Header);

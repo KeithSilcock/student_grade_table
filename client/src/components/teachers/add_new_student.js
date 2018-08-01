@@ -41,7 +41,7 @@ class AddNewStudent extends React.Component {
           studentIndex++
         ) {
           const student = roster[currentClass.class_name][studentIndex];
-          if (student.school_id === value) {
+          if (student.school_id.toLowerCase() === value.toLowerCase()) {
             shouldGetStudentName = false;
             this.setState({
               ...this.state,
@@ -122,7 +122,7 @@ class AddNewStudent extends React.Component {
     } else if (studentIsInClass) {
       var studentNameItem = (
         <li className="student-name not-found">
-          That student is already in this class
+          <i class="fa fa-times-circle" /> That student is already in this class
         </li>
       );
     } else {
@@ -157,7 +157,7 @@ class AddNewStudent extends React.Component {
           <span className="bold">NSD908</span> to add a new student
         </p>
         <p className="add-new-student tool-tip">
-          <span className="bold">ABC123</span> for an existing student
+          <span className="bold">DEF456</span> for an existing student
         </p>
       </div>
     );

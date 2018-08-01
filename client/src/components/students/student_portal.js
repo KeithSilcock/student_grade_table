@@ -18,7 +18,10 @@ class StudentPortal extends React.Component {
     if (this.props.currentClass.class_id) {
       return (
         <div className="student-portal container">
-          <div className="student-portal left">
+          <div
+            style={{ backgroundColor: this.props.tabColor }}
+            className="student-portal left"
+          >
             <ClassInfo />
           </div>
           <div className="student-portal right">
@@ -37,7 +40,8 @@ function mapStateToProps(state) {
     assignments: state.studentData.assignments,
     classes: state.studentData.classes,
     studentData: state.studentData.student_data,
-    currentClass: state.teacherData.current_class
+    currentClass: state.teacherData.current_class,
+    tabColor: state.navData.tabColor
   };
 }
 
