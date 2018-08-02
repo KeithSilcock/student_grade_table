@@ -2,6 +2,7 @@ import React from "react";
 import LogInForm from "./log_in_form";
 import { connect } from "react-redux";
 import { removeLoginError } from "../../actions";
+import YouTube from "react-youtube";
 
 import "../../assets/CSS/log_in.css";
 import "../../assets/CSS/animations/login_fail.css";
@@ -11,7 +12,8 @@ class LogIn extends React.Component {
     super(props);
 
     this.state = {
-      hasError: false
+      hasError: false,
+      studentShown: false
     };
   }
 
@@ -60,47 +62,115 @@ class LogIn extends React.Component {
     });
   }
 
+  switchUserLogin() {
+    const { studentShown } = this.state;
+    this.setState({
+      ...this.state,
+      studentShown: !studentShown
+    });
+  }
+
   render() {
-    const { hasError } = this.state;
+    const { hasError, studentShown } = this.state;
+
+    const sliderStyle = studentShown
+      ? { transform: "translateX(41px)" }
+      : { transform: "translateX(0px)" };
+    const sliderTextStyle = studentShown
+      ? { transform: "translateX(100px)" }
+      : { transform: "translateX(-90px)" };
+    const sliderText = studentShown ? "Administrator" : "Student";
+
+    const loginPortal = studentShown ? (
+      <div className="teacher-login body">
+        <LogInForm
+          clearError={this.clearError.bind(this)}
+          hasError={hasError}
+          userType={"Administrator"}
+        />
+        <div onClick={e => this.switchUserLogin()} className="switch-box">
+          <span style={sliderTextStyle} className="slider-text">
+            {sliderText}
+          </span>
+          <div className={`slider-container ${sliderText}`}>
+            <div style={sliderStyle} className="slider">
+              <i className="fas fa-chalkboard-teacher" />
+            </div>
+          </div>
+        </div>
+      </div>
+    ) : (
+      <div className="student-login body">
+        <LogInForm
+          clearError={this.clearError.bind(this)}
+          hasError={hasError}
+          userType={"Student"}
+        />
+        <div onClick={e => this.switchUserLogin()} className="switch-box">
+          <span style={sliderTextStyle} className="slider-text">
+            {sliderText}
+          </span>
+          <div className={`slider-container ${sliderText}`}>
+            <div className="slider">
+              <i className="fas fa-user-graduate" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+
+    const youtubeOpts = {
+      height: "315",
+      width: "560"
+    };
 
     return (
       <div className="login container">
         <div className="login header">
-          <div className="login logo">
-            <i className="fas fa-school" />
-          </div>
+          <a
+            className="login logo"
+            href="https://keithsilcock.com"
+            target="_blank"
+          />
           <h1>Education Web Portal</h1>
           <div className="login spacer" />
         </div>
-        <div className="login-boxes">
-          <div className="teacher-login container">
-            <div className="teacher-login header">
-              <h3>
-                <i className="fas fa-chalkboard-teacher" /> Educator
-              </h3>
-            </div>
-            <div className="teacher-login body">
-              <LogInForm
-                clearError={this.clearError.bind(this)}
-                hasError={hasError}
-                userType={"Administrator"}
+        <div className="teacher-login container">
+          <div className="login-top">
+            <div className="youtube-box">
+              <p className="youtube-text bold">
+                Feel free to log in as either a student or an administrator
+              </p>
+              <p className="youtube-text bold">
+                Or if you're short on time, you can watch my overview below
+              </p>
+              <YouTube
+                opts={youtubeOpts}
+                id="login-video"
+                containerClassName="video-span"
+                videoId="wKkfEik21RY"
               />
             </div>
+            {loginPortal}
           </div>
-
-          <div className="student-login container">
-            <div className="student-login header">
-              <h3>
-                <i className="fas fa-user-graduate" /> Student
-              </h3>
-            </div>
-            <div className="student-login body">
-              <LogInForm
-                clearError={this.clearError.bind(this)}
-                hasError={hasError}
-                userType={"Student"}
-              />
-            </div>
+          <div className="login-bottom">
+            <p>
+              This application was designed as a web portal for teachers and
+              students to create and view their course assignments.
+            </p>
+            <p>
+              Teachers can{" "}
+              <span className="bold">Create, Read, Update and Delete</span>{" "}
+              assignments and grades while students may only{" "}
+              <span className="bold">read</span> their assignment scores and
+              comments left by the teacher. You may log in above as a student or
+              an administrator. The login credentials for each have been
+              provided temproarily. Thank you for visting!
+            </p>
+            <p>
+              The technologies used to create this application were ReactJS,
+              ReduxJS and NodeJS.
+            </p>
           </div>
         </div>
       </div>
