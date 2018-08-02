@@ -32,6 +32,26 @@ class LogInForm extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    switch (nextProps.userType) {
+      case "Administrator":
+        this.setState({
+          ...this.state,
+          user_name: "hio985",
+          password: "abc123456"
+        });
+        break;
+      default:
+        this.setState({
+          ...this.state,
+          user_name: "abc123",
+          password: "abc123456"
+        });
+
+        break;
+    }
+  }
+
   handleOnChange(e) {
     const { name, value } = e.target;
     this.props.clearError();
@@ -60,11 +80,17 @@ class LogInForm extends React.Component {
 
     const incorrectFieldClass = hasError ? "invalid-shake" : null;
 
+    // if (this.props.userType === "Administrator") {
+    //   var fontAwesomeIcon = <i className="fas fa-chalkboard-teacher" />;
+    // } else {
+    //   fontAwesomeIcon = <i className="fas fa-user-graduate" />;
+    // }
+
     return (
       <form onSubmit={e => this.handleOnSubmit(e)}>
         <div className="header">
           <h4>
-            <i className="fas fa-door-open" />Welcome, {this.props.userType}!
+            <i class="fas fa-door-open" /> Welcome, {this.props.userType}!
           </h4>
           <h6>Please Login Below!</h6>
         </div>
