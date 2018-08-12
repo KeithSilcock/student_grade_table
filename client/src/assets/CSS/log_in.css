@@ -187,7 +187,6 @@ button.login-form {
 .video-span {
   display: flex;
   justify-content: center;
-  margin-top: 5%;
 }
 .video-span iframe {
   box-shadow: 5px 5px rgb(100, 100, 100);
