@@ -14,7 +14,9 @@ const store = createStore(rootReducer, {}, applyMiddleware(promiseMiddleware));
 ReactDOM.render(
   <Provider store={store}>
     <Router>
-      <App />
+      <App>
+        <link rel="shortcut icon" href="./assets/favicon/favicon.ico" />
+      </App>
     </Router>
   </Provider>,
   document.getElementById("root")
