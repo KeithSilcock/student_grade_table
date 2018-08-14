@@ -171,6 +171,17 @@ class LogIn extends React.Component {
               The technologies used to create this application were ReactJS,
               ReduxJS and NodeJS.
             </p>
+            <div className="no-location links">
+              <a
+                href="https://github.com/KeithSilcock/student_grade_table"
+                target="_blank"
+              >
+                <i class="fab fa-github-square" />
+              </a>
+              <a href="https://keithsilcock.com" target="_blank">
+                My porfolio
+              </a>
+            </div>
           </div>
         </div>
       </div>
