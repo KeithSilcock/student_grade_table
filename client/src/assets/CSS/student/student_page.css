@@ -1,14 +1,25 @@
 .student-portal {
 }
-.student-portal.container {
+.student-portal.body {
   width: 96%;
+  height: 83%;
   margin: auto;
-  height: 80%;
+  box-shadow: 5px 8px 9px 2px #979797;
+  overflow: hidden;
+  position: relative;
+  z-index: 5;
+}
+.student-portal.container {
+  height: 100%;
   display: flex;
   flex-flow: row;
-  box-shadow: 5px 5px #979797;
   border-radius: 0 0 10px 10px;
-  overflow: hidden;
+}
+.student-portal .spacer {
+  height: 10px;
+  margin: auto;
+  border-left: 1px solid #c2c2c2;
+  border-right: 1px solid #c2c2c2;
 }
 .student-portal.left {
   width: 25%;
@@ -16,6 +27,7 @@
   box-sizing: border-box;
   border: 1px solid #c2c2c2;
   border-top: none;
+  overflow: hidden;
 }
 .student-portal.right {
   width: 75%;
@@ -26,6 +38,8 @@
 .class-info {
 }
 .class-info.container {
+  height: 100%;
+  overflow: auto;
 }
 .class-info.header {
   display: flex;
