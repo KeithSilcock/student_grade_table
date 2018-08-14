@@ -142,7 +142,7 @@ class LogIn extends React.Component {
                 Feel free to log in as either a student or an administrator
               </p>
               <p className="youtube-text bold">
-                Or if you're short on time, you can watch my overview below
+                Or if you're short on time, feel free to watch my overview below
               </p>
               <YouTube
                 opts={youtubeOpts}

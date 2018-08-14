@@ -17,15 +17,21 @@ class StudentPortal extends React.Component {
   render() {
     if (this.props.currentClass.class_id) {
       return (
-        <div className="student-portal container">
+        <div className="student-portal body">
           <div
             style={{ backgroundColor: this.props.tabColor }}
-            className="student-portal left"
-          >
-            <ClassInfo />
-          </div>
-          <div className="student-portal right">
-            <AssignmentsPage />
+            className="spacer"
+          />
+          <div className="student-portal container">
+            <div
+              style={{ backgroundColor: this.props.tabColor }}
+              className="student-portal left"
+            >
+              <ClassInfo />
+            </div>
+            <div className="student-portal right">
+              <AssignmentsPage />
+            </div>
           </div>
         </div>
       );

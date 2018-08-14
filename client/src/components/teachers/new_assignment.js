@@ -8,6 +8,7 @@ import {
 import { findRandNumberBetween } from "../../helper/";
 
 import "../../assets/CSS/teacher/new_assignments.css";
+import { header } from "express-validator/check";
 
 class NewAssignment extends React.Component {
   constructor(props) {
@@ -58,6 +59,48 @@ class NewAssignment extends React.Component {
         out_of: outOf,
         assignmentName: homeworkRandomizer(this.props.currentClass.class_name)
       });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const {
+      currentClass: newClass,
+      studentData: { student_list }
+    } = nextProps;
+    const { currentClass: oldClass } = this.props;
+
+    if (newClass.class_id !== oldClass.class_id) {
+      const outOf = findRandNumberBetween(25, 100);
+
+      document.title = "New Assignment";
+
+      if (student_list) {
+        const assignmentData = {};
+        for (
+          let studentIndex = 0;
+          studentIndex < student_list.length;
+          studentIndex++
+        ) {
+          const student = student_list[studentIndex];
+          nextProps.currentClass;
+          if (student.class_id === nextProps.currentClass.class_id) {
+            assignmentData[student.school_id] = {
+              comments: commentRandomizer(
+                `${student.first_name} ${student.last_name}`
+              ),
+              points_total: outOf,
+              score: findRandNumberBetween(0, outOf)
+            };
+          }
+        }
+
+        this.setState({
+          ...this.state,
+          assignmentData,
+          out_of: outOf,
+          assignmentName: homeworkRandomizer(nextProps.currentClass.class_name)
+        });
+      }
     }
   }
 
@@ -138,7 +181,8 @@ class NewAssignment extends React.Component {
       studentData: { student_list },
       currentClass,
       addNewAssignment,
-      getTeacherData
+      getTeacherData,
+      tabColor
     } = this.props;
 
     if (student_list && Object.keys(assignmentData).length) {
@@ -174,7 +218,9 @@ class NewAssignment extends React.Component {
                     name={`score`}
                     value={score}
                   />
-                }/{
+                }
+                /
+                {
                   <input
                     onKeyDown={e =>
                       this.handleDifferentPointsTotal(e, student.school_id)
@@ -205,10 +251,12 @@ class NewAssignment extends React.Component {
       });
     }
 
+    const headerStyle = { backgroundColor: tabColor };
+
     return (
       <div className="new-assignment container">
         <div className="new-assignment top">
-          <div className="new-assignment header">
+          <div style={headerStyle} className="new-assignment header">
             <h3>Create A New Assignment</h3>
           </div>
           <div className="new-assignment title">
@@ -282,7 +330,8 @@ function mapStateToProps(state) {
   return {
     currentClass: state.teacherData.current_class,
     studentData: state.teacherData.student_data,
-    recentPage: state.navData.recentPage
+    recentPage: state.navData.recentPage,
+    tabColor: state.navData.tabColor
   };
 }
 

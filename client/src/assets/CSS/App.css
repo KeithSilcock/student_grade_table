@@ -22,7 +22,8 @@ body {
   background-color: rgb(20, 160, 216);
   color: white;
   cursor: pointer;
-  box-shadow: 1px 1px #5f5f5f;
+  box-shadow: 2px 2px 5px 2px #979797;
+  /* box-shadow: 1px 1px #5f5f5f; */
   outline: 0;
 }
 .standard-green-button {
@@ -31,7 +32,8 @@ body {
   background-color: rgb(44, 189, 116);
   color: white;
   cursor: pointer;
-  box-shadow: 1px 1px #5f5f5f;
+  box-shadow: 2px 2px 5px 2px #979797;
+  /* box-shadow: 1px 1px #5f5f5f; */
   outline: 0;
 }
 .delete-button {
@@ -40,7 +42,8 @@ body {
   background-color: rgb(255, 71, 71);
   color: white;
   cursor: pointer;
-  box-shadow: 1px 1px #5f5f5f;
+  box-shadow: 2px 2px 5px 2px #979797;
+  /* box-shadow: 1px 1px #5f5f5f; */
   outline: 0;
 }
 .bold {
