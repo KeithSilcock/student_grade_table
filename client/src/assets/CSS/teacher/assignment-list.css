@@ -2,6 +2,8 @@
   width: 96%;
   margin: auto;
   height: 85%;
+  z-index: 5;
+  position: relative;
 }
 .assignment-list.content {
   width: 100%;
@@ -15,7 +17,8 @@
   border: 2px solid #c2c2c2;
   border-top: none;
   background-color: #f5fafa;
-  box-shadow: 5px 5px #979797;
+  box-shadow: 5px 8px 9px 2px #979797;
+  overflow: hidden;
 }
 .assignment-list.footer {
   height: 10%;
