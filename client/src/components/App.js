@@ -12,7 +12,6 @@ import NewAssignment from "./teachers/new_assignment";
 import CheckLoggedIn from "./HOC/logged_in";
 
 import "../assets/CSS/App.css";
-// import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 class App extends Component {
   render() {

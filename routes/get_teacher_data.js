@@ -1,6 +1,5 @@
 module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
   webserver.get("/api/get_teacher_data", (req, res) => {
-    console.log("starting teacher teacher data retrieval");
     const output = {
       success: false,
       data: {},
@@ -27,7 +26,6 @@ module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
 
     const sqlQuery = mysql.format(query, inserts);
     dataBase.query(sqlQuery, (error, data, fields) => {
-      console.log("Reached teacher class data query");
       if (!error) {
         output.data.class_list = data;
         const class_ids = data.map(item => {
@@ -51,9 +49,7 @@ module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
       const sqlQuery = mysql.format(query, inserts);
 
       dataBase.query(sqlQuery, (error, data, fields) => {
-        console.log("Reached teacher-student data query");
         if (!error) {
-          // output.student_list = data;
           output.data.student_list = data;
 
           let student_ids = data.map(student => {
@@ -85,7 +81,6 @@ module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
       const sqlQuery = mysql.format(query, inserts);
 
       dataBase.query(sqlQuery, (error, data, fields) => {
-        console.log("Reached teacher assignment data query");
         if (!error) {
           output.data.assignment_list = data;
           output.success = true;

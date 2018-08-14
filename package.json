@@ -4,11 +4,12 @@
   "description": "A student grade table CMS made in JavaScript with React, Redux, and Node.js",
   "main": "webserver.js",
   "dependencies": {
+    "babel": "^6.23.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
-    "express-validator": "^5.2.0",
+    "express-validator": "^5.3.0",
     "mysql": "^2.15.0",
     "slashes": "^1.0.5"
   },
