@@ -53,6 +53,10 @@ class ClassInfo extends React.Component {
           <h1>{currentClass.class_name}</h1>
         </div>
         <div className="class-info content">
+          <div className="class-info course-average">
+            <p className="bold">Grade: </p>
+            <p>{`${(average * 100).toFixed(2)}% ${getLetterGrade(average)}`}</p>
+          </div>
           <div className="class-info teacher">
             <p className="bold">Teacher: </p>
             <p>{`${teachername}`}</p>
@@ -60,10 +64,6 @@ class ClassInfo extends React.Component {
           <div className="class-info course-description">
             <p className="bold">Class Description:</p>
             <p>{`${courseDesc}`}</p>
-          </div>
-          <div className="class-info course-average">
-            <p className="bold">Grade: </p>
-            <p>{`${(average * 100).toFixed(2)}% ${getLetterGrade(average)}`}</p>
           </div>
         </div>
       </div>

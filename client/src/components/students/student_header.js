@@ -16,7 +16,9 @@ class Header extends React.Component {
           <h2 className="header student title">{`${getDailyGreeting()}${
             studentData.name
           }`}</h2>
-          <a href="/logout">Log Out?</a>
+          <a href="/logout">
+            <i class="fas fa-sign-out-alt" /> Log Out?
+          </a>
         </div>
         <div className="header student header-bottom">
           <ClassTabs userType={`student`} />

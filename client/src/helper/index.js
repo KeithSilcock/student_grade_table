@@ -108,9 +108,9 @@ export function getDailyGreeting() {
   const hour = now.getHours();
 
   let greeting = "";
-  if (hour > 0 && hour < 12) {
+  if (hour >= 0 && hour <= 12) {
     greeting = "Good Morning, ";
-  } else if (hour > 12 && hour < 17) {
+  } else if (hour > 12 && hour <= 17) {
     greeting = "Good Afternoon, ";
   } else if (hour > 17) {
     greeting = "Good Evening, ";

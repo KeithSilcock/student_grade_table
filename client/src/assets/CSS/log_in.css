@@ -15,6 +15,7 @@
   display: flex;
   flex-flow: column;
   align-items: center;
+  overflow: auto;
 }
 .login.header {
   width: 100%;
@@ -109,7 +110,7 @@
   height: 50%;
   border: 2px solid rgb(124, 156, 161);
   border-radius: 10px;
-  box-shadow: 5px 5px rgb(92, 106, 109);
+  box-shadow: 5px 8px 9px 2px #979797;
 
   display: flex;
   flex-flow: column;
@@ -181,15 +182,19 @@ button.login-form {
   text-align: center;
   width: 50%;
   height: 100%;
+  /* margin-top: 1%; */
 }
 .youtube-text {
+  margin: 0;
+  margin-top: 2%;
 }
 .video-span {
   display: flex;
   justify-content: center;
 }
 .video-span iframe {
-  box-shadow: 5px 5px rgb(100, 100, 100);
+  box-shadow: 5px 5px 9px 2px #979797;
+  /* box-shadow: 5px 5px rgb(100, 100, 100); */
 }
 
 .switch-box {

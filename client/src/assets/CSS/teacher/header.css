@@ -8,6 +8,7 @@
   justify-content: space-between;
 }
 .header-top {
+  height: 25%;
   width: 100%;
   padding: 0 0 0 2%;
   /* margin-right: 2%; */
@@ -30,6 +31,7 @@
   text-align: center;
 }
 .header-pages {
+  height: 25%;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -68,6 +70,7 @@
   border-bottom: 2px solid #c2c2c2;
 }
 .header-bottom {
+  height: 50%;
   width: 96%;
   margin: 0 auto;
   display: flex;
