@@ -1,7 +1,5 @@
 module.exports = (mysql, webserver, database, encrypt, logger) => {
   webserver.get("/api/get_data_for_student", (req, res) => {
-    console.log("Getting individual student data");
-
     const output = {
       success: false,
       data: {},

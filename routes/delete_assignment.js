@@ -2,8 +2,6 @@ const slashes = require("slashes");
 
 module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
   webserver.post("/api/delete_assignment", (req, res) => {
-    console.log("starting to delete assignment");
-
     const output = {
       success: false,
       data: {},

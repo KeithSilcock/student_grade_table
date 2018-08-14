@@ -13,7 +13,7 @@ Sudents have access to view their grades and assignments.
 
 ## Author
 
-- **Keith Silcck** - _Initial work_ - [KeithSilcock](https://github.com/KeithSilcock)
+- **Keith Silcock** - _Initial work_ - [KeithSilcock](https://github.com/KeithSilcock)
 
 ## Acknowledgments
 
