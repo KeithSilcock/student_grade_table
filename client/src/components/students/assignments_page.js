@@ -67,7 +67,6 @@ class StudentAssignments extends React.Component {
             </tbody>
           </table>
         </div>
-        {/* <div className="student-assignments footer" /> */}
       </div>
     );
   }

@@ -1,7 +1,5 @@
 module.exports = (mysql, webserver, database) => {
   webserver.get("/api/get_student_data", (req, res) => {
-    console.log("attempting to get student data");
-
     const output = {
       success: false,
       data: [],
@@ -30,7 +28,6 @@ module.exports = (mysql, webserver, database) => {
 
     database.query(sqlQuery, (err, data, fields) => {
       if (!err) {
-        console.log("query sucessful");
         output.success = true;
         output.data = data;
         output.message = "Query was successful";

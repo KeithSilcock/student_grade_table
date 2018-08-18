@@ -2,8 +2,6 @@ const slashes = require("slashes");
 
 module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
   webserver.post("/api/add_student_to_class", (req, res) => {
-    console.log("starting to add student to class");
-
     const output = {
       success: false,
       data: {},
@@ -100,7 +98,6 @@ module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
       const sqlQuery = mysql.format(query, inserts);
       dataBase.query(sqlQuery, (error, data, fields) => {
         if (!error) {
-          console.log("Adding student to class: ", req.body.class_id);
           getAllAssignmentsForClass();
         } else {
           logger.simpleLog(__filename, req, error);

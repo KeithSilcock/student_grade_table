@@ -2,8 +2,6 @@ const slashes = require("slashes");
 
 module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
   webserver.post("/api/get_student_name", (req, res, next) => {
-    console.log("Getting data for student name");
-
     const output = {
       success: false,
       data: {},
