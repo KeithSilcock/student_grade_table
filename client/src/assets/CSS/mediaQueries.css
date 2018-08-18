@@ -1,0 +1,64 @@
+@media screen and (max-width: 400px) {
+  .login.container {
+    overflow: auto;
+  }
+  .login.header {
+    height: 10%;
+  }
+  .login.logo {
+    height: 60px;
+    width: 50px;
+    margin: 0;
+  }
+  .login.header h1 {
+    font-size: 1.2em;
+  }
+  .login.spacer {
+    width: 50px;
+  }
+
+  .teacher-login.container {
+    height: 90%;
+    display: block;
+  }
+  .login-top {
+    flex-flow: column;
+    height: auto;
+    align-items: center;
+    margin-bottom: 5%;
+  }
+  .youtube-box {
+    width: 100%;
+  }
+  .youtube-box p {
+    font-weight: normal;
+    font-size: 0.9em;
+  }
+  .student-login.body,
+  .teacher-login.body {
+    width: 80%;
+    margin-top: 3%;
+    border: none;
+  }
+  .student-login.body form,
+  .teacher-login.body form {
+    height: 100%;
+    width: 100%;
+  }
+  .login-actions {
+    padding: 5% 0;
+  }
+  #login-video {
+    box-shadow: unset;
+    height: 214px;
+  }
+
+  .login-bottom {
+    width: 90%;
+    padding: 0 5%;
+  }
+  .login-bottom p:first-of-type {
+    padding-top: 5%;
+    border-top: 1px solid #b3b3b3;
+  }
+}
