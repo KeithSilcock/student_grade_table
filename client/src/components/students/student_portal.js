@@ -8,8 +8,6 @@ import "../../assets/CSS/student/student_page.css";
 
 class StudentPortal extends React.Component {
   componentDidMount() {
-    //get starting data
-    console.log("got here at least");
     this.props.getStudentData();
     document.title = "Student Data";
   }

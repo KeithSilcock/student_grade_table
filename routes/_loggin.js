@@ -5,7 +5,6 @@ module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
   // ==== Logging In ====
   // ====================
   webserver.post("/api/login", (req, res) => {
-    console.log("starting log-in process");
     const output = {
       success: false,
       data: {},
@@ -27,7 +26,6 @@ module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
 
     const mysqlQuery = mysql.format(query, inserts);
     dataBase.query(mysqlQuery, (error, data, fields) => {
-      console.log("Reached user loggin query");
       if (!error) {
         if (data.length > 0) {
           encrypt.compare(

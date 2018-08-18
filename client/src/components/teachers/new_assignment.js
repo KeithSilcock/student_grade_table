@@ -120,8 +120,6 @@ class NewAssignment extends React.Component {
     var newAssignmentData = {};
 
     for (let student_id in assignmentData) {
-      // let student = assignmentData[student_id];
-
       if (!canEditPointsTotal[student_id]) {
         newAssignmentData = {
           ...newAssignmentData,
@@ -162,7 +160,6 @@ class NewAssignment extends React.Component {
 
   handleDifferentPointsTotal(e, school_id) {
     const { canEditPointsTotal } = this.state;
-    // if (e.key === "Backspace") {
     this.setState({
       ...this.state,
       canEditPointsTotal: { ...canEditPointsTotal, [school_id]: true }
@@ -199,10 +196,7 @@ class NewAssignment extends React.Component {
           }
 
           return (
-            <tr
-              key={index}
-              // className="teacher-student-table-row"
-            >
+            <tr key={index}>
               <td>
                 {student.first_name} {student.last_name}
               </td>

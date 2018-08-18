@@ -2,8 +2,6 @@ const slashes = require("slashes");
 
 module.exports = function(mysql, webserver, dataBase, encrypt, logger) {
   webserver.post("/api/update_score", (req, res) => {
-    console.log("starting update score procedure");
-
     const output = {
       success: false,
       data: {},

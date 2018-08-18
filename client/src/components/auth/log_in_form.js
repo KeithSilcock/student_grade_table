@@ -80,12 +80,6 @@ class LogInForm extends React.Component {
 
     const incorrectFieldClass = hasError ? "invalid-shake" : null;
 
-    // if (this.props.userType === "Administrator") {
-    //   var fontAwesomeIcon = <i className="fas fa-chalkboard-teacher" />;
-    // } else {
-    //   fontAwesomeIcon = <i className="fas fa-user-graduate" />;
-    // }
-
     return (
       <form onSubmit={e => this.handleOnSubmit(e)}>
         <div className="header">

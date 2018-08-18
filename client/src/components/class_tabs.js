@@ -54,7 +54,6 @@ class ClassTabs extends React.Component {
       );
     });
 
-    // const displayText = Object.keys(currentClass).length ? `${currentClass.class_name}` : "Classes: ";
     return (
       <div className="class-tabs container">
         <ul className={"class-tabs list"}>{classTabs}</ul>

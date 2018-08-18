@@ -20,7 +20,6 @@ class StudentList extends React.Component {
   }
   async componentWillMount() {
     try {
-      // await this.props.teacherLogin();
       await this.props.getTeacherData();
     } catch (err) {
       throw err;
