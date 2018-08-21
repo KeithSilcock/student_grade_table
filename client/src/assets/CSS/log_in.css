@@ -2,9 +2,9 @@
 }
 .login.logo {
   width: 100px;
-  height: 100px;
+  /* height: 50px; */
   margin-left: 2%;
-  background-image: url("../Images/KWS_logo.png");
+  /* background-image: url("../Images/KWS_logo.png"); */
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -42,6 +42,7 @@
   border-radius: 10px;
   color: rgb(36, 149, 255);
 }
+
 .login.spacer {
   width: 5%;
 }
@@ -69,6 +70,7 @@
 .login-bottom {
   height: 30%;
   padding: 0 15%;
+  margin-bottom: 3%;
   text-align: center;
 }
 
@@ -185,8 +187,7 @@ button.login-form {
   /* margin-top: 1%; */
 }
 .youtube-text {
-  margin: 0;
-  margin-top: 2%;
+  margin: 2%;
 }
 .video-span {
   display: flex;
@@ -212,6 +213,10 @@ button.login-form {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  cursor: pointer;
+}
+.Student .slider {
+  transform: translateX(-2px);
 }
 .slider-container.Administrator {
   background-color: #47cbff;

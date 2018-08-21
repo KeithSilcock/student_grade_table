@@ -1,7 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import {} from "../../actions";
-import { getAverageFromAssignments, formatGrade } from "../../helper";
+import {
+  getAverageFromAssignments,
+  formatGrade,
+  getClassAverage,
+  getLetterGrade
+} from "../../helper";
 import DoubleClickToEdit from "./double_click_editable";
 import AddNewStudent from "./add_new_student";
 
@@ -25,6 +30,7 @@ class AssignmentsTab extends React.Component {
         assignment_list,
         currentClass
       );
+      var averageClassGrade = getClassAverage(assignment_list, currentClass);
     }
     if (averageGradePerAssignment) {
       var renderAvgPerAssignment = Object.keys(averageGradePerAssignment).map(
@@ -41,10 +47,13 @@ class AssignmentsTab extends React.Component {
                 />
               </td>
               <td className={`roster-assignment average score`}>
-                {formatGrade(
+                <span className="roster-assignment avg">{`${formatGrade(
                   assignmentAverage.avg / assignmentAverage.count,
                   2
-                )}
+                )}`}</span>
+                <span className="roster-assignment letter-grade">{`${getLetterGrade(
+                  assignmentAverage.avg / assignmentAverage.count
+                )}`}</span>
               </td>
             </tr>
           );
@@ -84,6 +93,9 @@ class AssignmentsTab extends React.Component {
                     valueName={`points_total`}
                     objectData={item}
                   />
+                  <span className="roster-assignment avg">{`${formatGrade(
+                    item.score / item.points_total
+                  )}`}</span>
                 </div>
               </td>
             </tr>
@@ -96,7 +108,7 @@ class AssignmentsTab extends React.Component {
 
     const headerName = activeStudent.firstName
       ? `${activeStudent.firstName} ${activeStudent.lastName}: `
-      : "Assignment Avg:";
+      : `Class Avg: ${formatGrade(averageClassGrade, 2)}`;
     const headerStyle = { backgroundColor: tabColor };
 
     return (

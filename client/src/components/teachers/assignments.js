@@ -4,7 +4,12 @@ import { getTeacherData, deleteAssignment } from "../../actions";
 import AddNewStudent from "./add_new_student";
 import DoubleClickToEdit from "./double_click_editable";
 import WarningModal from "./warning_modal";
-import { formatGrade, getAverageFromAssignments } from "../../helper";
+import {
+  formatGrade,
+  getAverageFromAssignments,
+  getClassAverage,
+  getLetterGrade
+} from "../../helper";
 
 import "../../assets/CSS/teacher/assignment-list.css";
 import "../../assets/CSS/animations/delete_anim.css";
@@ -19,8 +24,12 @@ class TeacherAssignment extends React.Component {
       openInput_id: "",
       pressedDelete: { bool: false, id: "" },
       deleteModalOpen: false,
-      deleteAssignmentObj: { name: "", id: "" }
+      deleteAssignmentObj: { name: "", id: "" },
+      selectedAssignment_id: null,
+      selectedAssignment_id: null
     };
+
+    this.liveTimeout = null;
   }
 
   async componentWillMount() {
@@ -115,6 +124,47 @@ class TeacherAssignment extends React.Component {
     this.props.history.push("/teacher-portal/new-assignment");
   }
 
+  selectStudent(e, student_id) {
+    const { selectedStudent_id } = this.state;
+
+    if (selectedStudent_id !== student_id) {
+      this.setState({
+        ...this.state,
+        selectedStudent_id: student_id
+      });
+    } else {
+      this.setState({
+        ...this.state,
+        selectedStudent_id: null
+      });
+    }
+  }
+  selectAssignment(e, assignment_id) {
+    const { selectedAssignment_id } = this.state;
+
+    if (this.liveTimeout === null) {
+      this.liveTimeout = setTimeout(() => {
+        if (selectedAssignment_id !== assignment_id) {
+          this.setState({
+            ...this.state,
+            selectedAssignment_id: assignment_id
+          });
+        } else {
+          this.setState({
+            ...this.state,
+            selectedAssignment_id: null
+          });
+        }
+
+        clearTimeout(this.liveTimeout);
+        this.liveTimeout = null;
+      }, 150);
+    } else {
+      clearTimeout(this.liveTimeout);
+      this.liveTimeout = null;
+    }
+  }
+
   render() {
     const {
       availableAssignments,
@@ -122,7 +172,9 @@ class TeacherAssignment extends React.Component {
       openInput_id,
       pressedDelete,
       deleteModalOpen,
-      deleteAssignmentObj
+      deleteAssignmentObj,
+      selectedStudent_id,
+      selectedAssignment_id
     } = this.state;
     const {
       currentClass,
@@ -138,6 +190,7 @@ class TeacherAssignment extends React.Component {
         assignment_list,
         currentClass
       );
+      var classAverage = getClassAverage(assignment_list, currentClass);
     }
 
     //get all table headers
@@ -154,6 +207,9 @@ class TeacherAssignment extends React.Component {
           return (
             <Fragment key={index}>
               <th
+                onClick={e =>
+                  this.selectAssignment(e, assignment.assignment_id)
+                }
                 className={`assignment-list sortableHeader ${deleteAnimationClasses}`}
                 data-sort={assignment.assignment_name}
               >
@@ -189,7 +245,8 @@ class TeacherAssignment extends React.Component {
           //if they are editing a grade, mark student name
           //in color to indicate editing
           var studentEditOpenClass =
-            editingOpen && openInput_id === student.school_id
+            (editingOpen && openInput_id === student.school_id) ||
+            selectedStudent_id === student.school_id
               ? "editing-student"
               : "";
 
@@ -198,6 +255,11 @@ class TeacherAssignment extends React.Component {
               student.school_id
             ].assignments.map((assignment, index2) => {
               if (currentClass.class_id === assignment.class_id) {
+                const selectedAssignmentClass =
+                  assignment.assignment_id === selectedAssignment_id
+                    ? "selected-column"
+                    : "";
+
                 const redZeroClass = assignment.points_total ? "" : "red-zero";
 
                 const deleteAnimationClasses =
@@ -209,7 +271,7 @@ class TeacherAssignment extends React.Component {
                 return (
                   <td
                     key={index2}
-                    className={`assignment-list ${deleteAnimationClasses} ${studentEditOpenClass}`}
+                    className={`assignment-list ${deleteAnimationClasses} ${studentEditOpenClass} ${selectedAssignmentClass}`}
                   >
                     <div className="assignment-list assignment">
                       <DoubleClickToEdit
@@ -245,7 +307,10 @@ class TeacherAssignment extends React.Component {
           }
           return (
             <tr key={index1} className={`${studentEditOpenClass}`}>
-              <td className={studentEditOpenClass}>
+              <td
+                onClick={e => this.selectStudent(e, student.school_id)}
+                className={studentEditOpenClass}
+              >
                 {student.first_name} {student.last_name}
               </td>
               {assignment_row_data}
@@ -302,7 +367,12 @@ class TeacherAssignment extends React.Component {
         {renderDeleteModal}
         <div className="assignment-list content">
           <div style={headerStyle} className="assignment-list header">
-            <h3>Assignments</h3>
+            <h3>
+              Class avg:{" "}
+              {`${formatGrade(classAverage, 2)} ${getLetterGrade(
+                classAverage
+              )}`}
+            </h3>
           </div>
           <div className="assignment-list scroll-area">
             <table className="assignment-list table">
