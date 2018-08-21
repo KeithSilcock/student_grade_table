@@ -61,7 +61,8 @@ class Header extends React.Component {
               className={`${assignmentsClass}`}
               to="/teacher-portal/assignment-list"
             >
-              <i className="far fa-edit" />Assignments
+              <i className="far fa-edit" />
+              Assignments
             </Link>
             <Link
               className={`${rosterClass}`}
@@ -71,14 +72,18 @@ class Header extends React.Component {
               }}
               to="/teacher-portal/student-list"
             >
-              <i className="fas fa-users" />Roster
+              <i className="fas fa-users" />
+              Roster
             </Link>
           </div>
           <div className="header header-spacer-2" />
         </div>
         <div className="header header-bottom">
           <ClassTabs userType={`teacher`} />
-          <div className="header header-spacer-3"> </div>
+          <div className="header header-spacer-3">
+            {" "}
+            Double click to edit scores and assignments below
+          </div>
           <div className="header buttons">{exitNewAssignmentButton}</div>
         </div>
       </div>

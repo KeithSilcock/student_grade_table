@@ -103,6 +103,23 @@ export function getAverageFromAssignments(assignment_list, currentClass) {
   }, {});
 }
 
+export function getClassAverage(assignment_list, currentClass) {
+  let count = 0;
+  const avg = assignment_list.reduce((prev, assignment) => {
+    if (assignment.class_id === currentClass.class_id) {
+      if (assignment.points_total > 0) {
+        count++;
+        return prev + assignment.score / assignment.points_total;
+      } else {
+        return prev;
+      }
+    } else {
+      return prev;
+    }
+  }, 0);
+  return avg / count;
+}
+
 export function getDailyGreeting() {
   const now = new Date();
   const hour = now.getHours();

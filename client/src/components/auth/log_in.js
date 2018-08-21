@@ -6,6 +6,7 @@ import YouTube from "react-youtube";
 
 import "../../assets/CSS/log_in.css";
 import "../../assets/CSS/animations/login_fail.css";
+import kwsLogo from "../../assets/Images/KWS_logo.png";
 
 class LogIn extends React.Component {
   constructor(props) {
@@ -73,9 +74,7 @@ class LogIn extends React.Component {
   render() {
     const { hasError, studentShown } = this.state;
 
-    const sliderStyle = studentShown
-      ? { transform: "translateX(41px)" }
-      : { transform: "translateX(0px)" };
+    const sliderStyle = studentShown ? { transform: "translateX(42px)" } : {};
     const sliderTextStyle = studentShown
       ? { transform: "translateX(100px)" }
       : { transform: "translateX(-90px)" };
@@ -127,11 +126,9 @@ class LogIn extends React.Component {
     return (
       <div className="login container">
         <div className="login header">
-          <a
-            className="login logo"
-            href="https://keithsilcock.com"
-            target="_blank"
-          />
+          <a href="https://sgt.keithsilcock.com" target="_blank">
+            <img className="login logo" src={kwsLogo} alt="" />
+          </a>
           <h1>Education Web Portal</h1>
           <div className="login spacer" />
         </div>
@@ -169,7 +166,7 @@ class LogIn extends React.Component {
             </p>
             <p>
               The technologies used to create this application were ReactJS,
-              ReduxJS and NodeJS.
+              ReduxJS and NodeJS with an MySQL Database.
             </p>
             <div className="no-location links">
               <a
@@ -179,7 +176,7 @@ class LogIn extends React.Component {
                 <i class="fab fa-github-square" />
               </a>
               <a href="https://keithsilcock.com" target="_blank">
-                My porfolio
+                My portfolio
               </a>
             </div>
           </div>

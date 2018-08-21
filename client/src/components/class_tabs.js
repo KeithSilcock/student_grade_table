@@ -35,6 +35,12 @@ class ClassTabs extends React.Component {
     const classTabs = Object.keys(classes).map((item, index, array) => {
       const selectedTabClass =
         currentClass.class_id === classes[item].class_id ? "selected-tab" : "";
+
+      const unselectedTabsStyle =
+        currentClass.class_id === classes[item].class_id
+          ? {}
+          : { borderBottom: "2px solid #bbbbbb" };
+
       return (
         <li
           key={index}
@@ -46,7 +52,8 @@ class ClassTabs extends React.Component {
           className={`class-tabs item ${selectedTabClass}`}
           style={{
             minWidth: `${(100 / Object.keys(classes).length).toFixed(3)}%`,
-            backgroundColor: getTabColor(index)
+            backgroundColor: getTabColor(index),
+            ...unselectedTabsStyle
           }}
         >
           {`${item}`}
