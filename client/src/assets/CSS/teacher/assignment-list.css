@@ -95,6 +95,9 @@
   border-bottom: none;
   border-left: none;
 }
+.assignment-list.table-body tr:nth-child(n + 1) td:first-of-type {
+  cursor: pointer;
+}
 .assignment-list.table-body tr:last-of-type td {
   border-bottom: 1px solid #adadad;
 }
@@ -118,6 +121,7 @@
 
 .assignment-list .editable-container {
   align-self: center;
+  /* cursor: pointer; */
 }
 .editable-input {
   text-align: center;
@@ -149,7 +153,9 @@
 .editing-student > td {
   background-color: rgb(207, 207, 207) !important;
 }
-
+.selected-column {
+  background-color: rgb(207, 207, 207) !important;
+}
 .assignment-list.average {
   background-color: #b7efff !important;
 }

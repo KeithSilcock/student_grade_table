@@ -1,4 +1,4 @@
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 700px) {
   .login.container {
     overflow: auto;
   }
@@ -50,7 +50,7 @@
   }
   #login-video {
     box-shadow: unset;
-    height: 214px;
+    height: 318px;
   }
 
   .login-bottom {
@@ -60,5 +60,12 @@
   .login-bottom p:first-of-type {
     padding-top: 5%;
     border-top: 1px solid #b3b3b3;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  #login-video {
+    box-shadow: unset;
+    height: 214px;
   }
 }

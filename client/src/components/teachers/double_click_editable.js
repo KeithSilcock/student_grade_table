@@ -25,6 +25,19 @@ class DoubleClickToEdit extends React.Component {
     this.state;
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { valueName, objectData } = nextProps;
+    const { objectData: prevObjectData } = this.props;
+
+    if (JSON.stringify(objectData) !== JSON.stringify(prevObjectData)) {
+      this.setState({
+        ...this.state,
+        currentName: valueName,
+        currentValue: objectData[valueName]
+      });
+    }
+  }
+
   closeInputOnEscape(e) {
     if (e.key === "Escape") {
       this.closeEditMode();
@@ -57,6 +70,7 @@ class DoubleClickToEdit extends React.Component {
   }
   openEditMode(e) {
     const { toggleEditMode, objectData } = this.props;
+
     this.state;
     this.setState(
       {
