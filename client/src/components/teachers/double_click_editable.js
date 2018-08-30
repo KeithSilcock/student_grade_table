@@ -2,8 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { changeScore, getTeacherData } from "../../actions";
 
-import "../../assets/CSS/teacher/doubleClick.css";
-
 class DoubleClickToEdit extends React.Component {
   constructor(props) {
     super(props);
@@ -46,7 +44,7 @@ class DoubleClickToEdit extends React.Component {
 
   onChangeValue(e) {
     const { name, value } = e.target;
-
+    debugger;
     this.setState({
       ...this.state,
       currentName: name,
@@ -71,7 +69,6 @@ class DoubleClickToEdit extends React.Component {
   openEditMode(e) {
     const { toggleEditMode, objectData } = this.props;
 
-    this.state;
     this.setState(
       {
         inputIsOpen: true
@@ -94,26 +91,31 @@ class DoubleClickToEdit extends React.Component {
   }
   render() {
     const { inputIsOpen, currentName, currentValue } = this.state;
-    const { valueName, objectData, inputSize } = this.props;
+    const { valueName, objectData, inputSize, type } = this.props;
 
     const renderInput = inputIsOpen ? (
-      <form
-        className="editable-form"
-        onSubmit={e => this.onInputSubmit(e, objectData)}
-      >
-        <input
-          onKeyDown={e => this.closeInputOnEscape(e)}
-          className="editable-input"
-          autoFocus={true}
-          onFocus={e => e.target.select()}
-          size={inputSize}
-          onChange={e => this.onChangeValue(e)}
-          onBlur={e => this.closeEditMode(e)}
-          type="text"
-          name={currentName}
-          value={currentValue}
-        />
-      </form>
+      <div className="form-container">
+        <form
+          className="editable-form"
+          onSubmit={e => this.onInputSubmit(e, objectData)}
+        >
+          <input
+            onKeyDown={e => this.closeInputOnEscape(e)}
+            className="editable-input"
+            autoFocus={true}
+            onFocus={e => e.target.select()}
+            size={inputSize}
+            onChange={e => {
+              this.onChangeValue(e);
+            }}
+            onBlur={e => this.closeEditMode(e)}
+            type={type}
+            name={currentName}
+            value={currentValue}
+          />
+        </form>
+        <span className="editable-span">{objectData[valueName]}</span>
+      </div>
     ) : (
       <span className="editable-span">{objectData[valueName]}</span>
     );
@@ -121,7 +123,10 @@ class DoubleClickToEdit extends React.Component {
     return (
       <div
         className="editable-container"
-        onDoubleClick={e => this.openEditMode(e)}
+        onClick={e => {
+          e.stopPropagation();
+          this.openEditMode(e);
+        }}
       >
         {renderInput}
       </div>

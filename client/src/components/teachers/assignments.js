@@ -226,6 +226,8 @@ class TeacherAssignment extends React.Component {
                 </div>
                 <div className="assignment-list assignment-name">
                   <DoubleClickToEdit
+                    inputSize={12}
+                    type="text"
                     valueName="assignment_name"
                     objectData={assignment}
                     toggleEditMode={e => this.toggleEditMode(e)}
@@ -276,6 +278,7 @@ class TeacherAssignment extends React.Component {
                     <div className="assignment-list assignment">
                       <DoubleClickToEdit
                         inputSize={4}
+                        type="number"
                         valueName="score"
                         objectData={assignment}
                         toggleEditMode={e => this.toggleEditMode(e)}
@@ -283,6 +286,7 @@ class TeacherAssignment extends React.Component {
                       <span className="assignment-list spacer">/</span>
                       <DoubleClickToEdit
                         inputSize={4}
+                        type="number"
                         valueName="points_total"
                         objectData={assignment}
                         className={redZeroClass}
@@ -368,7 +372,7 @@ class TeacherAssignment extends React.Component {
         <div className="assignment-list content">
           <div style={headerStyle} className="assignment-list header">
             <h3>
-              Class avg:{" "}
+              Class Average:{" "}
               {`${formatGrade(classAverage, 2)} ${getLetterGrade(
                 classAverage
               )}`}

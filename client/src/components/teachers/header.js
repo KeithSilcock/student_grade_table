@@ -82,7 +82,7 @@ class Header extends React.Component {
           <ClassTabs userType={`teacher`} />
           <div className="header header-spacer-3">
             {" "}
-            Double click to edit scores and assignments below
+            Click to edit scores and assignments below
           </div>
           <div className="header buttons">{exitNewAssignmentButton}</div>
         </div>

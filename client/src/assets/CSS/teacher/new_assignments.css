@@ -1,5 +1,5 @@
 .new-assignment.container {
-  height: 85%;
+  height: 83%;
   width: 96%;
   margin: auto;
   display: flex;
@@ -8,15 +8,15 @@
   box-sizing: border-box;
   border: 2px solid rgb(194, 194, 194);
   border-top: none;
-  border-radius: 0 0 10px 10px;
   position: relative;
   z-index: 5;
   box-shadow: 5px 8px 9px 2px #979797;
+  border-radius: 0 0 10px 10px;
 }
 .new-assignment.top {
   display: flex;
   flex-flow: column;
-  height: 95%;
+  height: 99%;
   align-items: center;
   width: 100%;
 }
@@ -40,6 +40,14 @@
 .new-assignment .spacer {
   width: 15%;
 }
+.new-assignment.add-assignment {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.new-assignment.add-assignment button {
+  height: 50%;
+}
 
 .new-assignment.table {
   width: 100%;
@@ -48,7 +56,7 @@
 }
 .new-assignment.title {
   width: 100%;
-  height: 7.5%;
+  height: 15%;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -65,6 +73,7 @@
 .new-assignment.input-box.total-score input {
   width: 2em;
   text-align: center;
+  padding: 5px 0;
 }
 
 .new-assignment.student-info {
@@ -87,14 +96,34 @@
 
 .new-assignment td,
 .new-assignment th {
-  width: 20%;
+  width: 30%;
   text-align: center;
+}
+.new-assignment tr .divisor {
+  font-size: 2em;
+}
+.new-assignment tr td:nth-child(2) {
+  display: flex;
+  justify-content: center;
+}
+.new-assignment tr td:nth-child(3) {
+  width: 30%;
+}
+.new-assignment.points-inputs {
+  width: 40%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 .new-assignment thead tr,
 .new-assignment tbody tr {
   width: 100%;
   display: flex;
   justify-content: space-evenly;
+}
+.new-assignment textarea[name="comments"] {
+  color: black;
 }
 
 .new-assignment.score,
