@@ -201,34 +201,36 @@ class NewAssignment extends React.Component {
                 {student.first_name} {student.last_name}
               </td>
               <td>
-                {
-                  <input
-                    className="new-assignment input score"
-                    onChange={e =>
-                      this.changeStudentInput(e, student.school_id)
-                    }
-                    onFocus={e => e.target.select()}
-                    type="text"
-                    name={`score`}
-                    value={score}
-                  />
-                }
-                /
-                {
-                  <input
-                    onKeyDown={e =>
-                      this.handleDifferentPointsTotal(e, student.school_id)
-                    }
-                    className="new-assignment input points_total"
-                    onChange={e =>
-                      this.changeStudentInput(e, student.school_id)
-                    }
-                    onFocus={e => e.target.select()}
-                    type="text"
-                    name={`points_total`}
-                    value={points}
-                  />
-                }
+                <div className="new-assignment points-inputs">
+                  {
+                    <input
+                      className="new-assignment input score"
+                      onChange={e =>
+                        this.changeStudentInput(e, student.school_id)
+                      }
+                      onFocus={e => e.target.select()}
+                      type="text"
+                      name={`score`}
+                      value={score}
+                    />
+                  }
+                  <span className="divisor">/</span>
+                  {
+                    <input
+                      onKeyDown={e =>
+                        this.handleDifferentPointsTotal(e, student.school_id)
+                      }
+                      className="new-assignment input points_total"
+                      onChange={e =>
+                        this.changeStudentInput(e, student.school_id)
+                      }
+                      onFocus={e => e.target.select()}
+                      type="text"
+                      name={`points_total`}
+                      value={points}
+                    />
+                  }
+                </div>
               </td>
               <td>
                 <textarea
@@ -276,6 +278,23 @@ class NewAssignment extends React.Component {
                 value={out_of}
               />
             </div>
+            <div className="new-assignment add-assignment">
+              <button
+                onClick={e => {
+                  const {
+                    assignmentName,
+                    assignmentData,
+                    out_of,
+                    canEditPointsTotal
+                  } = this.state;
+                  addNewAssignment(this.state, currentClass.class_id);
+                  this.props.history.push(this.props.recentPage);
+                }}
+                className="standard-green-button"
+              >
+                Create Assignment
+              </button>
+            </div>
           </div>
           <div className="new-assignment student-info">
             <table className="new-assignment container table">
@@ -297,23 +316,6 @@ class NewAssignment extends React.Component {
               </tbody>
             </table>
           </div>
-        </div>
-        <div className="new-assignment bottom">
-          <button
-            onClick={e => {
-              const {
-                assignmentName,
-                assignmentData,
-                out_of,
-                canEditPointsTotal
-              } = this.state;
-              addNewAssignment(this.state, currentClass.class_id);
-              this.props.history.push(this.props.recentPage);
-            }}
-            className="standard-green-button"
-          >
-            Add Assignment
-          </button>
         </div>
       </div>
     );

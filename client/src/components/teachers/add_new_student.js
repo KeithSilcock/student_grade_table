@@ -152,7 +152,7 @@ class AddNewStudent extends React.Component {
             {studentNameItem}
           </ul>
         </form>
-        <p className="add-new-student tool-tip">Hint:</p>
+        <p className="add-new-student tool-tip red-text bold">Demo Usage:</p>
         <p className="add-new-student tool-tip">
           <span className="bold">NSD908</span> to add a new student
         </p>

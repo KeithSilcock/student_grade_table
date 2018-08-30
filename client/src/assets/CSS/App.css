@@ -17,34 +17,46 @@ body {
   margin: auto;
 }
 .standard-button {
-  border-radius: 10px;
-  border-color: rgb(35, 179, 204);
+  border-radius: 5px;
+  /* border-color: rgb(35, 179, 204); */
   background-color: rgb(20, 160, 216);
   color: white;
   cursor: pointer;
-  box-shadow: 2px 2px 5px 2px #979797;
+  box-shadow: 0px 1px 4px 1px #979797;
   /* box-shadow: 1px 1px #5f5f5f; */
   outline: 0;
+  border: none;
+}
+.standard-button:hover {
+  background-color: rgb(15, 132, 179);
 }
 .standard-green-button {
-  border-radius: 10px;
-  border-color: rgb(45, 177, 133);
-  background-color: rgb(44, 189, 116);
+  border-radius: 5px;
+  /* border-color: rgb(45, 177, 133); */
+  background-color: rgb(48, 207, 128);
   color: white;
   cursor: pointer;
-  box-shadow: 2px 2px 5px 2px #979797;
+  box-shadow: 0px 1px 4px 1px #979797;
   /* box-shadow: 1px 1px #5f5f5f; */
   outline: 0;
+  border: none;
+}
+.standard-green-button:hover {
+  background-color: rgb(39, 155, 97);
 }
 .delete-button {
-  border-radius: 10px;
-  border-color: rgb(196, 58, 58);
+  border-radius: 5px;
+  /* border-color: rgb(196, 58, 58); */
+  border: none;
   background-color: rgb(255, 71, 71);
   color: white;
   cursor: pointer;
-  box-shadow: 2px 2px 5px 2px #979797;
+  box-shadow: 0px 1px 4px 1px #979797;
   /* box-shadow: 1px 1px #5f5f5f; */
   outline: 0;
+}
+.delete-button:hover {
+  background-color: rgb(201, 56, 56);
 }
 .bold {
   font-weight: bold;
@@ -64,4 +76,67 @@ body {
 }
 .fa-github-square {
   font-size: 1.5em;
+}
+.grey {
+  background-color: #eff0f0;
+}
+.red-text {
+  color: red;
+}
+
+input[type="text"],
+input[type="password"] {
+  font-size: 1.2em;
+  color: black !important;
+}
+input[type="text"],
+input[type="password"],
+textarea {
+  color: rgb(104, 104, 104);
+  border: none;
+  border-radius: 3px;
+  padding: 10px 0 6px 5px;
+  box-shadow: 0px 4px 7px -3px grey, 0px 0px 5px 1px rgb(212, 212, 212);
+}
+input[type="number"] {
+  color: rgb(104, 104, 104);
+  border: none;
+  border-radius: 3px;
+  padding: 5px 0 5px 1px;
+  box-shadow: 0px 4px 7px -3px grey, 0px 0px 5px 1px rgb(212, 212, 212);
+  width: 50px;
+  font-size: 1.2em;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+textarea {
+  font-size: 1.4em;
+  width: 100%;
+  position: relative;
+  line-height: 1.3em;
+}
+textarea:focus,
+input:focus {
+  outline: none;
+  box-shadow: 0px 4px 7px -3px grey, 0px 0px 3px 1px rgb(211, 211, 211);
+}
+
+textarea::-webkit-scrollbar {
+  width: 0.5em;
+  height: 10px;
+}
+textarea::-webkit-scrollbar-thumb {
+  background: rgb(189, 189, 189);
+}
+textarea::-webkit-scrollbar-track {
+  background: rgb(218, 218, 218);
+}
+textarea::-webkit-resizer {
+  display: none;
+}
+textarea::-webkit-scrollbar-corner {
+  background: rgb(218, 218, 218);
 }
