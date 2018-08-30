@@ -43,7 +43,7 @@
 }
 .header-pages a {
   text-decoration: none;
-  color: #4d4d4d;
+  color: black;
   padding: 5px;
   border: 1px solid rgb(187, 187, 187);
   background-color: rgb(255, 255, 255);
@@ -96,12 +96,16 @@
 }
 .header.cancel-button {
   height: 70%;
-  border-radius: 10px 10px 0 0;
-  border-color: rgb(196, 58, 58);
+  border-radius: 5px 5px 0 0;
+  /* border-color: rgb(196, 58, 58); */
+  border: none;
   border-bottom: 2px solid rgb(194, 194, 194);
   background-color: rgb(255, 71, 71);
   color: white;
   cursor: pointer;
   outline: 0;
   box-shadow: 5px 5px 9px 2px #979797;
+}
+.header.cancel-button:hover {
+  background-color: rgb(231, 62, 62);
 }

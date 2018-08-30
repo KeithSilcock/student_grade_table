@@ -33,7 +33,7 @@ body {
 .standard-green-button {
   border-radius: 5px;
   /* border-color: rgb(45, 177, 133); */
-  background-color: rgb(44, 189, 116);
+  background-color: rgb(48, 207, 128);
   color: white;
   cursor: pointer;
   box-shadow: 0px 1px 4px 1px #979797;
@@ -41,15 +41,22 @@ body {
   outline: 0;
   border: none;
 }
+.standard-green-button:hover {
+  background-color: rgb(39, 155, 97);
+}
 .delete-button {
-  border-radius: 10px;
-  border-color: rgb(196, 58, 58);
+  border-radius: 5px;
+  /* border-color: rgb(196, 58, 58); */
+  border: none;
   background-color: rgb(255, 71, 71);
   color: white;
   cursor: pointer;
-  box-shadow: 2px 2px 5px 2px #979797;
+  box-shadow: 0px 1px 4px 1px #979797;
   /* box-shadow: 1px 1px #5f5f5f; */
   outline: 0;
+}
+.delete-button:hover {
+  background-color: rgb(201, 56, 56);
 }
 .bold {
   font-weight: bold;
