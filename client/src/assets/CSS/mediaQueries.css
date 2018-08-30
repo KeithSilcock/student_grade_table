@@ -1,3 +1,8 @@
+@media screen and (max-width: 1100px) {
+  .new-assignment.points-inputs {
+    width: 75%;
+  }
+}
 @media screen and (max-width: 700px) {
   .login.container {
     overflow: auto;
@@ -6,8 +11,8 @@
     height: 10%;
   }
   .login.logo {
-    height: 60px;
-    width: 50px;
+    height: 40px;
+    width: 70px;
     margin: 0;
   }
   .login.header h1 {
@@ -37,13 +42,17 @@
   .student-login.body,
   .teacher-login.body {
     width: 80%;
-    margin-top: 3%;
+    margin-top: 10%;
     border: none;
   }
   .student-login.body form,
   .teacher-login.body form {
     height: 100%;
     width: 100%;
+  }
+  .student-login.body form .header,
+  .teacher-login.body form .header {
+    height: 60px;
   }
   .login-actions {
     padding: 5% 0;

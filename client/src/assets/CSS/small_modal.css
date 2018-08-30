@@ -1,6 +1,7 @@
 .cant-click-through {
   width: 100vw;
   height: 100vh;
+  transform: translate(-2%, -15%);
   position: absolute;
   left: 0;
   top: 0;
@@ -29,6 +30,7 @@
 }
 .warning-modal.header {
   width: 100%;
+  height: 20%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -38,11 +40,12 @@
   width: 20px;
   height: 50%;
   cursor: pointer;
-  font-size: 1.5em;
+  font-size: 1.8em;
+  align-self: flex-start;
 }
 .warning-modal.content {
   width: 100%;
-  height: 100%;
+  /* height: 80%; */
   display: flex;
   justify-content: center;
   align-items: center;

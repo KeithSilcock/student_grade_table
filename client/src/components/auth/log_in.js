@@ -162,7 +162,8 @@ class LogIn extends React.Component {
               <span className="bold">read</span> their assignment scores and
               comments left by the teacher. You may log in above as a student or
               an administrator. The login credentials for each have been
-              provided temproarily. Thank you for visting!
+              provided <span className="red-text">for this demo only</span>.{" "}
+              <span className="bold">Thank you for visiting!</span>
             </p>
             <p>
               The technologies used to create this application were ReactJS,

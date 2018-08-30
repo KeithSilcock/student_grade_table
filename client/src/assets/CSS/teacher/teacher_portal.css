@@ -6,7 +6,7 @@
   flex-flow: row;
   box-shadow: 5px 8px 9px 2px #979797;
   border-radius: 0 0 10px 10px;
-  overflow: hidden;
+  /* overflow: hidden; */
   position: relative;
   z-index: 5;
 }
