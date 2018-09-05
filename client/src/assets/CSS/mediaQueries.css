@@ -2,6 +2,10 @@
   .new-assignment.points-inputs {
     width: 75%;
   }
+
+  #login-video {
+    width: 95%;
+  }
 }
 @media screen and (max-width: 700px) {
   .login.container {
