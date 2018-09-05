@@ -57,14 +57,15 @@
 }
 .teacher-login.container {
   width: 100%;
-  height: 75%;
+  height: 100%;
   display: flex;
   flex-flow: column;
   justify-content: flex-start;
 }
 .login-top {
   width: 100%;
-  height: 70%;
+  min-height: 55vh;
+  height: 75%;
   display: flex;
   flex-flow: row;
 }
@@ -76,7 +77,7 @@
   font-size: 120%;
 }
 
-.teacher-login.header,
+/* .teacher-login.header,
 .student-login.header {
   display: flex;
   justify-content: center;
@@ -88,7 +89,7 @@
   border-bottom: 1px solid rgb(168, 194, 199);
   background-color: rgb(255, 233, 193);
   color: rgb(0, 0, 0);
-}
+} */
 .teacher-login.header {
   align-self: flex-end;
 }
@@ -105,7 +106,7 @@
   flex-flow: column;
   justify-content: center;
   align-items: center;
-  border-left: 1px solid rgb(168, 194, 199);
+  margin: auto;
 }
 
 .teacher-login.body form,
@@ -114,7 +115,7 @@
   height: 60%;
   border: 2px solid rgb(124, 156, 161);
   border-radius: 10px;
-  box-shadow: 5px 8px 9px 2px #979797;
+  box-shadow: 3px 3px 11px 1px #979797;
 
   display: flex;
   flex-flow: column;
@@ -190,6 +191,7 @@ button.login-form {
   width: 50%;
   height: 100%;
   color: black;
+  border-right: 1px solid rgb(168, 194, 199);
 }
 .youtube-text {
   margin: 2%;
@@ -199,7 +201,7 @@ button.login-form {
   justify-content: center;
 }
 .video-span iframe {
-  box-shadow: 5px 5px 9px 2px #979797;
+  box-shadow: 3px 3px 11px 1px #979797;
 }
 
 .switch-box {
